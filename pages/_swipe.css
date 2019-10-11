@@ -58,45 +58,39 @@ hr {
   font-family: 'Inter UI';
   font-style: normal;
   font-weight: 400;
-  src: url('./assets/dist/fonts/inter-ui/Inter-UI-Regular.woff2?v=3.2')
+  src: url('/static/fonts/inter-ui/Inter-UI-Regular.woff2?v=3.2')
       format('woff2'),
-    url('./assets/dist/fonts/inter-ui/Inter-UI-Regular.woff?v=3.2')
-      format('woff');
+    url('/static/fonts/inter-ui/Inter-UI-Regular.woff?v=3.2') format('woff');
 }
 @font-face {
   font-family: 'Inter UI';
   font-style: normal;
   font-weight: 500;
-  src: url('./assets/dist/fonts/inter-ui/Inter-UI-Medium.woff2?v=3.2')
-      format('woff2'),
-    url('./assets/dist/fonts/inter-ui/Inter-UI-Medium.woff?v=3.2')
-      format('woff');
+  src: url('/static/fonts/inter-ui/Inter-UI-Medium.woff2?v=3.2') format('woff2'),
+    url('/static/fonts/inter-ui/Inter-UI-Medium.woff?v=3.2') format('woff');
 }
 @font-face {
   font-family: 'Inter UI';
   font-style: normal;
   font-weight: 600;
-  src: url('./assets/dist/fonts/inter-ui/Inter-UI-SemiBold.woff2?v=3.2')
+  src: url('/static/fonts/inter-ui/Inter-UI-SemiBold.woff2?v=3.2')
       format('woff2'),
-    url('./assets/dist/fonts/inter-ui/Inter-UI-SemiBold.woff?v=3.2')
-      format('woff');
+    url('/static/fonts/inter-ui/Inter-UI-SemiBold.woff?v=3.2') format('woff');
 }
 @font-face {
   font-family: 'Inter UI';
   font-style: normal;
   font-weight: 700;
-  src: url('./assets/dist/fonts/inter-ui/Inter-UI-Bold.woff2?v=3.2')
-      format('woff2'),
-    url('./assets/dist/fonts/inter-ui/Inter-UI-Bold.woff?v=3.2') format('woff');
+  src: url('/static/fonts/inter-ui/Inter-UI-Bold.woff2?v=3.2') format('woff2'),
+    url('/static/fonts/inter-ui/Inter-UI-Bold.woff?v=3.2') format('woff');
 }
 @font-face {
   font-family: 'Inter UI';
   font-style: normal;
   font-weight: 800;
-  src: url('./assets/dist/fonts/inter-ui/Inter-UI-ExtraBold.woff2?v=3.2')
+  src: url('/static/fonts/inter-ui/Inter-UI-ExtraBold.woff2?v=3.2')
       format('woff2'),
-    url('./assets/dist/fonts/inter-ui/Inter-UI-ExtraBold.woff?v=3.2')
-      format('woff');
+    url('/static/fonts/inter-ui/Inter-UI-ExtraBold.woff?v=3.2') format('woff');
 }
 /* Forms
 ==================== */

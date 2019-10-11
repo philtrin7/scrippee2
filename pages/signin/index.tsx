@@ -6,7 +6,7 @@ import Router from 'next/router'
 
 import './signin.scss'
 
-const LoginPage: React.FC = () => {
+const SigninPage: React.FC = () => {
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
   const [login] = useSigninMutation()
@@ -86,4 +86,4 @@ const LoginPage: React.FC = () => {
   )
 }
 
-export default LoginPage
+export default SigninPage
