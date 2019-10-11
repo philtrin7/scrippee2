@@ -1,6 +1,7 @@
 const path = require('path')
 const dotEnvResult = require('dotenv').config()
 const withCSS = require('@zeit/next-css')
+const withSass = require('@zeit/next-sass')
 const withImages = require('next-images')
 
 const prod = process.env.NODE_ENV === 'production'
@@ -10,17 +11,19 @@ if (dotEnvResult.error) {
 }
 
 module.exports = withCSS(
-  withImages({
-    exclude: path.resolve(__dirname, 'static/img/svg'),
-    webpack(config, _options) {
-      return config
-    },
-    env: {
-      REFRESH_TOKEN_URI: process.env.REFRESH_TOKEN_URI,
-      COOKIE_NAME: process.env.COOKIE_NAME,
-      PRISMA_SERVER_URI: process.env.PRISMA_SERVER_URI
-    }
-  })
+  withSass(
+    withImages({
+      exclude: path.resolve(__dirname, 'static/img/svg'),
+      webpack(config, _options) {
+        return config
+      },
+      env: {
+        REFRESH_TOKEN_URI: process.env.REFRESH_TOKEN_URI,
+        COOKIE_NAME: process.env.COOKIE_NAME,
+        PRISMA_SERVER_URI: process.env.PRISMA_SERVER_URI
+      }
+    })
+  )
 )
 
 /* ### Important ####
