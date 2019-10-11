@@ -5,7 +5,7 @@ import { ApolloProvider } from '@apollo/react-hooks'
 import { withApollo } from '../lib/apollo'
 import withReduxSaga from 'next-redux-saga'
 import withRedux from 'next-redux-wrapper'
-import createStore from '../lib/store'
+import createStore from '../redux/store'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import GlobalStyles from './GlobalStyles'

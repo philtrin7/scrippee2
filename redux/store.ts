@@ -1,8 +1,8 @@
 import { applyMiddleware, createStore } from 'redux'
 import createSagaMiddleware from 'redux-saga'
 
-import rootReducer from '../redux/rootReducer'
-import rootSaga from '../redux/rootSaga'
+import rootReducer from './rootReducer'
+import rootSaga from './rootSaga'
 
 const bindMiddleware = (middleware: any) => {
   if (process.env.NODE_ENV !== 'production') {
