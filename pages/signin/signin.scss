@@ -1,0 +1,64 @@
+$blue: #007bff;
+$grey: #bdbac2;
+
+.sign {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+  min-height: 100vh;
+  .item {
+    padding: 60px;
+    width: 100%;
+    max-width: 430px;
+    background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.03);
+    margin: 80px auto;
+    h2 {
+      font-weight: 600;
+      text-align: left;
+      margin-bottom: 0;
+      & + .form-group {
+        margin-top: 30px;
+      }
+    }
+    p {
+      margin: 15px 0 30px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+      & + a {
+        display: block;
+        margin-top: 30px;
+      }
+    }
+    .form-control {
+      padding: 0 15px 0 53px;
+      height: 55px;
+    }
+    .eva {
+      fill: #bdbac2;
+    }
+    a {
+      font-weight: 500;
+      color: $blue;
+      &:hover {
+        text-decoration: underline;
+      }
+      & + .primary {
+        margin-top: 15px;
+      }
+    }
+    .primary {
+      padding: 14px 0;
+    }
+    span {
+      display: block;
+      font-weight: 500;
+      text-align: center;
+      color: $grey;
+      margin-top: 30px;
+    }
+  }
+}

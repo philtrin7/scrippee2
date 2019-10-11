@@ -14,7 +14,13 @@ const Layout: React.FunctionComponent<Props> = ({
     <Head>
       <title>{title}</title>
       <meta charSet="utf-8" />
+      <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
       <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      <meta name="theme-color" content="#000000" />
+      <meta
+        name="description"
+        content="Scrippee 2.0 - Customer Management Tool"
+      />
     </Head>
     <Header />
     {children}
