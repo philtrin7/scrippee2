@@ -18,7 +18,7 @@ class SigninPage extends React.Component<any, any> {
     this.state = {
       email: '',
       password: '',
-      error: ''
+      errors: []
     }
   }
 
@@ -37,10 +37,12 @@ class SigninPage extends React.Component<any, any> {
       })
       signinStartDispatcher(response)
     } catch (error) {
+      const errorObj = { errors: error.graphQLErrors }
       this.setState({
-        error: error.message
+        errors: errorObj
       })
     }
+
     // if (response && response.data) {
     //   setAccessToken(response.data.signin.accessToken)
     // }
