@@ -23,9 +23,11 @@
     "jwt-decode": "^2.2.0",
     "next": "^9.0.8",
     "next-images": "^1.2.0",
+    "next-redux-wrapper": "^4.0.1",
     "node-sass": "^4.12.0",
     "react": "^16.10.1",
     "react-dom": "^16.10.1",
+    "react-redux": "^7.1.1",
     "react-svg": "^10.0.22",
     "styled-components": "^4.4.0"
   },
@@ -39,9 +41,11 @@
     "@types/node": "^12.7.8",
     "@types/react": "^16.9.3",
     "@types/react-dom": "^16.9.1",
+    "@types/react-redux": "^7.1.4",
     "@types/styled-components": "^4.1.19",
     "babel-plugin-styled-components": "^1.10.6",
     "dotenv": "^8.1.0",
+    "redux-devtools-extension": "^2.13.8",
     "typescript": "3.6.3"
   },
   "license": "ISC"
