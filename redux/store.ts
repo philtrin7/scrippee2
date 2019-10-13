@@ -1,6 +1,8 @@
 import { applyMiddleware, createStore } from 'redux'
+import createSagaMiddleware from 'redux-saga'
 
 import rootReducer from './rootReducer'
+import rootSaga from './rootSaga'
 
 const bindMiddleware = (middleware: any) => {
   if (process.env.NODE_ENV !== 'production') {
@@ -11,8 +13,14 @@ const bindMiddleware = (middleware: any) => {
 }
 
 function configureStore(initialState: any) {
-  const store: any = createStore(rootReducer, initialState, bindMiddleware([]))
+  const sagaMiddleware = createSagaMiddleware()
+  const store: any = createStore(
+    rootReducer,
+    initialState,
+    bindMiddleware([sagaMiddleware])
+  )
 
+  store.sagaTask = sagaMiddleware.run(rootSaga)
   return store
 }
 

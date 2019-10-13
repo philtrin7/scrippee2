@@ -9,6 +9,7 @@ import { SigninDocument } from '../../generated/graphql'
 import { signinStart } from '../../redux/auth/auth.actions'
 
 import './signin.scss'
+import { SigninPayload } from '../../redux/auth/auth.types'
 
 class SigninPage extends React.Component<any, any> {
   constructor(props: any) {
@@ -16,27 +17,30 @@ class SigninPage extends React.Component<any, any> {
 
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      error: ''
     }
   }
 
   handleSubmit = async (e: any) => {
     e.preventDefault()
 
-    const { signinStart } = this.props
+    const { signinStartDispatcher } = this.props
     const { email, password } = this.state
 
-    signinStart(email, password)
-
-    const response = await this.props.mutate({
-      variables: {
-        email,
-        password
-      }
-    })
-
-    console.log(response)
-
+    try {
+      const response = await this.props.mutate({
+        variables: {
+          email,
+          password
+        }
+      })
+      signinStartDispatcher(response)
+    } catch (error) {
+      this.setState({
+        error: error.message
+      })
+    }
     // if (response && response.data) {
     //   setAccessToken(response.data.signin.accessToken)
     // }
@@ -107,8 +111,8 @@ const SigninWtihData = graphql(SigninDocument)(SigninPage)
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    signinStart: (email: string, password: string) =>
-      dispatch(signinStart({ email, password }))
+    signinStartDispatcher: (response: SigninPayload) =>
+      dispatch(signinStart(response))
   }
 }
 
