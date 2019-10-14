@@ -1,11 +1,12 @@
-import { AuthPayload } from '../../generated/graphql'
+import { SigninMutationFn } from '../../generated/graphql'
 
 export enum AuthActionTypes {
-  SIGN_IN_START = 'SIGN_IN_START'
+  SIGNIN_START = 'SIGNIN_START',
+  SIGNIN_FAIL = 'SIGNIN_FAIL'
 }
 
 export interface SigninPayload {
-  payload: {
-    data: AuthPayload
-  }
+  email: string
+  password: string
+  mutate: SigninMutationFn
 }

@@ -3,13 +3,11 @@ import { connect } from 'react-redux'
 import ReactSVG from 'react-svg'
 import { graphql } from 'react-apollo'
 import { SigninDocument } from '../../generated/graphql'
+import { signinStart } from '../../redux/auth/auth.actions'
 
 // import Router from 'next/router'
 
-import { signinStart } from '../../redux/auth/auth.actions'
-
 import './signin.scss'
-import { SigninPayload } from '../../redux/auth/auth.types'
 
 class SigninPage extends React.Component<any, any> {
   constructor(props: any) {
@@ -25,23 +23,10 @@ class SigninPage extends React.Component<any, any> {
   handleSubmit = async (e: any) => {
     e.preventDefault()
 
-    const { signinStartDispatcher } = this.props
+    const { signinStartDispatcher, mutate } = this.props
     const { email, password } = this.state
 
-    try {
-      const response = await this.props.mutate({
-        variables: {
-          email,
-          password
-        }
-      })
-      signinStartDispatcher(response)
-    } catch (error) {
-      const errorObj = { errors: error.graphQLErrors }
-      this.setState({
-        errors: errorObj
-      })
-    }
+    signinStartDispatcher(email, password, mutate)
 
     // if (response && response.data) {
     //   setAccessToken(response.data.signin.accessToken)
@@ -113,8 +98,8 @@ const SigninWtihData = graphql(SigninDocument)(SigninPage)
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    signinStartDispatcher: (response: SigninPayload) =>
-      dispatch(signinStart(response))
+    signinStartDispatcher: (email: string, password: string, mutate: any) =>
+      dispatch(signinStart({ email, password, mutate }))
   }
 }
 
