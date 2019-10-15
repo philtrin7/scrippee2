@@ -1,43 +1,49 @@
-import React from 'react'
+import React, { useState } from 'react'
 import ReactSVG from 'react-svg'
 import { useSigninMutation, MeQuery, MeDocument } from '../../generated/graphql'
-import { setAccessToken } from '../../lib/accessToken'
-import Router from 'next/router'
+// import { setAccessToken } from '../../lib/accessToken'
+// import Router from 'next/router'
+import { toast } from 'react-toastify'
 
 import './signin.scss'
 
 const SigninPage: React.FC = () => {
-  const [email, setEmail] = React.useState('')
-  const [password, setPassword] = React.useState('')
-  const [login] = useSigninMutation()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [signin] = useSigninMutation()
 
   const handleSubmit = async (e: any) => {
     e.preventDefault()
 
-    const response = await login({
-      variables: {
-        email,
-        password
-      },
-      update: (store, { data }) => {
-        if (!data) {
-          return null
-        }
-        // Update Apollo cache with newly signed-in user
-        store.writeQuery<MeQuery>({
-          query: MeDocument,
-          data: {
-            me: data.signin.user
+    try {
+      const response = await signin({
+        variables: {
+          email,
+          password
+        },
+        update: (store, { data }) => {
+          if (!data) {
+            return null
           }
-        })
-      }
-    })
-
-    if (response && response.data) {
-      setAccessToken(response.data.signin.accessToken)
+          // Update Apollo cache with newly signed-in user
+          store.writeQuery<MeQuery>({
+            query: MeDocument,
+            data: {
+              me: data.signin.user
+            }
+          })
+        }
+      })
+      console.log(response)
+    } catch (err) {
+      toast.warn(err.graphQLErrors[0].message)
     }
 
-    Router.push('/')
+    // if (response && response.data) {
+    //   setAccessToken(response.data.signin.accessToken)
+    // }
+
+    // Router.push('/')
   }
 
   return (

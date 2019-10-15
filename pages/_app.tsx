@@ -8,8 +8,12 @@ import { Provider } from 'react-redux'
 import withRedux from 'next-redux-wrapper'
 import createStore from '../redux/store'
 
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.min.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import GlobalStyles from './GlobalStyles'
+
+toast.configure()
 
 class MyApp extends App<any> {
   render() {
