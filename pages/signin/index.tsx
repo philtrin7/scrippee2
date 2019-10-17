@@ -1,19 +1,33 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import ReactSVG from 'react-svg'
-import { useSigninMutation } from '../../generated/graphql'
-import { useDispatch } from 'react-redux'
-// import { setAccessToken } from '../../lib/accessToken'
-// import Router from 'next/router'
 import { toast } from 'react-toastify'
+import Router from 'next/router'
 
-import './signin.scss'
+import { useSigninMutation } from '../../generated/graphql'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from '../../redux/store'
+// import { setAccessToken } from '../../lib/accessToken'
 import { AuthActionTypes } from '../../redux/auth/auth.types'
 
+import './signin.scss'
+
 const SigninPage: React.FC = () => {
+  const errorsInit = useSelector((state: RootState) => state.auth.errors)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [errors, setErrors] = useState(errorsInit)
+
   const [signin] = useSigninMutation()
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (errors.length > 0) {
+      errors.map((error) => {
+        toast.error(error)
+        dispatch({ type: AuthActionTypes.CLEAR_ERRORS })
+      })
+    }
+  }, [errors])
 
   const handleSubmit = async (e: any) => {
     e.preventDefault()
@@ -28,16 +42,17 @@ const SigninPage: React.FC = () => {
       if (response && response.data) {
         const { user } = response.data.signin
         dispatch({ type: AuthActionTypes.SIGNIN_SUCCESS, payload: user })
+
+        Router.push('/')
       }
     } catch (err) {
-      toast.warn(err.graphQLErrors[0].message)
+      dispatch({ type: AuthActionTypes.SIGNIN_FAIL })
+      setErrors([err.graphQLErrors[0].message])
     }
 
     // if (response && response.data) {
     //   setAccessToken(response.data.signin.accessToken)
     // }
-
-    // Router.push('/')
   }
 
   return (

@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import Head from 'next/head'
-import Layout from '../components/Layout'
+import Router from 'next/router'
 import { NextPage } from 'next'
-import NavSideBar from '../components/navigation/nav-sidebar.component'
+
 import { useMeQuery } from '../generated/graphql'
 import { useDispatch, useSelector } from 'react-redux'
-import { AuthActionTypes } from '../redux/auth/auth.types'
 import { RootState } from '../redux/store'
-import Router from 'next/router'
+
+import { AuthActionTypes } from '../redux/auth/auth.types'
+
+import NavSideBar from '../components/navigation/nav-sidebar.component'
+import Layout from '../components/Layout'
 
 const IndexPage: NextPage = () => {
   const auth = useSelector((state: RootState) => state.auth)
@@ -19,7 +22,10 @@ const IndexPage: NextPage = () => {
     if (data && data.me) {
       const { me } = data
       dispatch({ type: AuthActionTypes.SIGNIN_SUCCESS, payload: me })
+    } else if (currentUser) {
+      return
     } else {
+      dispatch({ type: AuthActionTypes.SIGNIN_REQUIRED })
       Router.push('/signin')
     }
   }, [currentUser])
