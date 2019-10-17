@@ -31,20 +31,14 @@ export const LiNav = styled.li`
         fill: #007bff;
       }
     }
+    .signout-svg {
+      width: 28px;
+      height: 28px;
+    }
   }
   > a.active {
     .eva {
       fill: #007bff;
     }
   }
-`
-export const Btn = styled.button`
-  padding: 0;
-  position: relative;
-`
-
-export const ImgAvatar = styled.img`
-  width: 42px;
-  height: 42px;
-  border-radius: 100%;
 `

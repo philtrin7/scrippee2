@@ -1,17 +1,10 @@
 import React from 'react'
 
 import ReactSVG from 'react-svg'
-import avatar from '../../static/img/avatar-male-1.jpg'
+// import avatar from '../../static/img/avatar-male-1.jpg'
 import SwipeLogo from '../../static/img/swipe-logo-replace-me.png'
 
-import {
-  DivContainer,
-  ImgLogo,
-  UlNav,
-  LiNav,
-  Btn,
-  ImgAvatar
-} from './nav-sidebar.styles'
+import { DivContainer, ImgLogo, UlNav, LiNav } from './nav-sidebar.styles'
 
 const NavSideBar: React.FC = () => {
   return (
@@ -47,11 +40,19 @@ const NavSideBar: React.FC = () => {
             </i>
           </a>
         </LiNav>
-        <li>
-          <Btn type="button" className="btn">
-            <ImgAvatar src={avatar} alt="avatar" />
-          </Btn>
-        </li>
+        <LiNav>
+          <a
+            href="/"
+            data-toggle="tab"
+            role="tab"
+            aria-controls="settings"
+            aria-selected="false"
+          >
+            <i className="eva-hover">
+              <ReactSVG src="../../static/img/svg/signout.svg" />
+            </i>
+          </a>
+        </LiNav>
       </UlNav>
     </DivContainer>
   )

@@ -16,6 +16,11 @@ export const authReducer: Reducer<AuthState, any> = (
         ...state,
         currentUser: action.payload
       }
+    case AuthActionTypes.SIGNOUT_SUCCESS:
+      return {
+        ...state,
+        currentUser: null
+      }
     case AuthActionTypes.SIGNIN_FAIL:
       return {
         ...state
