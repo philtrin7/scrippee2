@@ -7,11 +7,13 @@ export enum AuthActionTypes {
 }
 
 export interface AuthState {
-  currentUser: {
-    id: String
-    email: String
-  } | null
-  errors: Error[]
+  currentUser: User | null
+  errors: ErrorArray
 }
 
-type Error = String
+export interface User {
+  id: String
+  email: String
+}
+
+export type ErrorArray = String[]

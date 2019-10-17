@@ -4,27 +4,40 @@ import { toast } from 'react-toastify'
 import Router from 'next/router'
 
 import { useSigninMutation } from '../../generated/graphql'
-import { useDispatch, useSelector } from 'react-redux'
+import { connect } from 'react-redux'
+import { Dispatch } from 'redux'
 import { RootState } from '../../redux/store'
 // import { setAccessToken } from '../../lib/accessToken'
-import { AuthActionTypes } from '../../redux/auth/auth.types'
+import { User, ErrorArray } from '../../redux/auth/auth.types'
+import {
+  clearErrors,
+  signinUser,
+  signinFail
+} from '../../redux/auth/auth.actions'
 
 import './signin.scss'
 
-const SigninPage: React.FC = () => {
-  const errorsInit = useSelector((state: RootState) => state.auth.errors)
+interface SigninPagePropTypes {
+  clearErrorsArr: Function
+  signinCurrentUser: Function
+  signinFailed: Function
+  errors: ErrorArray
+}
+
+const SigninPage: React.FC<SigninPagePropTypes> = (props) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [errors, setErrors] = useState(errorsInit)
+  const [errors, setErrors] = useState(props.errors)
 
   const [signin] = useSigninMutation()
-  const dispatch = useDispatch()
+
+  const { clearErrorsArr, signinCurrentUser, signinFailed } = props
 
   useEffect(() => {
     if (errors.length > 0) {
       errors.map((error) => {
         toast.error(error)
-        dispatch({ type: AuthActionTypes.CLEAR_ERRORS })
+        clearErrorsArr()
       })
     }
   }, [errors])
@@ -41,13 +54,13 @@ const SigninPage: React.FC = () => {
       })
       if (response && response.data) {
         const { user } = response.data.signin
-        dispatch({ type: AuthActionTypes.SIGNIN_SUCCESS, payload: user })
+        signinCurrentUser(user)
 
         Router.push('/')
       }
     } catch (err) {
-      dispatch({ type: AuthActionTypes.SIGNIN_FAIL })
       setErrors([err.graphQLErrors[0].message])
+      signinFailed()
     }
 
     // if (response && response.data) {
@@ -101,4 +114,19 @@ const SigninPage: React.FC = () => {
   )
 }
 
-export default SigninPage
+const mapStateToProps = (state: RootState) => {
+  return {
+    errors: state.auth.errors
+  }
+}
+
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  signinCurrentUser: (currentUser: User) => dispatch(signinUser(currentUser)),
+  signinFailed: () => dispatch(signinFail()),
+  clearErrorsArr: () => dispatch(clearErrors())
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SigninPage)

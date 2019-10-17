@@ -10,7 +10,7 @@ import { RootState } from '../redux/store'
 import NavSideBar from '../components/navigation/nav-sidebar.component'
 import Layout from '../components/Layout'
 import { signinUser, signinRequired } from '../redux/auth/auth.actions'
-import { AuthState } from '../redux/auth/auth.types'
+import { AuthState, User } from '../redux/auth/auth.types'
 
 interface IndexPageProps {
   signinCurrentUser: Function
@@ -27,9 +27,8 @@ const IndexPage: React.FC<IndexPageProps> = (props) => {
     if (data && data.me) {
       const { me } = data
       signinCurrentUser(me)
-    } else if (currentUser === null) {
-      signinRedirect()
-      Router.push('/signin')
+    } else if (currentUser !== null && currentUser.id) {
+      return
     } else {
       signinRedirect()
       Router.push('/signin')
@@ -59,7 +58,7 @@ const mapStateToProps = (state: RootState) => {
 }
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  signinCurrentUser: (currentUser: any) => dispatch(signinUser(currentUser)),
+  signinCurrentUser: (currentUser: User) => dispatch(signinUser(currentUser)),
   signinRedirect: () => dispatch(signinRequired())
 })
 
