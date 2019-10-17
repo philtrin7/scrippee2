@@ -1,16 +1,19 @@
 import React, { useState } from 'react'
 import ReactSVG from 'react-svg'
-import { useSigninMutation, MeQuery, MeDocument } from '../../generated/graphql'
+import { useSigninMutation } from '../../generated/graphql'
+import { useDispatch } from 'react-redux'
 // import { setAccessToken } from '../../lib/accessToken'
 // import Router from 'next/router'
 import { toast } from 'react-toastify'
 
 import './signin.scss'
+import { AuthActionTypes } from '../../redux/auth/auth.types'
 
 const SigninPage: React.FC = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [signin] = useSigninMutation()
+  const dispatch = useDispatch()
 
   const handleSubmit = async (e: any) => {
     e.preventDefault()
@@ -20,21 +23,12 @@ const SigninPage: React.FC = () => {
         variables: {
           email,
           password
-        },
-        update: (store, { data }) => {
-          if (!data) {
-            return null
-          }
-          // Update Apollo cache with newly signed-in user
-          store.writeQuery<MeQuery>({
-            query: MeDocument,
-            data: {
-              me: data.signin.user
-            }
-          })
         }
       })
-      console.log(response)
+      if (response && response.data) {
+        const { user } = response.data.signin
+        dispatch({ type: AuthActionTypes.SIGNIN_SUCCESS, payload: user })
+      }
     } catch (err) {
       toast.warn(err.graphQLErrors[0].message)
     }
