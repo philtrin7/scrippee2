@@ -1,10 +1,29 @@
-import * as React from 'react'
+import React, { useEffect, useState } from 'react'
 import Head from 'next/head'
 import Layout from '../components/Layout'
 import { NextPage } from 'next'
 import NavSideBar from '../components/navigation/nav-sidebar.component'
+import { useMeQuery } from '../generated/graphql'
+import { useDispatch, useSelector } from 'react-redux'
+import { AuthActionTypes } from '../redux/auth/auth.types'
+import { RootState } from '../redux/store'
+import Router from 'next/router'
 
 const IndexPage: NextPage = () => {
+  const auth = useSelector((state: RootState) => state.auth)
+  const [currentUser] = useState(auth.currentUser)
+  const dispatch = useDispatch()
+  const { data } = useMeQuery()
+
+  useEffect(() => {
+    if (data && data.me) {
+      const { me } = data
+      dispatch({ type: AuthActionTypes.SIGNIN_SUCCESS, payload: me })
+    } else {
+      Router.push('/signin')
+    }
+  }, [currentUser])
+
   return (
     <div>
       <Head>

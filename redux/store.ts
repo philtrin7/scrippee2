@@ -2,6 +2,8 @@ import { applyMiddleware, createStore } from 'redux'
 
 import rootReducer from './rootReducer'
 
+export type RootState = ReturnType<typeof rootReducer>
+
 const bindMiddleware = (middleware: any) => {
   if (process.env.NODE_ENV !== 'production') {
     const { composeWithDevTools } = require('redux-devtools-extension')
