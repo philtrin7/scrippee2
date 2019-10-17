@@ -29,6 +29,7 @@ export const LiNav = styled.li`
     &:hover {
       .eva {
         fill: #007bff;
+        cursor: pointer;
       }
     }
     .signout-svg {

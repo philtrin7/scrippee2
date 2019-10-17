@@ -1,7 +1,6 @@
 import React from 'react'
 
 import ReactSVG from 'react-svg'
-// import avatar from '../../static/img/avatar-male-1.jpg'
 import SwipeLogo from '../../static/img/swipe-logo-replace-me.png'
 
 import { DivContainer, ImgLogo, UlNav, LiNav } from './nav-sidebar.styles'
@@ -42,7 +41,6 @@ const NavSideBar: React.FC = () => {
         </LiNav>
         <LiNav>
           <a
-            href="/"
             data-toggle="tab"
             role="tab"
             aria-controls="settings"
