@@ -27,7 +27,7 @@ export const authReducer: Reducer<AuthState, any> = (
       }
     case AuthActionTypes.SIGNIN_REQUIRED:
       return {
-        errors: state.errors.push('Please sign in'),
+        errors: state.errors.push(action.payload),
         ...state
       }
     case AuthActionTypes.CLEAR_ERRORS:

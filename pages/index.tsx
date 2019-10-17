@@ -1,31 +1,37 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import Head from 'next/head'
 import Router from 'next/router'
-import { NextPage } from 'next'
 
 import { useMeQuery } from '../generated/graphql'
-import { useDispatch, useSelector } from 'react-redux'
+import { connect } from 'react-redux'
+import { Dispatch } from 'redux'
 import { RootState } from '../redux/store'
-
-import { AuthActionTypes } from '../redux/auth/auth.types'
 
 import NavSideBar from '../components/navigation/nav-sidebar.component'
 import Layout from '../components/Layout'
+import { signinUser, signinRequired } from '../redux/auth/auth.actions'
+import { AuthState } from '../redux/auth/auth.types'
 
-const IndexPage: NextPage = () => {
-  const auth = useSelector((state: RootState) => state.auth)
-  const [currentUser] = useState(auth.currentUser)
-  const dispatch = useDispatch()
+interface IndexPageProps {
+  signinCurrentUser: Function
+  signinRedirect: Function
+  auth: AuthState
+}
+
+const IndexPage: React.FC<IndexPageProps> = (props) => {
+  const { currentUser } = props.auth
+  const { signinCurrentUser, signinRedirect } = props
   const { data } = useMeQuery()
 
   useEffect(() => {
     if (data && data.me) {
       const { me } = data
-      dispatch({ type: AuthActionTypes.SIGNIN_SUCCESS, payload: me })
-    } else if (currentUser) {
-      return
+      signinCurrentUser(me)
+    } else if (currentUser === null) {
+      signinRedirect()
+      Router.push('/signin')
     } else {
-      dispatch({ type: AuthActionTypes.SIGNIN_REQUIRED })
+      signinRedirect()
       Router.push('/signin')
     }
   }, [currentUser])
@@ -46,4 +52,18 @@ const IndexPage: NextPage = () => {
   )
 }
 
-export default IndexPage
+const mapStateToProps = (state: RootState) => {
+  return {
+    auth: state.auth
+  }
+}
+
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  signinCurrentUser: (currentUser: any) => dispatch(signinUser(currentUser)),
+  signinRedirect: () => dispatch(signinRequired())
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(IndexPage)
