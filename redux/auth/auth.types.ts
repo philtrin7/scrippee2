@@ -8,7 +8,7 @@ export enum AuthActionTypes {
 
 export interface AuthState {
   currentUser: User | null
-  errors: ErrorArray
+  alerts: AlertsArray
 }
 
 export interface User {
@@ -16,4 +16,9 @@ export interface User {
   email: String
 }
 
-export type ErrorArray = String[]
+export type AlertsArray = Alert[]
+
+type Alert = {
+  type: string
+  message: string
+}

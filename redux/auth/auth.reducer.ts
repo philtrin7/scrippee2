@@ -3,7 +3,7 @@ import { Reducer } from 'redux'
 
 const INITIAL_STATE: AuthState = {
   currentUser: null,
-  errors: []
+  alerts: []
 }
 
 export const authReducer: Reducer<AuthState, any> = (
@@ -27,13 +27,13 @@ export const authReducer: Reducer<AuthState, any> = (
       }
     case AuthActionTypes.SIGNIN_REQUIRED:
       return {
-        errors: state.errors.push(action.payload),
+        alerts: state.alerts.push(action.payload),
         ...state
       }
     case AuthActionTypes.CLEAR_ERRORS:
       return {
         ...state,
-        errors: []
+        alerts: []
       }
     default:
       return state

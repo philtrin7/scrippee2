@@ -8,7 +8,7 @@ import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { RootState } from '../../redux/store'
 // import { setAccessToken } from '../../lib/accessToken'
-import { User, ErrorArray } from '../../redux/auth/auth.types'
+import { User, AlertsArray } from '../../redux/auth/auth.types'
 import {
   clearErrors,
   signinUser,
@@ -22,26 +22,32 @@ interface SigninPagePropTypes {
   clearErrorsArr: Function
   signinCurrentUser: Function
   signinFailed: Function
-  errors: ErrorArray
+  alerts: AlertsArray
 }
 
 const SigninPage: React.FC<SigninPagePropTypes> = (props) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [errors, setErrors] = useState(props.errors)
+  const [alerts, setAlerts] = useState(props.alerts)
 
   const [signin, { loading }] = useSigninMutation()
 
   const { clearErrorsArr, signinCurrentUser, signinFailed } = props
 
   useEffect(() => {
-    if (errors.length > 0) {
-      errors.map((error) => {
-        toast.error(error)
-        clearErrorsArr()
+    if (alerts.length > 0) {
+      alerts.map((alert) => {
+        const { type, message } = alert
+        if (type === 'warn') {
+          toast.warn(message)
+          clearErrorsArr()
+        } else if (type === 'error') {
+          toast.error(message)
+          clearErrorsArr()
+        }
       })
     }
-  }, [errors])
+  }, [alerts])
 
   const handleSubmit = async (e: any) => {
     e.preventDefault()
@@ -60,7 +66,12 @@ const SigninPage: React.FC<SigninPagePropTypes> = (props) => {
         Router.push('/')
       }
     } catch (err) {
-      setErrors([err.graphQLErrors[0].message])
+      setAlerts([
+        {
+          type: 'error',
+          message: err.graphQLErrors[0].message
+        }
+      ])
       signinFailed()
     }
 
@@ -121,7 +132,7 @@ const SigninPage: React.FC<SigninPagePropTypes> = (props) => {
 
 const mapStateToProps = (state: RootState) => {
   return {
-    errors: state.auth.errors
+    alerts: state.auth.alerts
   }
 }
 

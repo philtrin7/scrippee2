@@ -10,7 +10,7 @@ export const signinUser = (currentUser: User) => {
 export const signinRequired = () => {
   return {
     type: AuthActionTypes.SIGNIN_REQUIRED,
-    payload: 'Please sign in'
+    payload: { type: 'warn', message: 'To continue, please sign in.' }
   }
 }
 
