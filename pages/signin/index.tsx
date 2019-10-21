@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react'
 import ReactSVG from 'react-svg'
 import { toast } from 'react-toastify'
 import Router from 'next/router'
+import { setAccessToken } from '../../lib/accessToken'
 
 import { useSigninMutation } from '../../generated/graphql'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { RootState } from '../../redux/store'
-// import { setAccessToken } from '../../lib/accessToken'
 import { User, AlertsArray } from '../../redux/auth/auth.types'
 import {
   clearErrors,
@@ -64,6 +64,7 @@ const SigninPage: React.FC<SigninPagePropTypes> = (props) => {
       })
       if (response && response.data) {
         const { user } = response.data.signin
+        setAccessToken(response.data.signin.accessToken)
         signinCurrentUser(user)
 
         Router.push('/')
@@ -77,10 +78,6 @@ const SigninPage: React.FC<SigninPagePropTypes> = (props) => {
       ])
       signinFailed()
     }
-
-    // if (response && response.data) {
-    //   setAccessToken(response.data.signin.accessToken)
-    // }
   }
 
   return (
