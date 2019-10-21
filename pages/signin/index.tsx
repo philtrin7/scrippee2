@@ -44,6 +44,9 @@ const SigninPage: React.FC<SigninPagePropTypes> = (props) => {
         } else if (type === 'error') {
           toast.error(message)
           clearErrorsArr()
+        } else if (type === 'success') {
+          toast.success(message)
+          clearErrorsArr()
         }
       })
     }

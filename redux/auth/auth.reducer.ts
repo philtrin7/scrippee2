@@ -18,6 +18,7 @@ export const authReducer: Reducer<AuthState, any> = (
       }
     case AuthActionTypes.SIGNOUT_SUCCESS:
       return {
+        alerts: state.alerts.push(action.payload),
         ...state,
         currentUser: null
       }

@@ -25,3 +25,16 @@ export const signinFail = () => {
     type: AuthActionTypes.SIGNIN_FAIL
   }
 }
+
+export const signoutSuccess = () => {
+  return {
+    type: AuthActionTypes.SIGNOUT_SUCCESS,
+    payload: { type: 'success', message: 'Successfully signed out.' }
+  }
+}
+
+export const signoutFail = () => {
+  return {
+    type: AuthActionTypes.SIGNOUT_FAIL
+  }
+}

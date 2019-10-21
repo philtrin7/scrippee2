@@ -6,6 +6,7 @@ import { useMeQuery } from '../generated/graphql'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { RootState } from '../redux/store'
+import usePrevious from '../lib/usePreviousState'
 
 import NavSideBar from '../components/navigation/nav-sidebar.component'
 import Layout from '../components/Layout'
@@ -23,12 +24,21 @@ const IndexPage: React.FC<IndexPageProps> = (props) => {
   const { signinCurrentUser, signinRedirect } = props
   const { data } = useMeQuery()
 
+  const prevCurrentUser: User | null | undefined = usePrevious(currentUser)
+
   useEffect(() => {
+    // Prisma query for user
     if (data && data.me) {
       const { me } = data
       signinCurrentUser(me)
+      return
+      // State contains currentUser
     } else if (currentUser !== null && currentUser.id) {
       return
+      // Sign out success without signing required warning
+    } else if (currentUser === null && prevCurrentUser) {
+      Router.push('/signin')
+      // Fallback to forced signin
     } else {
       signinRedirect()
       Router.push('/signin')
@@ -43,7 +53,7 @@ const IndexPage: React.FC<IndexPageProps> = (props) => {
       <Layout title="Scrippee 2.0">
         <div className="layout">
           <nav className="navigation">
-            <NavSideBar />
+            <NavSideBar currentUser={currentUser} />
           </nav>
         </div>
       </Layout>
