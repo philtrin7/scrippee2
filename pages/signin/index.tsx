@@ -15,6 +15,7 @@ import {
   signinFail
 } from '../../redux/auth/auth.actions'
 
+import PulseLoader from 'react-spinners/PulseLoader'
 import './signin.scss'
 
 interface SigninPagePropTypes {
@@ -29,7 +30,7 @@ const SigninPage: React.FC<SigninPagePropTypes> = (props) => {
   const [password, setPassword] = useState('')
   const [errors, setErrors] = useState(props.errors)
 
-  const [signin] = useSigninMutation()
+  const [signin, { loading }] = useSigninMutation()
 
   const { clearErrorsArr, signinCurrentUser, signinFailed } = props
 
@@ -102,7 +103,11 @@ const SigninPage: React.FC<SigninPagePropTypes> = (props) => {
             </div>
             <a href="/">Forgot Password?</a>
             <button type="submit" className="btn primary">
-              Sign In
+              {loading ? (
+                <PulseLoader margin={'2px'} color={'white'} size={8} />
+              ) : (
+                'Sign In'
+              )}
             </button>
             <span>
               Don't have account? <a href="/">Create Account.</a>

@@ -28,6 +28,7 @@
     "react": "^16.10.1",
     "react-dom": "^16.10.1",
     "react-redux": "^7.1.1",
+    "react-spinners": "^0.6.1",
     "react-svg": "^10.0.22",
     "react-toastify": "^5.4.0",
     "styled-components": "^4.4.0"
