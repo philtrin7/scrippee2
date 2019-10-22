@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactSVG from 'react-svg'
 
 // import { ReactComponent as SearchSVGIcon } from '../../../assets/search.svg'
 // import { ReactComponent as NewOrderSVGIcon } from '../../../assets/new-order.svg'
@@ -24,7 +25,7 @@ const OrdersList = () => {
                     placeholder="Search"
                   />
                   <button type="submit" className="btn prepend">
-                    {/* <SearchSVGIcon /> */}
+                    <ReactSVG src="/static/img/svg/search.svg" />
                   </button>
                 </form>
                 <ul className="nav" role="tablist">
@@ -58,7 +59,7 @@ const OrdersList = () => {
                   data-toggle="modal"
                   data-target="#compose"
                 >
-                  {/* <NewOrderSVGIcon /> */}
+                  <ReactSVG src="/static/img/svg/new-order.svg" />
                 </button>
                 <hr />
 
