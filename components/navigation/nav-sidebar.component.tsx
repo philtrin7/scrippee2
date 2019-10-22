@@ -10,7 +10,7 @@ import { setAccessToken } from '../../lib/accessToken'
 
 import ReactSVG from 'react-svg'
 import SwipeLogo from '../../static/img/swipe-logo-replace-me.png'
-import { DivContainer, ImgLogo, UlNav, LiNav } from './nav-sidebar.styles'
+import navSidebarStyles from './nav-sidebar.styles.scss'
 
 interface NavSideBarProps {
   signoutSuccess: Function
@@ -36,51 +36,54 @@ const NavSideBar: React.FC<NavSideBarProps> = (props) => {
   }
 
   return (
-    <DivContainer className="container">
-      <a href="/" className="logo" rel="home">
-        <ImgLogo src={SwipeLogo} alt="logo" />
-      </a>
-      <UlNav role="tablist">
-        <LiNav>
-          <a
-            href="/"
-            className="active"
-            data-toggle="tab"
-            role="tab"
-            aria-controls="conversations"
-            aria-selected="true"
-          >
-            <i className="eva-hover">
-              <ReactSVG src="../../static/img/svg/eva-message-square.svg" />
-            </i>
-          </a>
-        </LiNav>
-        <LiNav>
-          <a
-            href="/"
-            data-toggle="tab"
-            role="tab"
-            aria-controls="settings"
-            aria-selected="false"
-          >
-            <i className="eva-hover">
-              <ReactSVG src="../../static/img/svg/settings-icon.svg" />
-            </i>
-          </a>
-        </LiNav>
-        {props.currentUser ? (
-          <LiNav>
-            <a onClick={handleOnClick}>
+    <div>
+      <div className="container">
+        <a href="/" className="logo" rel="home">
+          <img src={SwipeLogo} alt="logo" />
+        </a>
+        <ul className="nav" role="tablist">
+          <li>
+            <a
+              href="/"
+              className="active"
+              data-toggle="tab"
+              role="tab"
+              aria-controls="conversations"
+              aria-selected="true"
+            >
               <i className="eva-hover">
-                <ReactSVG src="../../static/img/svg/signout.svg" />
+                <ReactSVG src="../../static/img/svg/eva-message-square.svg" />
               </i>
             </a>
-          </LiNav>
-        ) : (
-          ''
-        )}
-      </UlNav>
-    </DivContainer>
+          </li>
+          <li>
+            <a
+              href="/"
+              data-toggle="tab"
+              role="tab"
+              aria-controls="settings"
+              aria-selected="false"
+            >
+              <i className="eva-hover">
+                <ReactSVG src="../../static/img/svg/settings-icon.svg" />
+              </i>
+            </a>
+          </li>
+          {props.currentUser ? (
+            <li>
+              <a onClick={handleOnClick}>
+                <i className="eva-hover">
+                  <ReactSVG src="../../static/img/svg/signout.svg" />
+                </i>
+              </a>
+            </li>
+          ) : (
+            ''
+          )}
+        </ul>
+      </div>
+      <style jsx>{navSidebarStyles}</style>
+    </div>
   )
 }
 

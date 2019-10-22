@@ -11,6 +11,7 @@ import NavSideBar from '../components/navigation/nav-sidebar.component'
 import Layout from '../components/Layout'
 import { signinUser, signinRequired } from '../redux/auth/auth.actions'
 import { AuthState, User } from '../redux/auth/auth.types'
+import Head from 'next/head'
 
 interface IndexPageProps {
   signinCurrentUser: Function
@@ -49,6 +50,9 @@ const IndexPage: React.FC<IndexPageProps> = (props) => {
 
   return (
     <div>
+      <Head>
+        <script src="../static/js/eva.min.js"></script>
+      </Head>
       <Layout title="Scrippee 2.0">
         <div className="layout">
           <nav className="navigation">
