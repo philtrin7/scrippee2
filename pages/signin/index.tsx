@@ -4,7 +4,7 @@ import { toast } from 'react-toastify'
 import Router from 'next/router'
 import { setAccessToken } from '../../lib/accessToken'
 
-import { useSigninMutation } from '../../generated/graphql'
+import { useSigninMutation, MeQuery, MeDocument } from '../../generated/graphql'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { RootState } from '../../redux/store'
@@ -60,6 +60,17 @@ const SigninPage: React.FC<SigninPagePropTypes> = (props) => {
         variables: {
           email,
           password
+        },
+        update: (store, { data }) => {
+          if (!data) {
+            return null
+          }
+          store.writeQuery<MeQuery>({
+            query: MeDocument,
+            data: {
+              me: data.signin.user
+            }
+          })
         }
       })
       if (response && response.data) {

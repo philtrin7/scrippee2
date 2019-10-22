@@ -30,8 +30,11 @@ const IndexPage: React.FC<IndexPageProps> = (props) => {
     // Prisma query for user
     if (data && data.me) {
       const { me } = data
-      signinCurrentUser(me)
-      return
+      if (currentUser !== null && currentUser.id === me.id) {
+        return
+      } else {
+        signinCurrentUser(me)
+      }
       // State contains currentUser
     } else if (currentUser !== null && currentUser.id) {
       return

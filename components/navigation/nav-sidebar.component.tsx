@@ -25,12 +25,13 @@ const NavSideBar: React.FC<NavSideBarProps> = (props) => {
   const handleOnClick = async () => {
     try {
       await logout()
+      setAccessToken('')
       await client!.resetStore()
+      signoutSuccess()
     } catch (error) {
       signoutFailed()
     }
-    setAccessToken('')
-    signoutSuccess()
+
     Router.push('/signin')
   }
 
