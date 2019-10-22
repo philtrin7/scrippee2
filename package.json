@@ -24,7 +24,6 @@
     "next": "^9.0.8",
     "next-images": "^1.2.0",
     "next-redux-wrapper": "^4.0.1",
-    "node-sass": "^4.12.0",
     "react": "^16.10.1",
     "react-dom": "^16.10.1",
     "react-redux": "^7.1.1",
@@ -47,7 +46,9 @@
     "@types/styled-components": "^4.1.19",
     "babel-plugin-styled-components": "^1.10.6",
     "dotenv": "^8.1.0",
+    "node-sass": "^4.12.0",
     "redux-devtools-extension": "^2.13.8",
+    "sass-loader": "^8.0.0",
     "typescript": "3.6.3"
   },
   "license": "ISC"

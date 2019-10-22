@@ -11,19 +11,31 @@ if (dotEnvResult.error) {
 }
 
 module.exports = withCSS(
-  withSass(
-    withImages({
-      exclude: path.resolve(__dirname, 'static/img/svg'),
-      webpack(config, _options) {
-        return config
-      },
-      env: {
-        REFRESH_TOKEN_URI: process.env.REFRESH_TOKEN_URI,
-        COOKIE_NAME: process.env.COOKIE_NAME,
-        PRISMA_SERVER_URI: process.env.PRISMA_SERVER_URI
-      }
-    })
-  )
+  withImages({
+    exclude: path.resolve(__dirname, 'static/img/svg'),
+    webpack: (config, { defaultLoaders }) => {
+      config.module.rules.push({
+        test: /\.scss$/,
+        use: [
+          defaultLoaders.babel,
+          {
+            loader: require('styled-jsx/webpack').loader,
+            options: {
+              type: 'scoped'
+            }
+          },
+          'sass-loader'
+        ]
+      })
+
+      return config
+    },
+    env: {
+      REFRESH_TOKEN_URI: process.env.REFRESH_TOKEN_URI,
+      COOKIE_NAME: process.env.COOKIE_NAME,
+      PRISMA_SERVER_URI: process.env.PRISMA_SERVER_URI
+    }
+  })
 )
 
 /* ### Important ####
