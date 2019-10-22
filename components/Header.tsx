@@ -1,13 +1,16 @@
 import React from 'react'
 import { useMeQuery, useLogoutMutation } from '../generated/graphql'
+import { useDispatch } from 'react-redux'
 import Link from 'next/link'
 import { setAccessToken } from '../lib/accessToken'
+import { AuthActionTypes } from '../redux/auth/auth.types'
 
 interface Props {}
 
 export const Header: React.FC<Props> = () => {
   const { data, loading } = useMeQuery()
   const [logout, { client }] = useLogoutMutation()
+  const dispatch = useDispatch()
 
   let body: any = null
 
@@ -44,6 +47,7 @@ export const Header: React.FC<Props> = () => {
               await logout()
               setAccessToken('')
               await client!.resetStore()
+              dispatch({ type: AuthActionTypes.SIGNOUT_SUCCESS })
             }}
           >
             logout

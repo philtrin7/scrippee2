@@ -479,10 +479,27 @@ a.dropdown-item {
   margin-bottom: 0;
 }
 
-/* 1. Navigation
-====================
->>> Navigation component
-
+/* 1. Navigation 
+==================== */
+.navigation ul > li > a .eva {
+  width: 36px;
+  height: 36px;
+  fill: #bdbac2;
+  -moz-transition: all 0.3s;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+}
+.navigation ul > li > a.active .eva {
+  fill: #007bff;
+}
+.navigation ul > li > a:hover .eva {
+  fill: #007bff;
+}
+.navigation ul > li .signout-svg {
+  cursor: pointer;
+  width: 28px !important;
+  height: 28px !important;
+}
 /* 2. Sidebar
 ==================== 
 >>> Orders-page.component.tsx 

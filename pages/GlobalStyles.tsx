@@ -69,17 +69,14 @@ hr {
   font-weight: 400;
   src: url('/static/fonts/inter-ui/Inter-UI-Regular.woff2?v=3.2')
       format('woff2'),
-    url('/static/fonts/inter-ui/Inter-UI-Regular.woff?v=3.2')
-      format('woff');
+    url('/static/fonts/inter-ui/Inter-UI-Regular.woff?v=3.2') format('woff');
 }
 @font-face {
   font-family: 'Inter UI';
   font-style: normal;
   font-weight: 500;
-  src: url('/static/fonts/inter-ui/Inter-UI-Medium.woff2?v=3.2')
-      format('woff2'),
-    url('/static/fonts/inter-ui/Inter-UI-Medium.woff?v=3.2')
-      format('woff');
+  src: url('/static/fonts/inter-ui/Inter-UI-Medium.woff2?v=3.2') format('woff2'),
+    url('/static/fonts/inter-ui/Inter-UI-Medium.woff?v=3.2') format('woff');
 }
 @font-face {
   font-family: 'Inter UI';
@@ -87,15 +84,13 @@ hr {
   font-weight: 600;
   src: url('/static/fonts/inter-ui/Inter-UI-SemiBold.woff2?v=3.2')
       format('woff2'),
-    url('/static/fonts/inter-ui/Inter-UI-SemiBold.woff?v=3.2')
-      format('woff');
+    url('/static/fonts/inter-ui/Inter-UI-SemiBold.woff?v=3.2') format('woff');
 }
 @font-face {
   font-family: 'Inter UI';
   font-style: normal;
   font-weight: 700;
-  src: url('/static/fonts/inter-ui/Inter-UI-Bold.woff2?v=3.2')
-      format('woff2'),
+  src: url('/static/fonts/inter-ui/Inter-UI-Bold.woff2?v=3.2') format('woff2'),
     url('/static/fonts/inter-ui/Inter-UI-Bold.woff?v=3.2') format('woff');
 }
 @font-face {
@@ -104,8 +99,7 @@ hr {
   font-weight: 800;
   src: url('/static/fonts/inter-ui/Inter-UI-ExtraBold.woff2?v=3.2')
       format('woff2'),
-    url('/static/fonts/inter-ui/Inter-UI-ExtraBold.woff?v=3.2')
-      format('woff');
+    url('/static/fonts/inter-ui/Inter-UI-ExtraBold.woff?v=3.2') format('woff');
 }
 /* Forms
 ==================== */
@@ -494,10 +488,27 @@ a.dropdown-item {
   margin-bottom: 0;
 }
 
-/* 1. Navigation
-====================
->>> Navigation component
-
+/* 1. Navigation 
+==================== */
+.navigation ul > li > a .eva {
+  width: 36px;
+  height: 36px;
+  fill: #bdbac2;
+  -moz-transition: all 0.3s;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+}
+.navigation ul > li > a.active .eva {
+  fill: #007bff;
+}
+.navigation ul > li > a:hover .eva {
+  fill: #007bff;
+}
+.navigation ul > li .signout-svg {
+  cursor: pointer;
+  width: 28px !important;
+  height: 28px !important;
+}
 /* 2. Sidebar
 ==================== 
 >>> Orders-page.component.tsx 
@@ -1330,6 +1341,7 @@ a.dropdown-item {
     overflow: hidden;
   }
 }
+
 
 `
 
