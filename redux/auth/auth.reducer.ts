@@ -31,7 +31,7 @@ export const authReducer: Reducer<AuthState, any> = (
         alerts: state.alerts.push(action.payload),
         ...state
       }
-    case AuthActionTypes.CLEAR_ERRORS:
+    case AuthActionTypes.CLEAR_ALERTS:
       return {
         ...state,
         alerts: []

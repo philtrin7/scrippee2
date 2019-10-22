@@ -10,7 +10,7 @@ import { Dispatch } from 'redux'
 import { RootState } from '../../redux/store'
 import { User, AlertsArray } from '../../redux/auth/auth.types'
 import {
-  clearErrors,
+  clearAlerts,
   signinUser,
   signinFail
 } from '../../redux/auth/auth.actions'
@@ -19,7 +19,7 @@ import PulseLoader from 'react-spinners/PulseLoader'
 import './signin.scss'
 
 interface SigninPagePropTypes {
-  clearErrorsArr: Function
+  clearAlertsArr: Function
   signinCurrentUser: Function
   signinFailed: Function
   alerts: AlertsArray
@@ -32,7 +32,7 @@ const SigninPage: React.FC<SigninPagePropTypes> = (props) => {
 
   const [signin, { loading }] = useSigninMutation()
 
-  const { clearErrorsArr, signinCurrentUser, signinFailed } = props
+  const { clearAlertsArr, signinCurrentUser, signinFailed } = props
 
   useEffect(() => {
     if (alerts.length > 0) {
@@ -40,14 +40,12 @@ const SigninPage: React.FC<SigninPagePropTypes> = (props) => {
         const { type, message } = alert
         if (type === 'warn') {
           toast.warn(message)
-          clearErrorsArr()
         } else if (type === 'error') {
           toast.error(message)
-          clearErrorsArr()
         } else if (type === 'success') {
           toast.success(message)
-          clearErrorsArr()
         }
+        clearAlertsArr()
       })
     }
   }, [alerts])
@@ -150,7 +148,7 @@ const mapStateToProps = (state: RootState) => {
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   signinCurrentUser: (currentUser: User) => dispatch(signinUser(currentUser)),
   signinFailed: () => dispatch(signinFail()),
-  clearErrorsArr: () => dispatch(clearErrors())
+  clearAlertsArr: () => dispatch(clearAlerts())
 })
 
 export default connect(

@@ -14,9 +14,9 @@ export const signinRequired = () => {
   }
 }
 
-export const clearErrors = () => {
+export const clearAlerts = () => {
   return {
-    type: AuthActionTypes.CLEAR_ERRORS
+    type: AuthActionTypes.CLEAR_ALERTS
   }
 }
 
