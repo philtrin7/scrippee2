@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import Router from 'next/router'
+import Head from 'next/head'
 
 import { useMeQuery } from '../generated/graphql'
 import { connect } from 'react-redux'
@@ -11,7 +12,8 @@ import NavSideBar from '../components/navigation/nav-sidebar.component'
 import Layout from '../components/Layout'
 import { signinUser, signinRequired } from '../redux/auth/auth.actions'
 import { AuthState, User } from '../redux/auth/auth.types'
-import Head from 'next/head'
+
+import OrdersList from '../components/orders/orders-list.tsx/orders-list.component'
 
 interface IndexPageProps {
   signinCurrentUser: Function
@@ -59,6 +61,7 @@ const IndexPage: React.FC<IndexPageProps> = (props) => {
             <NavSideBar currentUser={currentUser} />
           </nav>
         </div>
+        <OrdersList />
       </Layout>
     </div>
   )
