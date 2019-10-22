@@ -60,8 +60,8 @@ const IndexPage: React.FC<IndexPageProps> = (props) => {
           <nav className="navigation">
             <NavSideBar currentUser={currentUser} />
           </nav>
+          <OrdersList />
         </div>
-        <OrdersList />
       </Layout>
     </div>
   )
