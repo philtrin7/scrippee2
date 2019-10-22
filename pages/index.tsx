@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-import Head from 'next/head'
 import Router from 'next/router'
 
 import { useMeQuery } from '../generated/graphql'
@@ -50,9 +49,6 @@ const IndexPage: React.FC<IndexPageProps> = (props) => {
 
   return (
     <div>
-      <Head>
-        <script src="../static/js/eva.min.js"></script>
-      </Head>
       <Layout title="Scrippee 2.0">
         <div className="layout">
           <nav className="navigation">

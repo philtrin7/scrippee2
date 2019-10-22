@@ -21,6 +21,7 @@ const Layout: React.FunctionComponent<Props> = ({
         name="description"
         content="Scrippee 2.0 - Customer Management Tool"
       />
+      <script src="../static/js/eva.min.js"></script>
     </Head>
     <Header />
     {children}
