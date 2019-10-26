@@ -1,3 +1,5 @@
+import { User as _User } from '../../generated/graphql'
+
 export enum AuthActionTypes {
   SIGNIN_SUCCESS = 'SIGNIN_SUCCESS',
   SIGNIN_FAIL = 'SIGNIN_FAIL',
@@ -12,10 +14,7 @@ export interface AuthState {
   alerts: AlertsArray
 }
 
-export interface User {
-  id: String
-  email: String
-}
+export interface User extends _User {}
 
 export type AlertsArray = Alert[]
 
