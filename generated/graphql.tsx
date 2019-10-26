@@ -9,6 +9,7 @@ export type Scalars = {
   Boolean: boolean,
   Int: number,
   Float: number,
+  DateTime: any,
 };
 
 export type AuthPayload = {
@@ -17,11 +18,13 @@ export type AuthPayload = {
   user?: Maybe<User>,
 };
 
+
 export type Mutation = {
    __typename?: 'Mutation',
   signin: AuthPayload,
   signup: Scalars['Boolean'],
   logout: Scalars['Boolean'],
+  createOrder: Scalars['Boolean'],
 };
 
 
@@ -36,16 +39,36 @@ export type MutationSignupArgs = {
   password: Scalars['String']
 };
 
+
+export type MutationCreateOrderArgs = {
+  item: Scalars['String'],
+  contactNum?: Maybe<Scalars['Int']>,
+  email?: Maybe<Scalars['String']>
+};
+
+export type Order = {
+   __typename?: 'Order',
+  id: Scalars['ID'],
+  item: Scalars['String'],
+  contactNum?: Maybe<Scalars['Int']>,
+  email?: Maybe<Scalars['String']>,
+  createdBy: User,
+  createdAt: Scalars['DateTime'],
+  updatedAt: Scalars['DateTime'],
+};
+
 export type Query = {
    __typename?: 'Query',
   bye: Scalars['String'],
   me?: Maybe<User>,
+  user?: Maybe<User>,
 };
 
 export type User = {
    __typename?: 'User',
   id: Scalars['ID'],
   email: Scalars['String'],
+  orders: Array<Order>,
 };
 
 export type ByeQueryVariables = {};
@@ -102,6 +125,17 @@ export type SignupMutationVariables = {
 export type SignupMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'signup'>
+);
+
+export type UserQueryVariables = {};
+
+
+export type UserQuery = (
+  { __typename?: 'Query' }
+  & { user: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'email'>
+  )> }
 );
 
 
@@ -265,3 +299,36 @@ export function useSignupMutation(baseOptions?: ApolloReactHooks.MutationHookOpt
 export type SignupMutationHookResult = ReturnType<typeof useSignupMutation>;
 export type SignupMutationResult = ApolloReactCommon.MutationResult<SignupMutation>;
 export type SignupMutationOptions = ApolloReactCommon.BaseMutationOptions<SignupMutation, SignupMutationVariables>;
+export const UserDocument = gql`
+    query User {
+  user {
+    id
+    email
+  }
+}
+    `;
+
+/**
+ * __useUserQuery__
+ *
+ * To run a query within a React component, call `useUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useUserQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<UserQuery, UserQueryVariables>) {
+        return ApolloReactHooks.useQuery<UserQuery, UserQueryVariables>(UserDocument, baseOptions);
+      }
+export function useUserLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<UserQuery, UserQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<UserQuery, UserQueryVariables>(UserDocument, baseOptions);
+        }
+export type UserQueryHookResult = ReturnType<typeof useUserQuery>;
+export type UserLazyQueryHookResult = ReturnType<typeof useUserLazyQuery>;
+export type UserQueryResult = ApolloReactCommon.QueryResult<UserQuery, UserQueryVariables>;

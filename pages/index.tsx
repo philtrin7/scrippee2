@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import Router from 'next/router'
 import Head from 'next/head'
 
-import { useMeQuery } from '../generated/graphql'
+import { useUserQuery } from '../generated/graphql'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { RootState } from '../redux/store'
@@ -16,26 +16,26 @@ import { AuthState, User } from '../redux/auth/auth.types'
 import OrdersList from '../components/orders/orders-list.tsx/orders-list.component'
 
 interface IndexPageProps {
-  signinCurrentUser: Function
+  signinUser: Function
   signinRedirect: Function
   auth: AuthState
 }
 
 const IndexPage: React.FC<IndexPageProps> = (props) => {
   const { currentUser } = props.auth
-  const { signinCurrentUser, signinRedirect } = props
-  const { data } = useMeQuery()
+  const { signinUser, signinRedirect } = props
+  const { data } = useUserQuery()
 
   const prevCurrentUser: User | null | undefined = usePrevious(currentUser)
 
   useEffect(() => {
     // Prisma query for user
-    if (data && data.me) {
-      const { me } = data
-      if (currentUser !== null && currentUser.id === me.id) {
+    if (data && data.user) {
+      const { user } = data
+      if (currentUser !== null && currentUser.id === user.id) {
         return
       } else {
-        signinCurrentUser(me)
+        signinUser(user)
       }
       // State contains currentUser
     } else if (currentUser !== null && currentUser.id) {
@@ -74,7 +74,7 @@ const mapStateToProps = (state: RootState) => {
 }
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  signinCurrentUser: (currentUser: User) => dispatch(signinUser(currentUser)),
+  signinUser: (user: User) => dispatch(signinUser(user)),
   signinRedirect: () => dispatch(signinRequired())
 })
 
