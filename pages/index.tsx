@@ -14,17 +14,24 @@ import { signinUser, signinRequired } from '../redux/auth/auth.actions'
 import { AuthState, User } from '../redux/auth/auth.types'
 
 import OrdersList from '../components/orders/orders-list.tsx/orders-list.component'
+import { fetchOrderList } from '../redux/list/list.actions'
+import { ListState } from '../redux/list/list.types'
 
 interface IndexPageProps {
   signinUser: Function
   signinRedirect: Function
+  fetchOrderList: Function
   auth: AuthState
+  list: ListState
 }
 
 const IndexPage: React.FC<IndexPageProps> = (props) => {
   const { currentUser } = props.auth
   const { signinUser, signinRedirect } = props
   const { data: userData } = useUserQuery()
+
+  const { orders } = props.list
+  const { fetchOrderList } = props
   const { data: ordersData } = useOrdersQuery()
 
   const prevCurrentUser: User | null | undefined = usePrevious(currentUser)
@@ -52,9 +59,10 @@ const IndexPage: React.FC<IndexPageProps> = (props) => {
   }, [currentUser])
 
   useEffect(() => {
-    if (ordersData) {
+    if (ordersData && ordersData.user) {
+      fetchOrderList(ordersData.user.orders)
     }
-  }, [])
+  }, [orders])
 
   return (
     <div>
@@ -75,13 +83,15 @@ const IndexPage: React.FC<IndexPageProps> = (props) => {
 
 const mapStateToProps = (state: RootState) => {
   return {
-    auth: state.auth
+    auth: state.auth,
+    list: state.list
   }
 }
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   signinUser: (user: User) => dispatch(signinUser(user)),
-  signinRedirect: () => dispatch(signinRequired())
+  signinRedirect: () => dispatch(signinRequired()),
+  fetchOrderList: (orders: any) => dispatch(fetchOrderList(orders))
 })
 
 export default connect(
