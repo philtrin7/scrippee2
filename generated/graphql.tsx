@@ -98,6 +98,21 @@ export type MeQuery = (
   )> }
 );
 
+export type OrdersQueryVariables = {};
+
+
+export type OrdersQuery = (
+  { __typename?: 'Query' }
+  & { user: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'id'>
+    & { orders: Array<(
+      { __typename?: 'Order' }
+      & Pick<Order, 'id' | 'item' | 'contactNum' | 'email' | 'createdAt'>
+    )> }
+  )> }
+);
+
 export type SigninMutationVariables = {
   email: Scalars['String'],
   password: Scalars['String']
@@ -231,6 +246,45 @@ export function useMeLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptio
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = ApolloReactCommon.QueryResult<MeQuery, MeQueryVariables>;
+export const OrdersDocument = gql`
+    query Orders {
+  user {
+    id
+    orders {
+      id
+      item
+      contactNum
+      email
+      createdAt
+    }
+  }
+}
+    `;
+
+/**
+ * __useOrdersQuery__
+ *
+ * To run a query within a React component, call `useOrdersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useOrdersQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useOrdersQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useOrdersQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<OrdersQuery, OrdersQueryVariables>) {
+        return ApolloReactHooks.useQuery<OrdersQuery, OrdersQueryVariables>(OrdersDocument, baseOptions);
+      }
+export function useOrdersLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<OrdersQuery, OrdersQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<OrdersQuery, OrdersQueryVariables>(OrdersDocument, baseOptions);
+        }
+export type OrdersQueryHookResult = ReturnType<typeof useOrdersQuery>;
+export type OrdersLazyQueryHookResult = ReturnType<typeof useOrdersLazyQuery>;
+export type OrdersQueryResult = ApolloReactCommon.QueryResult<OrdersQuery, OrdersQueryVariables>;
 export const SigninDocument = gql`
     mutation Signin($email: String!, $password: String!) {
   signin(email: $email, password: $password) {

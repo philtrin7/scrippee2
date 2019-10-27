@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import Router from 'next/router'
 import Head from 'next/head'
 
-import { useUserQuery } from '../generated/graphql'
+import { useUserQuery, useOrdersQuery } from '../generated/graphql'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { RootState } from '../redux/store'
@@ -24,14 +24,15 @@ interface IndexPageProps {
 const IndexPage: React.FC<IndexPageProps> = (props) => {
   const { currentUser } = props.auth
   const { signinUser, signinRedirect } = props
-  const { data } = useUserQuery()
+  const { data: userData } = useUserQuery()
+  const { data: ordersData } = useOrdersQuery()
 
   const prevCurrentUser: User | null | undefined = usePrevious(currentUser)
 
   useEffect(() => {
     // Prisma query for user
-    if (data && data.user) {
-      const { user } = data
+    if (userData && userData.user) {
+      const { user } = userData
       if (currentUser !== null && currentUser.id === user.id) {
         return
       } else {
@@ -49,6 +50,11 @@ const IndexPage: React.FC<IndexPageProps> = (props) => {
       Router.push('/signin')
     }
   }, [currentUser])
+
+  useEffect(() => {
+    if (ordersData) {
+    }
+  }, [])
 
   return (
     <div>

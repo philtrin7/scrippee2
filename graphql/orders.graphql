@@ -1,0 +1,12 @@
+query Orders {
+  user {
+    id
+    orders {
+      id
+      item
+      contactNum
+      email
+      createdAt
+    }
+  }
+}
