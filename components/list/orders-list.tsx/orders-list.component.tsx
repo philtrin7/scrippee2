@@ -12,7 +12,17 @@ interface OrdersListPropTypes {
 }
 
 const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
-  const { loading } = props
+  const { loading, orders } = props
+
+  let Orders: JSX.Element | null = null
+  if (loading) {
+    Orders = <PulseSpinner loading={loading} />
+  } else if (orders.length > 0) {
+    Orders = <div>Displaying orders...</div>
+  } else {
+    Orders = <div>You do not have any orders yet.</div>
+  }
+
   return (
     <div>
       <div className="orders-list">
@@ -68,13 +78,7 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
                   <ReactSVG src="/static/img/svg/new-order.svg" />
                 </button>
                 <hr />
-                {loading ? (
-                  <PulseSpinner loading={loading} />
-                ) : (
-                  <div>Order loaded.</div>
-                )}
-
-                {/* <Order /> */}
+                {Orders}
               </div>
             </div>
           </div>

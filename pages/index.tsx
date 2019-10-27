@@ -13,7 +13,7 @@ import Layout from '../components/Layout'
 import { signinUser, signinRequired } from '../redux/auth/auth.actions'
 import { AuthState, User } from '../redux/auth/auth.types'
 
-import OrdersList from '../components/orders/orders-list.tsx/orders-list.component'
+import OrdersList from '../components/list/orders-list.tsx/orders-list.component'
 import { fetchOrderList } from '../redux/list/list.actions'
 import { ListState, Order } from '../redux/list/list.types'
 
@@ -55,6 +55,8 @@ const IndexPage: React.FC<IndexPageProps> = (props) => {
   useEffect(() => {
     if (ordersData && ordersData.user) {
       fetchOrderList(ordersData.user.orders)
+    } else {
+      fetchOrderList([])
     }
   }, [ordersData])
 
