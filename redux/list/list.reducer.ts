@@ -11,7 +11,6 @@ export const listReducer: Reducer<ListState, any> = (
 ) => {
   switch (action.type) {
     case ListActionTypes.FETCH_ORDER_LIST:
-      console.log(action.payload)
       return {
         ...state,
         orders: action.payload

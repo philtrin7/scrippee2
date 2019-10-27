@@ -15,7 +15,7 @@ import { AuthState, User } from '../redux/auth/auth.types'
 
 import OrdersList from '../components/orders/orders-list.tsx/orders-list.component'
 import { fetchOrderList } from '../redux/list/list.actions'
-import { ListState } from '../redux/list/list.types'
+import { ListState, Order } from '../redux/list/list.types'
 
 interface IndexPageProps {
   signinUser: Function
@@ -30,14 +30,12 @@ const IndexPage: React.FC<IndexPageProps> = (props) => {
   const { signinUser, signinRedirect } = props
   const { data: userData } = useUserQuery()
 
-  const { orders } = props.list
   const { fetchOrderList } = props
   const { data: ordersData } = useOrdersQuery()
 
   const prevCurrentUser: User | null | undefined = usePrevious(currentUser)
 
   useEffect(() => {
-    // Prisma query for user
     if (userData && userData.user) {
       const { user } = userData
       if (currentUser !== null && currentUser.id === user.id) {
@@ -45,24 +43,19 @@ const IndexPage: React.FC<IndexPageProps> = (props) => {
       } else {
         signinUser(user)
       }
-      // State contains currentUser
-    } else if (currentUser !== null && currentUser.id) {
-      return
-      // Sign out success without signing required warning
-    } else if (currentUser === null && prevCurrentUser) {
+    } else if (prevCurrentUser) {
       Router.push('/signin')
-      // Fallback to forced signin
     } else {
       signinRedirect()
       Router.push('/signin')
     }
-  }, [currentUser])
+  }, [userData])
 
   useEffect(() => {
     if (ordersData && ordersData.user) {
       fetchOrderList(ordersData.user.orders)
     }
-  }, [orders])
+  }, [ordersData])
 
   return (
     <div>
@@ -91,7 +84,7 @@ const mapStateToProps = (state: RootState) => {
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   signinUser: (user: User) => dispatch(signinUser(user)),
   signinRedirect: () => dispatch(signinRequired()),
-  fetchOrderList: (orders: any) => dispatch(fetchOrderList(orders))
+  fetchOrderList: (orders: Order[]) => dispatch(fetchOrderList(orders))
 })
 
 export default connect(
