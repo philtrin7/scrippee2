@@ -30,8 +30,9 @@ const IndexPage: React.FC<IndexPageProps> = (props) => {
   const { signinUser, signinRedirect } = props
   const { data: userData } = useUserQuery()
 
+  const { orders } = props.list
   const { fetchOrderList } = props
-  const { data: ordersData } = useOrdersQuery()
+  const { data: ordersData, loading: loadingOrders } = useOrdersQuery()
 
   const prevCurrentUser: User | null | undefined = usePrevious(currentUser)
 
@@ -67,7 +68,7 @@ const IndexPage: React.FC<IndexPageProps> = (props) => {
           <nav className="navigation">
             <NavSideBar currentUser={currentUser} />
           </nav>
-          <OrdersList />
+          <OrdersList orders={orders} loading={loadingOrders} />
         </div>
       </Layout>
     </div>

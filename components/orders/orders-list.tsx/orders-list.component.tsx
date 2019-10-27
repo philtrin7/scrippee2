@@ -1,12 +1,18 @@
 import React from 'react'
 import ReactSVG from 'react-svg'
 
-// import { ReactComponent as SearchSVGIcon } from '../../../assets/search.svg'
-// import { ReactComponent as NewOrderSVGIcon } from '../../../assets/new-order.svg'
+import { Order } from '../../../redux/list/list.types'
 
 import ordersListStyles from './orders-list.styles.scss'
+import { PulseSpinner } from '../../loading-spinner/PulseSpinner'
 
-const OrdersList = () => {
+interface OrdersListPropTypes {
+  orders: Order[]
+  loading: Boolean
+}
+
+const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
+  const { loading } = props
   return (
     <div>
       <div className="orders-list">
@@ -62,6 +68,11 @@ const OrdersList = () => {
                   <ReactSVG src="/static/img/svg/new-order.svg" />
                 </button>
                 <hr />
+                {loading ? (
+                  <PulseSpinner loading={loading} />
+                ) : (
+                  <div>Order loaded.</div>
+                )}
 
                 {/* <Order /> */}
               </div>
