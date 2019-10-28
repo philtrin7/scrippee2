@@ -15,6 +15,11 @@ export const listReducer: Reducer<ListState, any> = (
         ...state,
         orders: action.payload
       }
+    case ListActionTypes.CLEAR_ORDER_LIST:
+      return {
+        ...state,
+        orders: []
+      }
     default:
       return state
   }

@@ -6,3 +6,9 @@ export const fetchOrderList = (orders: Order[]) => {
     payload: orders
   }
 }
+
+export const clearOrderList = () => {
+  return {
+    type: ListActionTypes.CLEAR_ORDER_LIST
+  }
+}

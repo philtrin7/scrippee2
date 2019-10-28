@@ -1,5 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import ReactSVG from 'react-svg'
+
+import { connect } from 'react-redux'
+import { Dispatch } from 'redux'
+import { clearOrderList } from '../../../redux/list/list.actions'
 
 import { Order } from '../../../redux/list/list.types'
 import OrderComponent from './order/order.components'
@@ -8,12 +12,16 @@ import { PulseSpinner } from '../../loading-spinner/PulseSpinner'
 import ordersListStyles from './orders-list.styles.scss'
 
 interface OrdersListPropTypes {
+  clearOrderList: Function
   orders: Order[]
   loading: Boolean
 }
 
 const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
   const { loading, orders } = props
+
+  const [currentList, setCurrentList] = useState('active')
+  const [archiveList, setArchiveList] = useState('')
 
   let Orders: any = null
   if (loading) {
@@ -50,20 +58,27 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
                 <ul className="nav" role="tablist">
                   <li>
                     <a
-                      href="#current"
-                      className="filter-btn active"
+                      className={`filter-btn ${currentList}`}
                       data-toggle="tab"
                       data-filter="direct"
+                      onClick={() => {
+                        setArchiveList('inactive')
+                        setCurrentList('active')
+                      }}
                     >
                       Current
                     </a>
                   </li>
                   <li>
                     <a
-                      href="#archive"
-                      className="filter-btn"
+                      className={`filter-btn ${archiveList}`}
                       data-toggle="tab"
                       data-filter="groups"
+                      onClick={() => {
+                        setArchiveList('active')
+                        setCurrentList('inactive')
+                        props.clearOrderList()
+                      }}
                     >
                       Archive
                     </a>
@@ -92,4 +107,11 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
   )
 }
 
-export default OrdersList
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  clearOrderList: () => dispatch(clearOrderList())
+})
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(OrdersList)
