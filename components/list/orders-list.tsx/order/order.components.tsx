@@ -1,6 +1,5 @@
 import React from 'react'
 
-import SwipeLogo from '../../../../static/img/swipe-logo-replace-me.png'
 import orderComponentStyles from './order.style.scss'
 
 interface Props {}
@@ -12,8 +11,7 @@ const OrderComponent: React.FC<Props> = () => {
         <li>
           <a href="#chat1" className="filter direct active">
             <div className="status online">
-              <img src={SwipeLogo} alt="avatar" />
-              <i data-eva="radio-button-on"></i>
+              <div className="status-number">1</div>
             </div>
             <div className="content">
               <div className="headline">
