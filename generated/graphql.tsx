@@ -42,6 +42,7 @@ export type MutationSignupArgs = {
 
 export type MutationCreateOrderArgs = {
   item: Scalars['String'],
+  customerName: Scalars['String'],
   contactNum?: Maybe<Scalars['Int']>,
   email?: Maybe<Scalars['String']>
 };
@@ -49,6 +50,7 @@ export type MutationCreateOrderArgs = {
 export type Order = {
    __typename?: 'Order',
   id: Scalars['ID'],
+  customerName: Scalars['String'],
   item: Scalars['String'],
   contactNum?: Maybe<Scalars['Int']>,
   email?: Maybe<Scalars['String']>,
@@ -108,7 +110,7 @@ export type OrdersQuery = (
     & Pick<User, 'id'>
     & { orders: Array<(
       { __typename?: 'Order' }
-      & Pick<Order, 'id' | 'item' | 'contactNum' | 'email' | 'createdAt'>
+      & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'createdAt'>
     )> }
   )> }
 );
@@ -252,6 +254,7 @@ export const OrdersDocument = gql`
     id
     orders {
       id
+      customerName
       item
       contactNum
       email

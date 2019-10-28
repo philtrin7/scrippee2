@@ -3,6 +3,7 @@ query Orders {
     id
     orders {
       id
+      customerName
       item
       contactNum
       email

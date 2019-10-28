@@ -12,7 +12,7 @@ interface Props {
 }
 
 const OrderComponent: React.FC<Props> = (props) => {
-  const { createdAt, item } = props.order
+  const { createdAt, item, customerName } = props.order
 
   let days: number | null
   let userfriendlyDate: string = '-'
@@ -46,10 +46,10 @@ const OrderComponent: React.FC<Props> = (props) => {
             </div>
             <div className="content">
               <div className="headline">
-                <h5>{item}</h5>
+                <h5>{customerName}</h5>
                 <span>{userfriendlyDate}</span>
               </div>
-              <p>Please review and sign the binding agreement.</p>
+              <p>{item}</p>
             </div>
           </a>
         </li>
