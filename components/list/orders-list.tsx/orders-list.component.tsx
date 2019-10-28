@@ -15,11 +15,13 @@ interface OrdersListPropTypes {
 const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
   const { loading, orders } = props
 
-  let Orders: JSX.Element | null = null
+  let Orders: any = null
   if (loading) {
     Orders = <PulseSpinner loading={loading} />
   } else if (orders.length > 0) {
-    Orders = <OrderComponent />
+    Orders = orders.map((order) => {
+      return <OrderComponent key={order.id} order={order} />
+    })
   } else {
     Orders = <div>You do not have any orders yet.</div>
   }
