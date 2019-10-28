@@ -2,9 +2,10 @@ import React from 'react'
 import ReactSVG from 'react-svg'
 
 import { Order } from '../../../redux/list/list.types'
+import OrderComponent from './order/order.components'
 
-import ordersListStyles from './orders-list.styles.scss'
 import { PulseSpinner } from '../../loading-spinner/PulseSpinner'
+import ordersListStyles from './orders-list.styles.scss'
 
 interface OrdersListPropTypes {
   orders: Order[]
@@ -18,7 +19,7 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
   if (loading) {
     Orders = <PulseSpinner loading={loading} />
   } else if (orders.length > 0) {
-    Orders = <div>Displaying orders...</div>
+    Orders = <OrderComponent />
   } else {
     Orders = <div>You do not have any orders yet.</div>
   }
