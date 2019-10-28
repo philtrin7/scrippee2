@@ -1,53 +1,40 @@
 import React from 'react'
-import dayjs from 'dayjs'
 
 import statusCounterStyles from './status-counter.styles.scss'
 
 interface Props {
-  createdAt: string
-}
-
-const daysBetween = (orderDate: string): number => {
-  // Set date to 9am tomorrow
-  const fromDate = dayjs()
-    .hour(9)
-    .minute(0)
-    .second(0)
-    .add(1, 'day')
-  return fromDate.diff(orderDate, 'day')
+  daysPassed: number | null
 }
 
 const StatusCounter: React.FC<Props> = (props) => {
-  const { createdAt } = props
+  const { daysPassed } = props
 
   let counter: number | string = '-'
   let status: string = ''
   let star = ''
-  const numOfDaysPassed = daysBetween(createdAt)
 
-  if (typeof numOfDaysPassed === 'number') {
-    if (numOfDaysPassed > 0) {
-      if (numOfDaysPassed <= 3) {
+  if (daysPassed !== null) {
+    if (daysPassed > 0) {
+      if (daysPassed <= 3) {
         // Days 1, 2, 3 = green
         status = 'safe'
-      } else if (numOfDaysPassed >= 4 && numOfDaysPassed <= 7) {
+      } else if (daysPassed >= 4 && daysPassed <= 7) {
         // Days 4, 5, 6, 7
         status = 'warn'
       } else {
         // Days >= 8
         status = 'danger'
       }
-      counter = numOfDaysPassed
-    } else if (numOfDaysPassed < 0) {
-      // Should not be negative; default to initial values
+      counter = daysPassed
     } else {
-      // Number of days === 0
+      // Day 0
       status = 'safe'
       star = 'star'
       counter = '*'
     }
   } else {
-    // Something went wrong; default to initial values
+    // Should never reach to this logic
+    // Default initial value if it does
   }
 
   return (
