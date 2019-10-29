@@ -12,3 +12,9 @@ export const clearOrderList = () => {
     type: ListActionTypes.CLEAR_ORDER_LIST
   }
 }
+
+export const fetchArchiveListStart = () => {
+  return {
+    type: ListActionTypes.FETCH_ARCHIVE_LIST_START
+  }
+}

@@ -1,8 +1,9 @@
-import { ListActionTypes, ListState } from './list.types'
+import { ListActionTypes, ListState, LIST_TYPES } from './list.types'
 import { Reducer } from 'redux'
 
 const INITIAL_STATE: ListState = {
-  orders: []
+  orders: [],
+  listType: LIST_TYPES.INBOX
 }
 
 export const listReducer: Reducer<ListState, any> = (
@@ -14,6 +15,11 @@ export const listReducer: Reducer<ListState, any> = (
       return {
         ...state,
         orders: action.payload
+      }
+    case ListActionTypes.FETCH_ARCHIVE_LIST_START:
+      return {
+        ...state,
+        listType: LIST_TYPES.ARCHIVE
       }
     case ListActionTypes.CLEAR_ORDER_LIST:
       return {
