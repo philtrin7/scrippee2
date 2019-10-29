@@ -21,11 +21,6 @@ export const listReducer: Reducer<ListState, any> = (
         ...state,
         listType: LIST_TYPES.ARCHIVE
       }
-    case ListActionTypes.CLEAR_ORDER_LIST:
-      return {
-        ...state,
-        orders: []
-      }
     default:
       return state
   }

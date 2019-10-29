@@ -6,13 +6,6 @@ export const fetchOrderList = (orders: Order[]) => {
     payload: orders
   }
 }
-
-export const clearOrderList = () => {
-  return {
-    type: ListActionTypes.CLEAR_ORDER_LIST
-  }
-}
-
 export const fetchArchiveListStart = () => {
   return {
     type: ListActionTypes.FETCH_ARCHIVE_LIST_START
