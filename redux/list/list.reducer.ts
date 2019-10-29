@@ -11,15 +11,21 @@ export const listReducer: Reducer<ListState, any> = (
   action
 ) => {
   switch (action.type) {
-    case ListActionTypes.FETCH_ORDER_LIST:
+    case ListActionTypes.FETCH_INBOX_LIST_START:
       return {
         ...state,
-        orders: action.payload
+        // orders: action.payload
+        listType: LIST_TYPES.INBOX
       }
     case ListActionTypes.FETCH_ARCHIVE_LIST_START:
       return {
         ...state,
         listType: LIST_TYPES.ARCHIVE
+      }
+    case ListActionTypes.FETCH_LIST_SUCCESS:
+      return {
+        ...state,
+        orders: action.payload
       }
     default:
       return state

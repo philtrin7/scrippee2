@@ -3,7 +3,10 @@ import ReactSVG from 'react-svg'
 
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
-import { fetchArchiveListStart } from '../../../redux/list/list.actions'
+import {
+  fetchArchiveListStart,
+  fetchInboxListStart
+} from '../../../redux/list/list.actions'
 
 import { Order } from '../../../redux/list/list.types'
 import OrderComponent from './order/order.components'
@@ -12,6 +15,7 @@ import { PulseSpinner } from '../../loading-spinner/PulseSpinner'
 import ordersListStyles from './orders-list.styles.scss'
 
 interface OrdersListPropTypes {
+  fetchInboxListStart: Function
   fetchArchiveListStart: Function
   orders: Order[]
   loading: Boolean
@@ -64,6 +68,7 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
                       onClick={() => {
                         setArchiveList('inactive')
                         setCurrentList('active')
+                        props.fetchInboxListStart()
                       }}
                     >
                       Current
@@ -108,6 +113,7 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
 }
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
+  fetchInboxListStart: () => dispatch(fetchInboxListStart()),
   fetchArchiveListStart: () => dispatch(fetchArchiveListStart())
 })
 

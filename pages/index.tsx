@@ -14,13 +14,13 @@ import { signinUser, signinRequired } from '../redux/auth/auth.actions'
 import { AuthState, User } from '../redux/auth/auth.types'
 
 import OrdersList from '../components/list/orders-list.tsx/orders-list.component'
-import { fetchOrderList } from '../redux/list/list.actions'
-import { ListState, Order } from '../redux/list/list.types'
+import { fetchList } from '../redux/list/list.actions'
+import { ListState, Order, LIST_TYPES } from '../redux/list/list.types'
 
 interface IndexPageProps {
   signinUser: Function
   signinRedirect: Function
-  fetchOrderList: Function
+  fetchList: Function
   auth: AuthState
   list: ListState
 }
@@ -29,12 +29,11 @@ const IndexPage: React.FC<IndexPageProps> = (props) => {
   const { currentUser } = props.auth
   const { signinUser, signinRedirect } = props
   const { data: userData } = useUserQuery()
-
-  const { orders } = props.list
-  const { fetchOrderList } = props
-  const { data: ordersData, loading: loadingOrders } = useOrdersQuery()
-
   const prevCurrentUser: User | null | undefined = usePrevious(currentUser)
+
+  const { orders, listType } = props.list
+  const { fetchList } = props
+  const { data: ordersData, loading: loadingOrders } = useOrdersQuery()
 
   useEffect(() => {
     if (userData && userData.user) {
@@ -52,13 +51,31 @@ const IndexPage: React.FC<IndexPageProps> = (props) => {
     }
   }, [userData])
 
+  // Default orders list = Inbox
   useEffect(() => {
     if (ordersData && ordersData.user) {
-      fetchOrderList(ordersData.user.orders)
+      fetchList(ordersData.user.orders)
     } else {
-      fetchOrderList([])
+      fetchList([])
     }
   }, [ordersData])
+
+  useEffect(() => {
+    if (listType === LIST_TYPES.ARCHIVE) {
+      if (ordersData && ordersData.user) {
+        fetchList([])
+      } else {
+        fetchList([])
+      }
+    }
+    if (listType === LIST_TYPES.INBOX) {
+      if (ordersData && ordersData.user) {
+        fetchList(ordersData.user.orders)
+      } else {
+        fetchList([])
+      }
+    }
+  }, [listType])
 
   return (
     <div>
@@ -87,7 +104,7 @@ const mapStateToProps = (state: RootState) => {
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   signinUser: (user: User) => dispatch(signinUser(user)),
   signinRedirect: () => dispatch(signinRequired()),
-  fetchOrderList: (orders: Order[]) => dispatch(fetchOrderList(orders))
+  fetchList: (orders: Order[]) => dispatch(fetchList(orders))
 })
 
 export default connect(
