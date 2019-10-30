@@ -16,12 +16,6 @@ export const authReducer: Reducer<AuthState, any> = (
         ...state,
         currentUser: action.payload
       }
-    case AuthActionTypes.SIGNOUT_SUCCESS:
-      return {
-        alerts: state.alerts.push(action.payload),
-        ...state,
-        currentUser: null
-      }
     case AuthActionTypes.SIGNIN_FAIL:
       return {
         ...state
@@ -35,6 +29,12 @@ export const authReducer: Reducer<AuthState, any> = (
       return {
         ...state,
         alerts: []
+      }
+    case AuthActionTypes.SIGNOUT_SUCCESS:
+      return {
+        alerts: state.alerts.push(action.payload),
+        ...state,
+        currentUser: null
       }
     default:
       return state

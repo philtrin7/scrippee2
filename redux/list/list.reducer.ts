@@ -1,5 +1,6 @@
 import { ListActionTypes, ListState, LIST_TYPES } from './list.types'
 import { Reducer } from 'redux'
+import { AuthActionTypes } from '../auth/auth.types'
 
 const INITIAL_STATE: ListState = {
   orders: [],
@@ -26,6 +27,11 @@ export const listReducer: Reducer<ListState, any> = (
       return {
         ...state,
         orders: action.payload
+      }
+    case AuthActionTypes.SIGNOUT_SUCCESS:
+      return {
+        orders: [],
+        listType: null
       }
     default:
       return state

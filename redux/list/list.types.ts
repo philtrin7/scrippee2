@@ -8,7 +8,7 @@ export enum ListActionTypes {
 }
 
 export interface ListState {
-  listType: LIST_TYPES
+  listType: LIST_TYPES | null
   orders: Order[] | []
 }
 
