@@ -1,12 +1,13 @@
-query Orders {
+query InboxOrders {
   user {
     id
-    orders {
+    inbox {
       id
       customerName
       item
       contactNum
       email
+      archive
       createdAt
     }
   }

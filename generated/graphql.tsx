@@ -55,6 +55,7 @@ export type Order = {
   contactNum?: Maybe<Scalars['Int']>,
   email?: Maybe<Scalars['String']>,
   createdBy: User,
+  archive: Scalars['Boolean'],
   createdAt: Scalars['DateTime'],
   updatedAt: Scalars['DateTime'],
 };
@@ -70,8 +71,24 @@ export type User = {
    __typename?: 'User',
   id: Scalars['ID'],
   email: Scalars['String'],
-  orders: Array<Order>,
+  inbox: Array<Order>,
+  archive: Array<Order>,
 };
+
+export type ArchiveOrdersQueryVariables = {};
+
+
+export type ArchiveOrdersQuery = (
+  { __typename?: 'Query' }
+  & { user: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'id'>
+    & { archive: Array<(
+      { __typename?: 'Order' }
+      & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'archive' | 'createdAt'>
+    )> }
+  )> }
+);
 
 export type ByeQueryVariables = {};
 
@@ -79,6 +96,21 @@ export type ByeQueryVariables = {};
 export type ByeQuery = (
   { __typename?: 'Query' }
   & Pick<Query, 'bye'>
+);
+
+export type InboxOrdersQueryVariables = {};
+
+
+export type InboxOrdersQuery = (
+  { __typename?: 'Query' }
+  & { user: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'id'>
+    & { inbox: Array<(
+      { __typename?: 'Order' }
+      & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'archive' | 'createdAt'>
+    )> }
+  )> }
 );
 
 export type LogoutMutationVariables = {};
@@ -97,21 +129,6 @@ export type MeQuery = (
   & { me: Maybe<(
     { __typename?: 'User' }
     & Pick<User, 'id' | 'email'>
-  )> }
-);
-
-export type OrdersQueryVariables = {};
-
-
-export type OrdersQuery = (
-  { __typename?: 'Query' }
-  & { user: Maybe<(
-    { __typename?: 'User' }
-    & Pick<User, 'id'>
-    & { orders: Array<(
-      { __typename?: 'Order' }
-      & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'createdAt'>
-    )> }
   )> }
 );
 
@@ -156,6 +173,47 @@ export type UserQuery = (
 );
 
 
+export const ArchiveOrdersDocument = gql`
+    query ArchiveOrders {
+  user {
+    id
+    archive {
+      id
+      customerName
+      item
+      contactNum
+      email
+      archive
+      createdAt
+    }
+  }
+}
+    `;
+
+/**
+ * __useArchiveOrdersQuery__
+ *
+ * To run a query within a React component, call `useArchiveOrdersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useArchiveOrdersQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useArchiveOrdersQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useArchiveOrdersQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<ArchiveOrdersQuery, ArchiveOrdersQueryVariables>) {
+        return ApolloReactHooks.useQuery<ArchiveOrdersQuery, ArchiveOrdersQueryVariables>(ArchiveOrdersDocument, baseOptions);
+      }
+export function useArchiveOrdersLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<ArchiveOrdersQuery, ArchiveOrdersQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<ArchiveOrdersQuery, ArchiveOrdersQueryVariables>(ArchiveOrdersDocument, baseOptions);
+        }
+export type ArchiveOrdersQueryHookResult = ReturnType<typeof useArchiveOrdersQuery>;
+export type ArchiveOrdersLazyQueryHookResult = ReturnType<typeof useArchiveOrdersLazyQuery>;
+export type ArchiveOrdersQueryResult = ApolloReactCommon.QueryResult<ArchiveOrdersQuery, ArchiveOrdersQueryVariables>;
 export const ByeDocument = gql`
     query Bye {
   bye
@@ -186,6 +244,47 @@ export function useByeLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOpti
 export type ByeQueryHookResult = ReturnType<typeof useByeQuery>;
 export type ByeLazyQueryHookResult = ReturnType<typeof useByeLazyQuery>;
 export type ByeQueryResult = ApolloReactCommon.QueryResult<ByeQuery, ByeQueryVariables>;
+export const InboxOrdersDocument = gql`
+    query InboxOrders {
+  user {
+    id
+    inbox {
+      id
+      customerName
+      item
+      contactNum
+      email
+      archive
+      createdAt
+    }
+  }
+}
+    `;
+
+/**
+ * __useInboxOrdersQuery__
+ *
+ * To run a query within a React component, call `useInboxOrdersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useInboxOrdersQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useInboxOrdersQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useInboxOrdersQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<InboxOrdersQuery, InboxOrdersQueryVariables>) {
+        return ApolloReactHooks.useQuery<InboxOrdersQuery, InboxOrdersQueryVariables>(InboxOrdersDocument, baseOptions);
+      }
+export function useInboxOrdersLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<InboxOrdersQuery, InboxOrdersQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<InboxOrdersQuery, InboxOrdersQueryVariables>(InboxOrdersDocument, baseOptions);
+        }
+export type InboxOrdersQueryHookResult = ReturnType<typeof useInboxOrdersQuery>;
+export type InboxOrdersLazyQueryHookResult = ReturnType<typeof useInboxOrdersLazyQuery>;
+export type InboxOrdersQueryResult = ApolloReactCommon.QueryResult<InboxOrdersQuery, InboxOrdersQueryVariables>;
 export const LogoutDocument = gql`
     mutation Logout {
   logout
@@ -248,46 +347,6 @@ export function useMeLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptio
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = ApolloReactCommon.QueryResult<MeQuery, MeQueryVariables>;
-export const OrdersDocument = gql`
-    query Orders {
-  user {
-    id
-    orders {
-      id
-      customerName
-      item
-      contactNum
-      email
-      createdAt
-    }
-  }
-}
-    `;
-
-/**
- * __useOrdersQuery__
- *
- * To run a query within a React component, call `useOrdersQuery` and pass it any options that fit your needs.
- * When your component renders, `useOrdersQuery` returns an object from Apollo Client that contains loading, error, and data properties 
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useOrdersQuery({
- *   variables: {
- *   },
- * });
- */
-export function useOrdersQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<OrdersQuery, OrdersQueryVariables>) {
-        return ApolloReactHooks.useQuery<OrdersQuery, OrdersQueryVariables>(OrdersDocument, baseOptions);
-      }
-export function useOrdersLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<OrdersQuery, OrdersQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<OrdersQuery, OrdersQueryVariables>(OrdersDocument, baseOptions);
-        }
-export type OrdersQueryHookResult = ReturnType<typeof useOrdersQuery>;
-export type OrdersLazyQueryHookResult = ReturnType<typeof useOrdersLazyQuery>;
-export type OrdersQueryResult = ApolloReactCommon.QueryResult<OrdersQuery, OrdersQueryVariables>;
 export const SigninDocument = gql`
     mutation Signin($email: String!, $password: String!) {
   signin(email: $email, password: $password) {

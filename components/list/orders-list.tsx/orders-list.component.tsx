@@ -63,22 +63,18 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
                   <li>
                     <a
                       className={`filter-btn ${currentList}`}
-                      data-toggle="tab"
-                      data-filter="direct"
                       onClick={() => {
                         setArchiveList('inactive')
                         setCurrentList('active')
                         props.fetchInboxListStart()
                       }}
                     >
-                      Current
+                      Inbox
                     </a>
                   </li>
                   <li>
                     <a
                       className={`filter-btn ${archiveList}`}
-                      data-toggle="tab"
-                      data-filter="groups"
                       onClick={() => {
                         setArchiveList('active')
                         setCurrentList('inactive')

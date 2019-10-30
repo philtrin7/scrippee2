@@ -2,7 +2,11 @@ import React, { useEffect } from 'react'
 import Router from 'next/router'
 import Head from 'next/head'
 
-import { useUserQuery, useOrdersQuery } from '../generated/graphql'
+import {
+  useUserQuery,
+  useInboxOrdersQuery,
+  useArchiveOrdersLazyQuery
+} from '../generated/graphql'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { RootState } from '../redux/store'
@@ -26,14 +30,18 @@ interface IndexPageProps {
 }
 
 const IndexPage: React.FC<IndexPageProps> = (props) => {
+  const { data: userData } = useUserQuery()
   const { currentUser } = props.auth
   const { signinUser, signinRedirect } = props
-  const { data: userData } = useUserQuery()
   const prevCurrentUser: User | null | undefined = usePrevious(currentUser)
 
   const { orders, listType } = props.list
   const { fetchList } = props
-  const { data: ordersData, loading: loadingOrders } = useOrdersQuery()
+  const { data: inboxOrders, loading: loadingInboxList } = useInboxOrdersQuery()
+  const [
+    getArchiveOrders,
+    { data: archiveOrders, loading: loadingArchiveList }
+  ] = useArchiveOrdersLazyQuery()
 
   useEffect(() => {
     if (userData && userData.user) {
@@ -51,31 +59,19 @@ const IndexPage: React.FC<IndexPageProps> = (props) => {
     }
   }, [userData])
 
-  // Default orders list = Inbox
   useEffect(() => {
-    if (ordersData && ordersData.user) {
-      fetchList(ordersData.user.orders)
-    } else {
-      fetchList([])
-    }
-  }, [ordersData])
-
-  useEffect(() => {
-    if (listType === LIST_TYPES.ARCHIVE) {
-      if (ordersData && ordersData.user) {
-        fetchList([])
-      } else {
-        fetchList([])
-      }
-    }
     if (listType === LIST_TYPES.INBOX) {
-      if (ordersData && ordersData.user) {
-        fetchList(ordersData.user.orders)
-      } else {
-        fetchList([])
+      if (inboxOrders && inboxOrders.user) {
+        fetchList(inboxOrders.user.inbox)
       }
     }
-  }, [listType])
+    if (listType === LIST_TYPES.ARCHIVE) {
+      getArchiveOrders()
+      if (archiveOrders && archiveOrders.user) {
+        fetchList(archiveOrders.user.archive)
+      }
+    }
+  }, [listType, inboxOrders, archiveOrders])
 
   return (
     <div>
@@ -87,7 +83,10 @@ const IndexPage: React.FC<IndexPageProps> = (props) => {
           <nav className="navigation">
             <NavSideBar currentUser={currentUser} />
           </nav>
-          <OrdersList orders={orders} loading={loadingOrders} />
+          <OrdersList
+            orders={orders}
+            loading={loadingInboxList || loadingArchiveList}
+          />
         </div>
       </Layout>
     </div>

@@ -1,0 +1,14 @@
+query ArchiveOrders {
+  user {
+    id
+    archive {
+      id
+      customerName
+      item
+      contactNum
+      email
+      archive
+      createdAt
+    }
+  }
+}
