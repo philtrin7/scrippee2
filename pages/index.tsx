@@ -21,6 +21,8 @@ import OrdersList from '../components/list/orders-list.tsx/orders-list.component
 import { fetchList } from '../redux/list/list.actions'
 import { ListState, LIST_TYPES, OrderList } from '../redux/list/list.types'
 
+import Viewer from '../components/viewer/viewer.component'
+
 interface IndexPageProps {
   signinUser: Function
   signinRedirect: Function
@@ -90,6 +92,8 @@ const IndexPage: React.FC<IndexPageProps> = (props) => {
             orders={orders}
             loading={loadingInboxList || loadingArchiveList}
           />
+
+          <Viewer />
         </div>
       </Layout>
     </div>

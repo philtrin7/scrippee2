@@ -165,7 +165,7 @@ input[type='search']::-webkit-search-cancel-button {
   display: inline-block;
   width: 24px;
   height: 24px;
-  background: url(/static/img/svg/clear.svg);
+  background: url(./assets/clear.svg);
   background-size: cover;
   -moz-appearance: none;
   -webkit-appearance: none;
@@ -247,11 +247,7 @@ input[type='search']::-webkit-search-cancel-button {
   text-align: center;
   border-radius: 100%;
 }
-.round .eva {
-  width: 20px;
-  height: 20px;
-  fill: #bdbac2;
-}
+
 /* Eva Icons
 ==================== 
 .eva-icon-pulse:hover {
@@ -1343,6 +1339,7 @@ a.dropdown-item {
     overflow: hidden;
   }
 }
+
 
 `
 
