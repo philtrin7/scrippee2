@@ -1,0 +1,17 @@
+query InboxOrders {
+  user {
+    id
+    inbox {
+      listType
+      orders {
+        id
+        customerName
+        item
+        contactNum
+        email
+        archive
+        createdAt
+      }
+    }
+  }
+}

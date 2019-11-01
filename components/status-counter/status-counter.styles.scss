@@ -1,0 +1,27 @@
+.status-counter {
+  display: inline-block;
+  width: 42px;
+  height: 42px;
+  line-height: 42px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #fff;
+  text-align: center;
+  background-color: #bdbac2;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+}
+.star {
+  font-size: 25px;
+  line-height: 50px;
+}
+.safe {
+  background-color: #20c326;
+}
+.warn {
+  background-color: #f2c932;
+}
+.danger {
+  background-color: #e65747;
+}

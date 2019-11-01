@@ -18,7 +18,7 @@ const GlobalStyles = createGlobalStyle`
 	Components:
 	
 	01. Navigation
-	02. Sidebar
+	02. Orders List (formerly Sidebar)
 	03. Discussions
 	04. Users
 	05. Notifications
@@ -165,7 +165,7 @@ input[type='search']::-webkit-search-cancel-button {
   display: inline-block;
   width: 24px;
   height: 24px;
-  background: url(./assets/clear.svg);
+  background: url(/static/img/svg/clear.svg);
   background-size: cover;
   -moz-appearance: none;
   -webkit-appearance: none;
@@ -509,9 +509,11 @@ a.dropdown-item {
   width: 28px !important;
   height: 28px !important;
 }
-/* 2. Sidebar
-==================== 
->>> Orders-page.component.tsx 
+/* 2. Orders List
+==================== */
+.orders-list .top form .eva {
+  fill: #bdbac2;
+}
 
 /* 3. Discussions
 ====================
@@ -1341,7 +1343,6 @@ a.dropdown-item {
     overflow: hidden;
   }
 }
-
 
 `
 

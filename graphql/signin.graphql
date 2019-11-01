@@ -1,9 +1,23 @@
 mutation Signin($email: String!, $password: String!) {
   signin(email: $email, password: $password) {
-    accessToken
-    user {
-      id
-      email
+    auth {
+      accessToken
+      user {
+        id
+        email
+      }
+    }
+    list {
+      listType
+      orders {
+        id
+        customerName
+        item
+        contactNum
+        email
+        archive
+        createdAt
+      }
     }
   }
 }

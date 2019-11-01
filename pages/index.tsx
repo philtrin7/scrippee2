@@ -1,7 +1,12 @@
 import React, { useEffect } from 'react'
 import Router from 'next/router'
+import Head from 'next/head'
 
-import { useMeQuery } from '../generated/graphql'
+import {
+  useUserQuery,
+  useInboxOrdersQuery,
+  useArchiveOrdersLazyQuery
+} from '../generated/graphql'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { RootState } from '../redux/store'
@@ -11,42 +16,65 @@ import NavSideBar from '../components/navigation/nav-sidebar.component'
 import Layout from '../components/Layout'
 import { signinUser, signinRequired } from '../redux/auth/auth.actions'
 import { AuthState, User } from '../redux/auth/auth.types'
-import Head from 'next/head'
+
+import OrdersList from '../components/list/orders-list.tsx/orders-list.component'
+import { fetchList } from '../redux/list/list.actions'
+import { ListState, LIST_TYPES, OrderList } from '../redux/list/list.types'
 
 interface IndexPageProps {
-  signinCurrentUser: Function
+  signinUser: Function
   signinRedirect: Function
+  fetchList: Function
   auth: AuthState
+  list: ListState
 }
 
 const IndexPage: React.FC<IndexPageProps> = (props) => {
+  const { data: userData } = useUserQuery()
   const { currentUser } = props.auth
-  const { signinCurrentUser, signinRedirect } = props
-  const { data } = useMeQuery()
-
+  const { signinUser, signinRedirect } = props
   const prevCurrentUser: User | null | undefined = usePrevious(currentUser)
 
+  const { orders, listType } = props.list
+  const { fetchList } = props
+  const { data: inboxOrders, loading: loadingInboxList } = useInboxOrdersQuery()
+  const [
+    getArchiveOrders,
+    { data: archiveOrders, loading: loadingArchiveList }
+  ] = useArchiveOrdersLazyQuery()
+
   useEffect(() => {
-    // Prisma query for user
-    if (data && data.me) {
-      const { me } = data
-      if (currentUser !== null && currentUser.id === me.id) {
+    if (userData && userData.user) {
+      const { user } = userData
+      if (currentUser !== null && currentUser.id === user.id) {
         return
       } else {
-        signinCurrentUser(me)
+        signinUser(user)
+        fetchList(user.inbox)
       }
-      // State contains currentUser
-    } else if (currentUser !== null && currentUser.id) {
-      return
-      // Sign out success without signing required warning
-    } else if (currentUser === null && prevCurrentUser) {
+    } else if (prevCurrentUser) {
       Router.push('/signin')
-      // Fallback to forced signin
     } else {
       signinRedirect()
       Router.push('/signin')
     }
-  }, [currentUser])
+  }, [userData])
+
+  useEffect(() => {
+    if (listType === LIST_TYPES.INBOX) {
+      if (inboxOrders && inboxOrders.user) {
+        const { inbox } = inboxOrders.user
+        fetchList(inbox)
+      }
+    }
+    if (listType === LIST_TYPES.ARCHIVE) {
+      getArchiveOrders()
+      if (archiveOrders && archiveOrders.user) {
+        const { archive } = archiveOrders.user
+        fetchList(archive)
+      }
+    }
+  }, [listType, inboxOrders, archiveOrders])
 
   return (
     <div>
@@ -58,6 +86,10 @@ const IndexPage: React.FC<IndexPageProps> = (props) => {
           <nav className="navigation">
             <NavSideBar currentUser={currentUser} />
           </nav>
+          <OrdersList
+            orders={orders}
+            loading={loadingInboxList || loadingArchiveList}
+          />
         </div>
       </Layout>
     </div>
@@ -66,13 +98,15 @@ const IndexPage: React.FC<IndexPageProps> = (props) => {
 
 const mapStateToProps = (state: RootState) => {
   return {
-    auth: state.auth
+    auth: state.auth,
+    list: state.list
   }
 }
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  signinCurrentUser: (currentUser: User) => dispatch(signinUser(currentUser)),
-  signinRedirect: () => dispatch(signinRequired())
+  signinUser: (user: User) => dispatch(signinUser(user)),
+  signinRedirect: () => dispatch(signinRequired()),
+  fetchList: (orderList: OrderList) => dispatch(fetchList(orderList))
 })
 
 export default connect(
