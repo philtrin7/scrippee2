@@ -83,8 +83,8 @@ export type User = {
    __typename?: 'User',
   id: Scalars['ID'],
   email: Scalars['String'],
-  inbox: Array<Order>,
-  archive: Array<Order>,
+  inbox: OrderList,
+  archive: OrderList,
 };
 
 export type ArchiveOrdersQueryVariables = {};
@@ -95,10 +95,14 @@ export type ArchiveOrdersQuery = (
   & { user: Maybe<(
     { __typename?: 'User' }
     & Pick<User, 'id'>
-    & { archive: Array<(
-      { __typename?: 'Order' }
-      & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'archive' | 'createdAt'>
-    )> }
+    & { archive: (
+      { __typename?: 'OrderList' }
+      & Pick<OrderList, 'listType'>
+      & { orders: Array<(
+        { __typename?: 'Order' }
+        & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'archive' | 'createdAt'>
+      )> }
+    ) }
   )> }
 );
 
@@ -118,10 +122,14 @@ export type InboxOrdersQuery = (
   & { user: Maybe<(
     { __typename?: 'User' }
     & Pick<User, 'id'>
-    & { inbox: Array<(
-      { __typename?: 'Order' }
-      & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'archive' | 'createdAt'>
-    )> }
+    & { inbox: (
+      { __typename?: 'OrderList' }
+      & Pick<OrderList, 'listType'>
+      & { orders: Array<(
+        { __typename?: 'Order' }
+        & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'archive' | 'createdAt'>
+      )> }
+    ) }
   )> }
 );
 
@@ -200,13 +208,16 @@ export const ArchiveOrdersDocument = gql`
   user {
     id
     archive {
-      id
-      customerName
-      item
-      contactNum
-      email
-      archive
-      createdAt
+      listType
+      orders {
+        id
+        customerName
+        item
+        contactNum
+        email
+        archive
+        createdAt
+      }
     }
   }
 }
@@ -271,13 +282,16 @@ export const InboxOrdersDocument = gql`
   user {
     id
     inbox {
-      id
-      customerName
-      item
-      contactNum
-      email
-      archive
-      createdAt
+      listType
+      orders {
+        id
+        customerName
+        item
+        contactNum
+        email
+        archive
+        createdAt
+      }
     }
   }
 }

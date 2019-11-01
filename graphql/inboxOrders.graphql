@@ -2,13 +2,16 @@ query InboxOrders {
   user {
     id
     inbox {
-      id
-      customerName
-      item
-      contactNum
-      email
-      archive
-      createdAt
+      listType
+      orders {
+        id
+        customerName
+        item
+        contactNum
+        email
+        archive
+        createdAt
+      }
     }
   }
 }

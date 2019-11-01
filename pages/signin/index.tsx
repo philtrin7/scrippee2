@@ -13,7 +13,7 @@ import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { RootState } from '../../redux/store'
 import { User, AlertsArray } from '../../redux/auth/auth.types'
-import { Order } from '../../redux/list/list.types'
+import { OrderList } from '../../redux/list/list.types'
 import {
   clearAlerts,
   signinUser,
@@ -82,10 +82,10 @@ const SigninPage: React.FC<SigninPagePropTypes> = (props) => {
       })
       if (response && response.data) {
         const { user, accessToken } = response.data.signin.auth
-        const { orders } = response.data.signin.list
+        const { list } = response.data.signin
         setAccessToken(accessToken)
         signinCurrentUser(user)
-        fetchList(orders)
+        fetchList(list)
         Router.push('/')
       }
     } catch (err) {
@@ -161,7 +161,7 @@ const mapStateToProps = (state: RootState) => {
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   signinCurrentUser: (currentUser: User) => dispatch(signinUser(currentUser)),
   signinFailed: () => dispatch(signinFail()),
-  fetchList: (orders: Order[]) => dispatch(fetchList(orders)),
+  fetchList: (orderList: OrderList) => dispatch(fetchList(orderList)),
   clearAlertsArr: () => dispatch(clearAlerts())
 })
 

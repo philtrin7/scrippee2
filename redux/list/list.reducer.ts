@@ -4,7 +4,7 @@ import { AuthActionTypes } from '../auth/auth.types'
 
 const INITIAL_STATE: ListState = {
   orders: [],
-  listType: LIST_TYPES.INBOX
+  listType: null
 }
 
 export const listReducer: Reducer<ListState, any> = (
@@ -15,7 +15,6 @@ export const listReducer: Reducer<ListState, any> = (
     case ListActionTypes.FETCH_INBOX_LIST_START:
       return {
         ...state,
-        // orders: action.payload
         listType: LIST_TYPES.INBOX
       }
     case ListActionTypes.FETCH_ARCHIVE_LIST_START:
@@ -26,7 +25,8 @@ export const listReducer: Reducer<ListState, any> = (
     case ListActionTypes.FETCH_LIST_SUCCESS:
       return {
         ...state,
-        orders: action.payload
+        listType: action.payload.listType,
+        orders: action.payload.orders
       }
     case AuthActionTypes.SIGNOUT_SUCCESS:
       return {

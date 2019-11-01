@@ -19,7 +19,7 @@ import { AuthState, User } from '../redux/auth/auth.types'
 
 import OrdersList from '../components/list/orders-list.tsx/orders-list.component'
 import { fetchList } from '../redux/list/list.actions'
-import { ListState, Order, LIST_TYPES } from '../redux/list/list.types'
+import { ListState, LIST_TYPES, OrderList } from '../redux/list/list.types'
 
 interface IndexPageProps {
   signinUser: Function
@@ -103,7 +103,7 @@ const mapStateToProps = (state: RootState) => {
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   signinUser: (user: User) => dispatch(signinUser(user)),
   signinRedirect: () => dispatch(signinRequired()),
-  fetchList: (orders: Order[]) => dispatch(fetchList(orders))
+  fetchList: (orderList: OrderList) => dispatch(fetchList(orderList))
 })
 
 export default connect(
