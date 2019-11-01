@@ -70,4 +70,11 @@ $grey: #bdbac2;
       margin-bottom: 0;
     }
   }
+  .order {
+    -ms-flex-preferred-size: 100%;
+    flex-basis: 100%;
+    padding-left: 0;
+    list-style: none;
+    margin-bottom: 0;
+  }
 }

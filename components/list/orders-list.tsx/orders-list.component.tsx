@@ -43,11 +43,7 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
       <div className="orders-list">
         <div className="container">
           <div className="tab-content">
-            <div
-              className="tab-pane fade show active"
-              id="conversations"
-              role="tabpanel"
-            >
+            <div className="tab-pane fade show active">
               <div className="top">
                 <form>
                   <input
@@ -59,7 +55,7 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
                     <ReactSVG src="/static/img/svg/search.svg" />
                   </button>
                 </form>
-                <ul className="nav" role="tablist">
+                <ul className="nav">
                   <li>
                     <a
                       className={`filter-btn ${currentList}`}
@@ -97,7 +93,7 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
                   <ReactSVG src="/static/img/svg/new-order.svg" />
                 </button>
                 <hr />
-                {Orders}
+                <ul className="nav order">{Orders}</ul>
               </div>
             </div>
           </div>

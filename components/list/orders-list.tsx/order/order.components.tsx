@@ -37,25 +37,21 @@ const OrderComponent: React.FC<Props> = (props) => {
   }
 
   return (
-    <div>
-      <ul className="nav order" role="tablist">
-        <li>
-          <a href="#chat1" className="filter direct active">
-            <div className="status online">
-              <StatusCounter daysPassed={days} />
-            </div>
-            <div className="content">
-              <div className="headline">
-                <h5>{customerName}</h5>
-                <span>{userfriendlyDate}</span>
-              </div>
-              <p>{item}</p>
-            </div>
-          </a>
-        </li>
-      </ul>
+    <li>
+      <a href="#" className="filter direct active">
+        <div className="status">
+          <StatusCounter daysPassed={days} />
+        </div>
+        <div className="content">
+          <div className="headline">
+            <h5>{customerName}</h5>
+            <span>{userfriendlyDate}</span>
+          </div>
+          <p>{item}</p>
+        </div>
+      </a>
       <style jsx>{orderComponentStyles}</style>
-    </div>
+    </li>
   )
 }
 
