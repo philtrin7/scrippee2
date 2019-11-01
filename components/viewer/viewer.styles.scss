@@ -5,7 +5,7 @@ $blue: #007bff;
 /* Top */
 /* Middle */
 /* Bottom */
-.order-convo {
+.viewer {
   background: #fbfbfb;
   .item {
     display: -ms-flexbox;
@@ -168,9 +168,6 @@ $blue: #007bff;
               justify-content: center;
               background: #fff;
               margin-right: 15px;
-              .eva {
-                fill: #007bff;
-              }
             }
             h5 {
               font-size: 16px;

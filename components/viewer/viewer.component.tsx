@@ -9,7 +9,7 @@ interface Props {}
 
 const Viewer: React.FC<Props> = () => {
   return (
-    <div className="order-convo">
+    <div className="viewer">
       <div className="tab-content">
         <div className="tab-pane fade show active" id="chat1" role="tabpanel">
           <div className="item">
@@ -60,7 +60,7 @@ const Viewer: React.FC<Props> = () => {
                   </ul>
                 </div>
               </div>
-              <div className="middle" id="scroll">
+              <div className="middle">
                 <div className="container">
                   <ul>
                     <li>
