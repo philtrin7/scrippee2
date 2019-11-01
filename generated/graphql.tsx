@@ -199,6 +199,14 @@ export type UserQuery = (
   & { user: Maybe<(
     { __typename?: 'User' }
     & Pick<User, 'id' | 'email'>
+    & { inbox: (
+      { __typename?: 'OrderList' }
+      & Pick<OrderList, 'listType'>
+      & { orders: Array<(
+        { __typename?: 'Order' }
+        & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'archive' | 'createdAt'>
+      )> }
+    ) }
   )> }
 );
 
@@ -470,6 +478,18 @@ export const UserDocument = gql`
   user {
     id
     email
+    inbox {
+      listType
+      orders {
+        id
+        customerName
+        item
+        contactNum
+        email
+        archive
+        createdAt
+      }
+    }
   }
 }
     `;

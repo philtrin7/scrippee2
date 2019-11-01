@@ -74,7 +74,7 @@ const SigninPage: React.FC<SigninPagePropTypes> = (props) => {
             store.writeQuery<UserQuery>({
               query: UserDocument,
               data: {
-                user: data.signin.auth.user
+                user: { ...data.signin.auth.user, inbox: data.signin.list }
               }
             })
           }

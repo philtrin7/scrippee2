@@ -50,6 +50,7 @@ const IndexPage: React.FC<IndexPageProps> = (props) => {
         return
       } else {
         signinUser(user)
+        fetchList(user.inbox)
       }
     } else if (prevCurrentUser) {
       Router.push('/signin')
@@ -62,13 +63,15 @@ const IndexPage: React.FC<IndexPageProps> = (props) => {
   useEffect(() => {
     if (listType === LIST_TYPES.INBOX) {
       if (inboxOrders && inboxOrders.user) {
-        fetchList(inboxOrders.user.inbox)
+        const { inbox } = inboxOrders.user
+        fetchList(inbox)
       }
     }
     if (listType === LIST_TYPES.ARCHIVE) {
       getArchiveOrders()
       if (archiveOrders && archiveOrders.user) {
-        fetchList(archiveOrders.user.archive)
+        const { archive } = archiveOrders.user
+        fetchList(archive)
       }
     }
   }, [listType, inboxOrders, archiveOrders])

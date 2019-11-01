@@ -2,5 +2,17 @@ query User {
   user {
     id
     email
+    inbox {
+      listType
+      orders {
+        id
+        customerName
+        item
+        contactNum
+        email
+        archive
+        createdAt
+      }
+    }
   }
 }
