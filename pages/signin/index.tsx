@@ -13,11 +13,13 @@ import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { RootState } from '../../redux/store'
 import { User, AlertsArray } from '../../redux/auth/auth.types'
+import { Order } from '../../redux/list/list.types'
 import {
   clearAlerts,
   signinUser,
   signinFail
 } from '../../redux/auth/auth.actions'
+import { fetchList } from '../../redux/list/list.actions'
 
 import PulseLoader from 'react-spinners/PulseLoader'
 import signinPageStyles from './signin-page.styles.scss'
@@ -26,6 +28,7 @@ interface SigninPagePropTypes {
   clearAlertsArr: Function
   signinCurrentUser: Function
   signinFailed: Function
+  fetchList: Function
   alerts: AlertsArray
 }
 
@@ -36,7 +39,7 @@ const SigninPage: React.FC<SigninPagePropTypes> = (props) => {
 
   const [signin, { loading }] = useSigninMutation()
 
-  const { clearAlertsArr, signinCurrentUser, signinFailed } = props
+  const { clearAlertsArr, signinCurrentUser, signinFailed, fetchList } = props
 
   useEffect(() => {
     if (alerts.length > 0) {
@@ -67,19 +70,22 @@ const SigninPage: React.FC<SigninPagePropTypes> = (props) => {
           if (!data) {
             return null
           }
-          store.writeQuery<UserQuery>({
-            query: UserDocument,
-            data: {
-              user: data.signin.user
-            }
-          })
+          if (data.signin.auth.user) {
+            store.writeQuery<UserQuery>({
+              query: UserDocument,
+              data: {
+                user: data.signin.auth.user
+              }
+            })
+          }
         }
       })
       if (response && response.data) {
-        const { user } = response.data.signin
-        setAccessToken(response.data.signin.accessToken)
+        const { user, accessToken } = response.data.signin.auth
+        const { orders } = response.data.signin.list
+        setAccessToken(accessToken)
         signinCurrentUser(user)
-
+        fetchList(orders)
         Router.push('/')
       }
     } catch (err) {
@@ -155,6 +161,7 @@ const mapStateToProps = (state: RootState) => {
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   signinCurrentUser: (currentUser: User) => dispatch(signinUser(currentUser)),
   signinFailed: () => dispatch(signinFail()),
+  fetchList: (orders: Order[]) => dispatch(fetchList(orders)),
   clearAlertsArr: () => dispatch(clearAlerts())
 })
 

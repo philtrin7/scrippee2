@@ -21,7 +21,7 @@ export type AuthPayload = {
 
 export type Mutation = {
    __typename?: 'Mutation',
-  signin: AuthPayload,
+  signin: SigninData,
   signup: Scalars['Boolean'],
   logout: Scalars['Boolean'],
   createOrder: Scalars['Boolean'],
@@ -60,11 +60,23 @@ export type Order = {
   updatedAt: Scalars['DateTime'],
 };
 
+export type OrderList = {
+   __typename?: 'OrderList',
+  orders: Array<Order>,
+  listType?: Maybe<Scalars['String']>,
+};
+
 export type Query = {
    __typename?: 'Query',
   bye: Scalars['String'],
   me?: Maybe<User>,
   user?: Maybe<User>,
+};
+
+export type SigninData = {
+   __typename?: 'SigninData',
+  auth: AuthPayload,
+  list: OrderList,
 };
 
 export type User = {
@@ -141,12 +153,22 @@ export type SigninMutationVariables = {
 export type SigninMutation = (
   { __typename?: 'Mutation' }
   & { signin: (
-    { __typename?: 'AuthPayload' }
-    & Pick<AuthPayload, 'accessToken'>
-    & { user: Maybe<(
-      { __typename?: 'User' }
-      & Pick<User, 'id' | 'email'>
-    )> }
+    { __typename?: 'SigninData' }
+    & { auth: (
+      { __typename?: 'AuthPayload' }
+      & Pick<AuthPayload, 'accessToken'>
+      & { user: Maybe<(
+        { __typename?: 'User' }
+        & Pick<User, 'id' | 'email'>
+      )> }
+    ), list: (
+      { __typename?: 'OrderList' }
+      & Pick<OrderList, 'listType'>
+      & { orders: Array<(
+        { __typename?: 'Order' }
+        & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'archive' | 'createdAt'>
+      )> }
+    ) }
   ) }
 );
 
@@ -350,10 +372,24 @@ export type MeQueryResult = ApolloReactCommon.QueryResult<MeQuery, MeQueryVariab
 export const SigninDocument = gql`
     mutation Signin($email: String!, $password: String!) {
   signin(email: $email, password: $password) {
-    accessToken
-    user {
-      id
-      email
+    auth {
+      accessToken
+      user {
+        id
+        email
+      }
+    }
+    list {
+      listType
+      orders {
+        id
+        customerName
+        item
+        contactNum
+        email
+        archive
+        createdAt
+      }
     }
   }
 }
