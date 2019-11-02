@@ -1,22 +1,44 @@
 import React from 'react'
+import { connect } from 'react-redux'
+
+import { RootState } from '../../redux/store'
+import { ViewerState, VIEWER_TYPES } from '../../redux/viewer/viewer.types'
 
 import HeaderViewer from './header/header.component'
+import ConvoViewer from './convo/convo.component'
+import NewOrderViewer from './new-order/new-order.component'
 
 import viewerStyles from './viewer.styles.scss'
-import ConvoViewer from './convo/convo.component'
 
-interface Props {}
+interface Props {
+  viewer: ViewerState
+}
 
-const Viewer: React.FC<Props> = () => {
+const Viewer: React.FC<Props> = (props) => {
+  let Viewer: any = props.viewer.type
+  if (Viewer === null) {
+    Viewer = (
+      <div>
+        <HeaderViewer />
+        <ConvoViewer />
+      </div>
+    )
+  } else if (Viewer === VIEWER_TYPES.NEW_ORDER) {
+    Viewer = (
+      <div>
+        <NewOrderViewer />
+      </div>
+    )
+  } else {
+    Viewer = <div>Hmmm... this shouldn't have happened</div>
+  }
+
   return (
     <div className="viewer">
       <div className="tab-content">
         <div className="tab-pane fade show active" id="chat1" role="tabpanel">
           <div className="item">
-            <div className="content">
-              <HeaderViewer />
-              <ConvoViewer />
-            </div>
+            <div className="content">{Viewer}</div>
           </div>
         </div>
       </div>
@@ -25,4 +47,10 @@ const Viewer: React.FC<Props> = () => {
   )
 }
 
-export default Viewer
+const mapStateToProps = (state: RootState) => {
+  return {
+    viewer: state.viewer
+  }
+}
+
+export default connect(mapStateToProps)(Viewer)
