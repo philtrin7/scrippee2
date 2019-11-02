@@ -2,7 +2,6 @@ $grey: #bdbac2;
 $white: #fff;
 $blue: #007bff;
 
-/* Top */
 /* Middle */
 /* Bottom */
 .viewer {
@@ -17,73 +16,6 @@ $blue: #007bff;
       flex: 1;
     }
 
-    .top {
-      display: -ms-flexbox;
-      display: flex;
-      -ms-flex-align: center;
-      align-items: center;
-      -ms-flex-pack: justify;
-      justify-content: space-between;
-      padding: 30px 0;
-      border-bottom: 2px solid #f9f9f9;
-      .headline {
-        display: -ms-flexbox;
-        display: flex;
-        -ms-flex-align: center;
-        align-items: center;
-      }
-      img {
-        width: 42px;
-        height: 42px;
-        border-radius: 100%;
-        margin-right: 15px;
-      }
-      h5 {
-        font-size: 16px;
-        font-weight: 600;
-        margin-bottom: 8px;
-      }
-      span {
-        display: block;
-        font-size: 15px;
-        font-weight: 500;
-        line-height: 1;
-        color: $grey;
-      }
-      ul {
-        display: -ms-flexbox;
-        display: flex;
-        -ms-flex-wrap: nowrap;
-        flex-wrap: nowrap;
-        -ms-flex-direction: row;
-        flex-direction: row;
-        -ms-flex-align: center;
-        align-items: center;
-        padding-left: 0;
-        list-style: none;
-        margin-bottom: 0;
-        > li {
-          &:nth-child(6) {
-            display: none;
-          }
-          & + li {
-            margin-left: 25px;
-          }
-          .btn {
-            padding: 0;
-            i {
-              fill: #bdbac2;
-              -moz-transition: all 0.3s;
-              -webkit-transition: all 0.3s;
-              transition: all 0.3s;
-              &:hover {
-                fill: #007bff;
-              }
-            }
-          }
-        }
-      }
-    }
     .middle {
       display: -ms-flexbox;
       display: flex;

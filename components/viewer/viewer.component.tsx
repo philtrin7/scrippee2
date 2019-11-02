@@ -1,8 +1,8 @@
 import React from 'react'
 import ReactSVG from 'react-svg'
 
+import HeaderViewer from './header/header.component'
 import SwipeLogo from '../../static/img/swipe-logo-replace-me.png'
-
 import viewerStyles from './viewer.styles.scss'
 
 interface Props {}
@@ -14,52 +14,7 @@ const Viewer: React.FC<Props> = () => {
         <div className="tab-pane fade show active" id="chat1" role="tabpanel">
           <div className="item">
             <div className="content">
-              <div className="container">
-                <div className="top">
-                  <div className="headline">
-                    <img src={SwipeLogo} alt="avatar" />
-                    <div className="content">
-                      <h5>Quincy Hensen</h5>
-                      <span>Away</span>
-                    </div>
-                  </div>
-                  <ul>
-                    <li>
-                      <button type="button" className="btn">
-                        <i className="eva-hover">
-                          <ReactSVG src="/static/img/svg/video.svg" />
-                        </i>
-                      </button>
-                    </li>
-                    <li>
-                      <button type="button" className="btn">
-                        <i className="eva-hover">
-                          <ReactSVG src="/static/img/svg/phone.svg" />
-                        </i>
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        type="button"
-                        className="btn"
-                        data-toggle="modal"
-                        data-target="#compose"
-                      >
-                        <i className="eva-hover">
-                          <ReactSVG src="/static/img/svg/add-friend.svg" />
-                        </i>
-                      </button>
-                    </li>
-                    <li>
-                      <button type="button" className="btn" data-utility="open">
-                        <i className="eva-hover">
-                          <ReactSVG src="/static/img/svg/info.svg" />
-                        </i>
-                      </button>
-                    </li>
-                  </ul>
-                </div>
-              </div>
+              <HeaderViewer />
               <div className="middle">
                 <div className="container">
                   <ul>
