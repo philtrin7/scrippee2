@@ -13,10 +13,12 @@ import OrderComponent from './order/order.components'
 
 import { PulseSpinner } from '../../loading-spinner/PulseSpinner'
 import ordersListStyles from './orders-list.styles.scss'
+import { setNewOrderView } from '../../../redux/viewer/viewer.actions'
 
 interface OrdersListPropTypes {
   fetchInboxListStart: Function
   fetchArchiveListStart: Function
+  setNewOrderView: Function
   orders: Order[]
   loading: Boolean
 }
@@ -87,8 +89,9 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
                 <button
                   type="button"
                   className="btn round"
-                  data-toggle="modal"
-                  data-target="#compose"
+                  onClick={() => {
+                    props.setNewOrderView()
+                  }}
                 >
                   <ReactSVG src="/static/img/svg/new-order.svg" />
                 </button>
@@ -106,7 +109,8 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   fetchInboxListStart: () => dispatch(fetchInboxListStart()),
-  fetchArchiveListStart: () => dispatch(fetchArchiveListStart())
+  fetchArchiveListStart: () => dispatch(fetchArchiveListStart()),
+  setNewOrderView: () => dispatch(setNewOrderView())
 })
 
 export default connect(

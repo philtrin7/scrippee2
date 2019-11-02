@@ -165,7 +165,7 @@ input[type='search']::-webkit-search-cancel-button {
   display: inline-block;
   width: 24px;
   height: 24px;
-  background: url(/static/img/svg/clear.svg);
+  background: url(./assets/clear.svg);
   background-size: cover;
   -moz-appearance: none;
   -webkit-appearance: none;
@@ -247,11 +247,7 @@ input[type='search']::-webkit-search-cancel-button {
   text-align: center;
   border-radius: 100%;
 }
-.round .eva {
-  width: 20px;
-  height: 20px;
-  fill: #bdbac2;
-}
+
 /* Eva Icons
 ==================== 
 .eva-icon-pulse:hover {
@@ -855,7 +851,7 @@ a.dropdown-item {
 }
 /* 7. Chat
 ====================
->>> order-convo.component.tsx
+>>> viewer.component.tsx
 
 /* 8. Utility
 ====================
@@ -1212,13 +1208,13 @@ a.dropdown-item {
     width: 336px;
     height: 100vh;
   }
-  .order-convo {
+  .viewer {
     flex: 1;
     max-width: calc(100vw - 300px);
     height: 100vh;
     overflow: hidden;
   }
-  .order-convo .item .top ul > li:nth-child(5) {
+  .viewer .item .top ul > li:nth-child(5) {
     display: none;
   }
 }
@@ -1256,7 +1252,7 @@ a.dropdown-item {
     -ms-flex-align: center;
     align-items: center;
   }
-  .order-convo {
+  .viewer {
     position: fixed;
     width: 100%;
     left: 100%;
@@ -1268,7 +1264,7 @@ a.dropdown-item {
     transition-duration: 0.3s;
     transition-property: left, visibility;
   }
-  .order-convo.open {
+  .viewer.open {
     visibility: visible;
     left: 0;
   }
@@ -1294,19 +1290,19 @@ a.dropdown-item {
     width: 32px;
     height: 32px;
   }
-  .order-convo .item .top ul > li:nth-child(1) {
+  .viewer .item .top ul > li:nth-child(1) {
     display: none;
   }
-  .order-convo .item .top ul > li:nth-child(2) {
+  .viewer .item .top ul > li:nth-child(2) {
     display: none;
   }
-  .order-convo .item .top ul > li:nth-child(3) {
+  .viewer .item .top ul > li:nth-child(3) {
     display: none;
   }
-  .order-convo .item .top ul > li:nth-child(4) {
+  .viewer .item .top ul > li:nth-child(4) {
     display: none;
   }
-  .order-convo .item .top ul > li:nth-child(6) {
+  .viewer .item .top ul > li:nth-child(6) {
     display: block;
     margin-left: 15.67px;
   }
@@ -1334,16 +1330,15 @@ a.dropdown-item {
     -ms-flex-align: flex-start;
     align-items: flex-start;
   }
-  .order-convo .item .top h5 {
+  .viewer .item .top h5 {
     height: 19px;
     overflow: hidden;
   }
-  .order-convo .item .top span {
+  .viewer .item .top span {
     height: 15px;
     overflow: hidden;
   }
 }
-
 `
 
 export default GlobalStyles

@@ -62,6 +62,10 @@ $grey: #bdbac2;
       margin-bottom: 0;
       & + .btn {
         margin-left: 15px;
+        fill: #bdbac2;
+        &:hover {
+          fill: $blue;
+        }
       }
     }
     hr {
