@@ -43,7 +43,7 @@ export type MutationSignupArgs = {
 export type MutationCreateOrderArgs = {
   item: Scalars['String'],
   customerName: Scalars['String'],
-  contactNum?: Maybe<Scalars['Int']>,
+  contactNum?: Maybe<Scalars['String']>,
   email?: Maybe<Scalars['String']>
 };
 
@@ -52,7 +52,7 @@ export type Order = {
   id: Scalars['ID'],
   customerName: Scalars['String'],
   item: Scalars['String'],
-  contactNum?: Maybe<Scalars['Int']>,
+  contactNum?: Maybe<Scalars['String']>,
   email?: Maybe<Scalars['String']>,
   createdBy: User,
   archive: Scalars['Boolean'],
