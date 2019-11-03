@@ -34,8 +34,12 @@ const NewOrderViewer: React.FC<Props> = () => {
         }
       })
     } catch (ApolloError) {
-      const errors = formatValidationErrors(ApolloError)
-      setErrors(errors)
+      const validationErrors = formatValidationErrors(ApolloError)
+      if (validationErrors) {
+        setErrors(validationErrors)
+      } else {
+        console.log('Error: ', 'Unexpected error. Path: ["createOrder"]')
+      }
     }
   }
   return (

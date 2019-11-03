@@ -13,6 +13,6 @@ export const formatValidationErrors = (error: ApolloError) => {
     )
     return formattedError
   } else {
-    throw new Error('Unexpected error["createOrder"]')
+    return null
   }
 }
