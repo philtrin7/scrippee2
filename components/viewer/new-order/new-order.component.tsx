@@ -1,14 +1,17 @@
 import React from 'react'
 import ReactSVG from 'react-svg'
-import { Formik, Field, Form } from 'formik'
 
-import newOrderViewerStyles from './new-order.styles.scss'
+import { Formik, Field, Form } from 'formik'
 import InputField from './fields/InputFied'
+
 import { Order } from '../../../redux/list/list.types'
+import { formatValidationErrors } from '../../../lib/utils/formatError'
 import {
   useCreateOrderMutation,
   CreateOrderMutationVariables
 } from '../../../generated/graphql'
+
+import newOrderViewerStyles from './new-order.styles.scss'
 
 type OrderForm = Pick<Order, 'customerName' | 'item' | 'contactNum' | 'email'>
 
@@ -19,7 +22,7 @@ const NewOrderViewer: React.FC<Props> = () => {
 
   const handleSubmit = async (
     data: CreateOrderMutationVariables,
-    setErrors: any
+    setErrors: Function
   ) => {
     try {
       await createOrder({
@@ -30,19 +33,8 @@ const NewOrderViewer: React.FC<Props> = () => {
           contactNum: data.contactNum
         }
       })
-    } catch (error) {
-      const errors: { [key: string]: string } = {}
-      if (
-        error.graphQLErrors[0].extensions.exception.name === 'ValidationError'
-      ) {
-        error.graphQLErrors[0].extensions.exception.inner.forEach(
-          (validationErr: any) => {
-            errors[validationErr.path] = validationErr.message
-          }
-        )
-      } else {
-        throw new Error('Unexpected error["createOrder"]')
-      }
+    } catch (ApolloError) {
+      const errors = formatValidationErrors(ApolloError)
       setErrors(errors)
     }
   }
