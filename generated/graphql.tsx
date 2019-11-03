@@ -114,6 +114,19 @@ export type ByeQuery = (
   & Pick<Query, 'bye'>
 );
 
+export type CreateOrderMutationVariables = {
+  item: Scalars['String'],
+  customerName: Scalars['String'],
+  contactNum?: Maybe<Scalars['String']>,
+  email?: Maybe<Scalars['String']>
+};
+
+
+export type CreateOrderMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'createOrder'>
+);
+
 export type InboxOrdersQueryVariables = {};
 
 
@@ -285,6 +298,39 @@ export function useByeLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOpti
 export type ByeQueryHookResult = ReturnType<typeof useByeQuery>;
 export type ByeLazyQueryHookResult = ReturnType<typeof useByeLazyQuery>;
 export type ByeQueryResult = ApolloReactCommon.QueryResult<ByeQuery, ByeQueryVariables>;
+export const CreateOrderDocument = gql`
+    mutation CreateOrder($item: String!, $customerName: String!, $contactNum: String, $email: String) {
+  createOrder(item: $item, customerName: $customerName, contactNum: $contactNum, email: $email)
+}
+    `;
+export type CreateOrderMutationFn = ApolloReactCommon.MutationFunction<CreateOrderMutation, CreateOrderMutationVariables>;
+
+/**
+ * __useCreateOrderMutation__
+ *
+ * To run a mutation, you first call `useCreateOrderMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateOrderMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createOrderMutation, { data, loading, error }] = useCreateOrderMutation({
+ *   variables: {
+ *      item: // value for 'item'
+ *      customerName: // value for 'customerName'
+ *      contactNum: // value for 'contactNum'
+ *      email: // value for 'email'
+ *   },
+ * });
+ */
+export function useCreateOrderMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreateOrderMutation, CreateOrderMutationVariables>) {
+        return ApolloReactHooks.useMutation<CreateOrderMutation, CreateOrderMutationVariables>(CreateOrderDocument, baseOptions);
+      }
+export type CreateOrderMutationHookResult = ReturnType<typeof useCreateOrderMutation>;
+export type CreateOrderMutationResult = ApolloReactCommon.MutationResult<CreateOrderMutation>;
+export type CreateOrderMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateOrderMutation, CreateOrderMutationVariables>;
 export const InboxOrdersDocument = gql`
     query InboxOrders {
   user {

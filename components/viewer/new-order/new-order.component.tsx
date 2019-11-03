@@ -1,16 +1,51 @@
 import React from 'react'
 import ReactSVG from 'react-svg'
-import { Formik, Field } from 'formik'
+import { Formik, Field, Form } from 'formik'
 
 import newOrderViewerStyles from './new-order.styles.scss'
 import InputField from './fields/InputFied'
 import { Order } from '../../../redux/list/list.types'
+import {
+  useCreateOrderMutation,
+  CreateOrderMutationVariables
+} from '../../../generated/graphql'
 
 type OrderForm = Pick<Order, 'customerName' | 'item' | 'contactNum' | 'email'>
 
 interface Props {}
 
 const NewOrderViewer: React.FC<Props> = () => {
+  const [createOrder] = useCreateOrderMutation()
+
+  const handleSubmit = async (
+    data: CreateOrderMutationVariables,
+    setErrors: any
+  ) => {
+    try {
+      await createOrder({
+        variables: {
+          item: data.item,
+          customerName: data.customerName,
+          email: data.email,
+          contactNum: data.contactNum
+        }
+      })
+    } catch (error) {
+      const errors: { [key: string]: string } = {}
+      if (
+        error.graphQLErrors[0].extensions.exception.name === 'ValidationError'
+      ) {
+        error.graphQLErrors[0].extensions.exception.inner.forEach(
+          (validationErr: any) => {
+            errors[validationErr.path] = validationErr.message
+          }
+        )
+      } else {
+        throw new Error('Unexpected error["createOrder"]')
+      }
+      setErrors(errors)
+    }
+  }
   return (
     <div className="new-order-viewer">
       <div className="new-order-content">
@@ -34,12 +69,12 @@ const NewOrderViewer: React.FC<Props> = () => {
               contactNum: '',
               email: ''
             }}
-            onSubmit={(data) => {
-              console.log(data)
-            }}
+            onSubmit={(data, { setErrors }) => handleSubmit(data, setErrors)}
+            validateOnBlur={false}
+            validateOnChange={false}
           >
-            {({ handleSubmit }) => (
-              <form onSubmit={handleSubmit}>
+            {() => (
+              <Form>
                 <Field
                   name="customerName"
                   placeholder="Customer name"
@@ -58,7 +93,7 @@ const NewOrderViewer: React.FC<Props> = () => {
                   component={InputField}
                 />
                 <button type="submit">submit</button>
-              </form>
+              </Form>
             )}
           </Formik>
           <div className="details">

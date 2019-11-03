@@ -6,10 +6,16 @@ type InputProps = DetailedHTMLProps<
   HTMLInputElement
 >
 
-const InputField = ({ field, form: _, ...props }: FieldProps & InputProps) => {
+const InputField = ({
+  field,
+  form: { errors, touched },
+  ...props
+}: FieldProps & InputProps) => {
+  const errorMessage = touched[field.name] && errors[field.name]
   return (
     <div>
       <input {...field} {...props} />
+      {errorMessage && <div>{errorMessage}</div>}
     </div>
   )
 }
