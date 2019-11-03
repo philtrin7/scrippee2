@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactSVG from 'react-svg'
 
+import { toast } from 'react-toastify'
 import { Formik, Field, Form } from 'formik'
 import InputField from './fields/InputFied'
 
@@ -36,6 +37,7 @@ const NewOrderViewer: React.FC<Props> = () => {
     } catch (ApolloError) {
       const validationErrors = formatValidationErrors(ApolloError)
       if (validationErrors) {
+        toast.error('There were problem(s) creating your order.')
         setErrors(validationErrors)
       } else {
         console.log('Error: ', 'Unexpected error. Path: ["createOrder"]')
