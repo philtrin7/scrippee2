@@ -100,7 +100,9 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
                   className="btn round"
                   onClick={() => {
                     props.setNewOrderView()
-                    props.newTempOrder()
+                    if (props.temp.orders.length === 0) {
+                      props.newTempOrder()
+                    }
                   }}
                 >
                   <ReactSVG src="/static/img/svg/new-order.svg" />
