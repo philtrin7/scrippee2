@@ -5,20 +5,20 @@ import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { RootState } from '../../../redux/store'
 import { ViewerState } from '../../../redux/viewer/viewer.types'
+import { TempState } from '../../../redux/temp/temp.types'
+import { Order, ListState, LIST_TYPES } from '../../../redux/list/list.types'
 import {
   fetchArchiveListStart,
   fetchInboxListStart
 } from '../../../redux/list/list.actions'
-
-import { Order, ListState, LIST_TYPES } from '../../../redux/list/list.types'
-import OrderComponent from './order/order.components'
-
-import { PulseSpinner } from '../../loading-spinner/PulseSpinner'
-import ordersListStyles from './orders-list.styles.scss'
-import { setNewOrderView } from '../../../redux/viewer/viewer.actions'
-import StatusCounter from '../../status-counter/status-counter.component'
 import { newTempOrder } from '../../../redux/temp/temp.actions'
-import { TempState } from '../../../redux/temp/temp.types'
+import { setNewOrderView } from '../../../redux/viewer/viewer.actions'
+
+import OrderComponent from './order/order.components'
+import StatusCounter from '../../status-counter/status-counter.component'
+import { PulseSpinner } from '../../loading-spinner/PulseSpinner'
+
+import ordersListStyles from './orders-list.styles.scss'
 
 interface OrdersListPropTypes {
   fetchInboxListStart: Function

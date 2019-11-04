@@ -2,9 +2,9 @@ import React, { DetailedHTMLProps, InputHTMLAttributes } from 'react'
 import { connect } from 'react-redux'
 import { FieldProps } from 'formik'
 import { Dispatch } from 'redux'
+import { setTempOrder } from '../../../../redux/temp/temp.actions'
 
 import inputFieldStyles from './inputField.styles.scss'
-import { setTempOrder } from '../../../../redux/temp/temp.actions'
 
 type FormikPropTypes = DetailedHTMLProps<
   InputHTMLAttributes<HTMLInputElement>,
