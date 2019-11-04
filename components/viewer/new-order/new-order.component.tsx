@@ -3,7 +3,7 @@ import ReactSVG from 'react-svg'
 
 import { toast } from 'react-toastify'
 import { Formik, Field, Form } from 'formik'
-import InputField from './fields/InputFied'
+import InputField from './fields/InputField'
 
 import { Order } from '../../../redux/list/list.types'
 import { formatValidationErrors } from '../../../lib/utils/formatError'
@@ -60,64 +60,54 @@ const NewOrderViewer: React.FC<Props> = () => {
           </button>
         </div>
         <div className="new-order-body">
-          <Formik<OrderForm>
-            initialValues={{
-              customerName: '',
-              item: '',
-              contactNum: '',
-              email: ''
-            }}
-            onSubmit={(data, { setErrors }) => handleSubmit(data, setErrors)}
-            validateOnBlur={false}
-            validateOnChange={false}
-          >
-            {() => (
-              <Form>
-                <Field
-                  name="customerName"
-                  placeholder="Customer name"
-                  component={InputField}
-                />
-                <Field name="item" placeholder="Items" component={InputField} />
-                <Field
-                  name="contactNum"
-                  placeholder="Contact number"
-                  component={InputField}
-                />
-                <Field
-                  type="email"
-                  name="email"
-                  placeholder="Email"
-                  component={InputField}
-                />
-                <button type="submit">submit</button>
-              </Form>
-            )}
-          </Formik>
           <div className="details">
-            <form>
-              <div className="form-group">
-                <label>Title</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="What's the topic?"
-                />
-              </div>
-              <div className="form-group">
-                <label>Message</label>
-                <textarea
-                  className="form-control"
-                  placeholder="Hmm, are you friendly?"
-                ></textarea>
-              </div>
-            </form>
+            <Formik<OrderForm>
+              initialValues={{
+                customerName: '',
+                item: '',
+                contactNum: '',
+                email: ''
+              }}
+              onSubmit={(data, { setErrors }) => handleSubmit(data, setErrors)}
+              validateOnBlur={false}
+              validateOnChange={false}
+            >
+              {() => (
+                <Form>
+                  <Field
+                    name="customerName"
+                    className="form-control"
+                    placeholder="Customer name"
+                    component={InputField}
+                  />
+                  <Field
+                    name="item"
+                    className="form-control"
+                    placeholder="Items"
+                    component={InputField}
+                  />
+                  <Field
+                    name="contactNum"
+                    className="form-control"
+                    placeholder="Contact number"
+                    component={InputField}
+                  />
+                  <Field
+                    type="email"
+                    name="email"
+                    className="form-control"
+                    placeholder="Email"
+                    component={InputField}
+                  />
+                  <div className="new-order-footer">
+                    <button className="btn primary" type="submit">
+                      Create Order
+                    </button>
+                  </div>
+                </Form>
+              )}
+            </Formik>
           </div>
-        </div>
-        <div className="new-order-footer">
-          <button type="submit" className="btn primary">
-            Create Order
-          </button>
         </div>
       </div>
       <style jsx>{newOrderViewerStyles}</style>

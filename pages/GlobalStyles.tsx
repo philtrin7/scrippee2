@@ -1339,6 +1339,7 @@ a.dropdown-item {
     overflow: hidden;
   }
 }
+
 `
 
 export default GlobalStyles
