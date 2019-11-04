@@ -2,13 +2,18 @@ import React from 'react'
 import StatusCounter from '../../../status-counter/status-counter.component'
 
 import tempOrderStyles from './temp-order.styles.scss'
+import { processString } from '../../../../lib/utils/processString'
 
 interface Props {
   orders: any
 }
 
 const TempOrder: React.FC<Props> = (props) => {
-  const tempOrders = props.orders[0]
+  const tempOrder = props.orders[0]
+  const { customerName, item } = tempOrder
+
+  const processedCustomerName = processString(customerName, 14, 28)
+  const processedItem = processString(item, 18, 36)
 
   return (
     <li>
@@ -18,16 +23,16 @@ const TempOrder: React.FC<Props> = (props) => {
         </div>
         <div className="content">
           <div className="headline">
-            {tempOrders.customerName !== '' ? (
-              <h5>{tempOrders.customerName}</h5>
+            {customerName !== '' ? (
+              <h5>{processedCustomerName}</h5>
             ) : (
               <h5 className="temp-placeholder">Customer name</h5>
             )}
             <span>New</span>
           </div>
 
-          {tempOrders.item.length > 0 ? (
-            <p>{tempOrders.item}</p>
+          {item.length > 0 ? (
+            <p>{processedItem}</p>
           ) : (
             <p className="temp-placeholder">Items...</p>
           )}
