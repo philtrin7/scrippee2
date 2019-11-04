@@ -4,32 +4,36 @@ import ReactSVG from 'react-svg'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { RootState } from '../../../redux/store'
-import { ViewerState, VIEWER_TYPES } from '../../../redux/viewer/viewer.types'
+import { ViewerState } from '../../../redux/viewer/viewer.types'
 import {
   fetchArchiveListStart,
   fetchInboxListStart
 } from '../../../redux/list/list.actions'
 
-import { Order } from '../../../redux/list/list.types'
+import { Order, ListState, LIST_TYPES } from '../../../redux/list/list.types'
 import OrderComponent from './order/order.components'
 
 import { PulseSpinner } from '../../loading-spinner/PulseSpinner'
 import ordersListStyles from './orders-list.styles.scss'
 import { setNewOrderView } from '../../../redux/viewer/viewer.actions'
 import StatusCounter from '../../status-counter/status-counter.component'
+import { newTempOrder } from '../../../redux/temp/temp.actions'
+import { TempState } from '../../../redux/temp/temp.types'
 
 interface OrdersListPropTypes {
   fetchInboxListStart: Function
   fetchArchiveListStart: Function
   setNewOrderView: Function
+  newTempOrder: Function
   orders: Order[]
   loading: Boolean
   viewer: ViewerState
+  temp: TempState
+  list: ListState
 }
 
 const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
   const { loading, orders } = props
-  const { type } = props.viewer
 
   const [currentList, setCurrentList] = useState('active')
   const [archiveList, setArchiveList] = useState('')
@@ -96,6 +100,7 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
                   className="btn round"
                   onClick={() => {
                     props.setNewOrderView()
+                    props.newTempOrder()
                   }}
                 >
                   <ReactSVG src="/static/img/svg/new-order.svg" />
@@ -103,17 +108,29 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
                 <hr />
                 <ul className="nav order">
                   <li>
-                    {type === VIEWER_TYPES.NEW_ORDER ? (
+                    {props.list.listType === LIST_TYPES.INBOX &&
+                    props.temp.orders.length > 0 ? (
                       <a href="#" className="filter direct active">
                         <div className="status">
                           <StatusCounter daysPassed={0} />
                         </div>
                         <div className="content">
                           <div className="headline">
-                            <h5>New Order</h5>
-                            <span>Now</span>
+                            {props.temp.orders[0].customerName !== '' ? (
+                              <h5>{props.temp.orders[0].customerName}</h5>
+                            ) : (
+                              <h5 className="temp-placeholder">
+                                Customer name
+                              </h5>
+                            )}
+                            <span>New</span>
                           </div>
-                          <p>Items...</p>
+
+                          {props.temp.orders[0].item.length > 0 ? (
+                            <p>{props.temp.orders[0].item}</p>
+                          ) : (
+                            <p className="temp-placeholder">Items...</p>
+                          )}
                         </div>
                       </a>
                     ) : (
@@ -133,13 +150,16 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
 }
 
 const mapStateToProps = (state: RootState) => ({
-  viewer: state.viewer
+  viewer: state.viewer,
+  temp: state.temp,
+  list: state.list
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   fetchInboxListStart: () => dispatch(fetchInboxListStart()),
   fetchArchiveListStart: () => dispatch(fetchArchiveListStart()),
-  setNewOrderView: () => dispatch(setNewOrderView())
+  setNewOrderView: () => dispatch(setNewOrderView()),
+  newTempOrder: () => dispatch(newTempOrder())
 })
 
 export default connect(
