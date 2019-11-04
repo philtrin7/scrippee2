@@ -76,26 +76,22 @@ const NewOrderViewer: React.FC<Props> = () => {
                 <Form>
                   <Field
                     name="customerName"
-                    className="form-control"
                     placeholder="Customer name"
                     component={InputField}
                   />
                   <Field
                     name="item"
-                    className="form-control"
                     placeholder="Items"
                     component={InputField}
                   />
                   <Field
                     name="contactNum"
-                    className="form-control"
                     placeholder="Contact number"
                     component={InputField}
                   />
                   <Field
                     type="email"
                     name="email"
-                    className="form-control"
                     placeholder="Email"
                     component={InputField}
                   />

@@ -1,4 +1,4 @@
-import React, { DetailedHTMLProps, InputHTMLAttributes } from 'react'
+import React, { useState, DetailedHTMLProps, InputHTMLAttributes } from 'react'
 import { connect } from 'react-redux'
 import { FieldProps } from 'formik'
 import { Dispatch } from 'redux'
@@ -27,14 +27,18 @@ const InputField = ({
 
   const errorMessage = touched[fields.name] && errors[fields.name]
 
+  const [hasValue, setHasValue] = useState(false)
+
   return (
     <div>
-      <div className="form-group">
+      {errorMessage && <div className="error-msg">{errorMessage}</div>}
+      <div className={`form-group ${errorMessage ? 'with-error' : ''}`}>
         <input
           {...fields}
           {...formikProps}
           onChange={(e) => {
             if (e.target.value.length > 0) {
+              setHasValue(true)
               if (fields.name === 'customerName') {
                 setTempOrder({ customerName: e.target.value })
               }
@@ -42,6 +46,7 @@ const InputField = ({
                 setTempOrder({ item: e.target.value })
               }
             } else {
+              setHasValue(false)
               if (fields.name === 'customerName') {
                 setTempOrder({ customerName: ' ' })
               }
@@ -51,8 +56,8 @@ const InputField = ({
             }
             handleChange(e)
           }}
+          className={`form-control ${hasValue ? 'hasValue' : ''}`}
         />
-        {errorMessage && <div>{errorMessage}</div>}
       </div>
       <style jsx>{inputFieldStyles}</style>
     </div>
