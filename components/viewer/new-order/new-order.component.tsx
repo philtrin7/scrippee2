@@ -1,6 +1,9 @@
 import React from 'react'
 import ReactSVG from 'react-svg'
 
+import { connect } from 'react-redux'
+import { Dispatch } from 'redux'
+
 import { toast } from 'react-toastify'
 import { Formik, Field, Form } from 'formik'
 import InputField from './fields/InputField'
@@ -13,12 +16,15 @@ import {
 } from '../../../generated/graphql'
 
 import newOrderViewerStyles from './new-order.styles.scss'
+import { clearTempOrder } from '../../../redux/temp/temp.actions'
 
 type OrderForm = Pick<Order, 'customerName' | 'item' | 'contactNum' | 'email'>
 
-interface Props {}
+interface Props {
+  clearTempOrder: Function
+}
 
-const NewOrderViewer: React.FC<Props> = () => {
+const NewOrderViewer: React.FC<Props> = (props) => {
   const [createOrder] = useCreateOrderMutation()
 
   const handleSubmit = async (
@@ -53,7 +59,13 @@ const NewOrderViewer: React.FC<Props> = () => {
             <ReactSVG wrapper={'span'} src="/static/img/svg/new-order.svg" />
           </h5>
 
-          <button type="button" className="btn round">
+          <button
+            type="button"
+            className="btn round"
+            onClick={() => {
+              props.clearTempOrder()
+            }}
+          >
             <i>
               <ReactSVG src="/static/img/svg/close.svg" />
             </i>
@@ -111,4 +123,11 @@ const NewOrderViewer: React.FC<Props> = () => {
   )
 }
 
-export default NewOrderViewer
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  clearTempOrder: () => dispatch(clearTempOrder())
+})
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(NewOrderViewer)

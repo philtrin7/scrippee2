@@ -12,3 +12,9 @@ export const setTempOrder = (object: { [key: string]: string }) => {
     payload: object
   }
 }
+
+export const clearTempOrder = () => {
+  return {
+    type: TempActionTypes.CLEAR_TEMP_ORDER
+  }
+}

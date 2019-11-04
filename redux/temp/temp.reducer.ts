@@ -30,6 +30,11 @@ export const tempReducer: Reducer<TempState, any> = (
         newState.orders[0].item = action.payload.item
       }
       return newState
+    case TempActionTypes.CLEAR_TEMP_ORDER:
+      return {
+        ...state,
+        orders: []
+      }
     default:
       return state
   }
