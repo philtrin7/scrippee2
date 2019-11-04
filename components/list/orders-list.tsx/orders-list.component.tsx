@@ -3,6 +3,8 @@ import ReactSVG from 'react-svg'
 
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
+import { RootState } from '../../../redux/store'
+import { ViewerState, VIEWER_TYPES } from '../../../redux/viewer/viewer.types'
 import {
   fetchArchiveListStart,
   fetchInboxListStart
@@ -14,6 +16,7 @@ import OrderComponent from './order/order.components'
 import { PulseSpinner } from '../../loading-spinner/PulseSpinner'
 import ordersListStyles from './orders-list.styles.scss'
 import { setNewOrderView } from '../../../redux/viewer/viewer.actions'
+import StatusCounter from '../../status-counter/status-counter.component'
 
 interface OrdersListPropTypes {
   fetchInboxListStart: Function
@@ -21,10 +24,12 @@ interface OrdersListPropTypes {
   setNewOrderView: Function
   orders: Order[]
   loading: Boolean
+  viewer: ViewerState
 }
 
 const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
   const { loading, orders } = props
+  const { type } = props.viewer
 
   const [currentList, setCurrentList] = useState('active')
   const [archiveList, setArchiveList] = useState('')
@@ -96,7 +101,27 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
                   <ReactSVG src="/static/img/svg/new-order.svg" />
                 </button>
                 <hr />
-                <ul className="nav order">{Orders}</ul>
+                <ul className="nav order">
+                  <li>
+                    {type === VIEWER_TYPES.NEW_ORDER ? (
+                      <a href="#" className="filter direct active">
+                        <div className="status">
+                          <StatusCounter daysPassed={0} />
+                        </div>
+                        <div className="content">
+                          <div className="headline">
+                            <h5>New Order</h5>
+                            <span>Now</span>
+                          </div>
+                          <p>Items...</p>
+                        </div>
+                      </a>
+                    ) : (
+                      ''
+                    )}
+                  </li>
+                  {Orders}
+                </ul>
               </div>
             </div>
           </div>
@@ -107,6 +132,10 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
   )
 }
 
+const mapStateToProps = (state: RootState) => ({
+  viewer: state.viewer
+})
+
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   fetchInboxListStart: () => dispatch(fetchInboxListStart()),
   fetchArchiveListStart: () => dispatch(fetchArchiveListStart()),
@@ -114,6 +143,6 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 })
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(OrdersList)

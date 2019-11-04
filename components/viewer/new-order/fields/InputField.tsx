@@ -8,17 +8,22 @@ type InputProps = DetailedHTMLProps<
   HTMLInputElement
 >
 
-const InputField = ({
-  field,
-  form: { errors, touched },
-  ...props
-}: FieldProps & InputProps) => {
-  const errorMessage = touched[field.name] && errors[field.name]
+const InputField = (formikProps: FieldProps & InputProps) => {
+  const { errors, touched, handleChange } = formikProps.form
+  const { onChange, value, ...fields } = formikProps.field
+
+  const errorMessage = touched[fields.name] && errors[fields.name]
 
   return (
     <div>
       <div className="form-group">
-        <input {...field} {...props} />
+        <input
+          {...fields}
+          {...formikProps}
+          onChange={(e) => {
+            handleChange(e)
+          }}
+        />
         {errorMessage && <div>{errorMessage}</div>}
       </div>
       <style jsx>{inputFieldStyles}</style>
