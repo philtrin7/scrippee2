@@ -15,10 +15,10 @@ import { newTempOrder } from '../../../redux/temp/temp.actions'
 import { setNewOrderView } from '../../../redux/viewer/viewer.actions'
 
 import OrderComponent from './order/order.components'
-import StatusCounter from '../../status-counter/status-counter.component'
 import { PulseSpinner } from '../../loading-spinner/PulseSpinner'
 
 import ordersListStyles from './orders-list.styles.scss'
+import TempOrder from './temp-order/temp-order.component'
 
 interface OrdersListPropTypes {
   fetchInboxListStart: Function
@@ -34,6 +34,8 @@ interface OrdersListPropTypes {
 
 const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
   const { loading, orders } = props
+  const { listType } = props.list
+  const { orders: tempOrders } = props.temp
 
   const [currentList, setCurrentList] = useState('active')
   const [archiveList, setArchiveList] = useState('')
@@ -100,7 +102,7 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
                   className="btn round"
                   onClick={() => {
                     props.setNewOrderView()
-                    if (props.temp.orders.length === 0) {
+                    if (tempOrders.length === 0) {
                       props.newTempOrder()
                     }
                   }}
@@ -109,36 +111,12 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
                 </button>
                 <hr />
                 <ul className="nav order">
-                  <li>
-                    {props.list.listType === LIST_TYPES.INBOX &&
-                    props.temp.orders.length > 0 ? (
-                      <a href="#" className="filter direct active">
-                        <div className="status">
-                          <StatusCounter daysPassed={0} />
-                        </div>
-                        <div className="content">
-                          <div className="headline">
-                            {props.temp.orders[0].customerName !== '' ? (
-                              <h5>{props.temp.orders[0].customerName}</h5>
-                            ) : (
-                              <h5 className="temp-placeholder">
-                                Customer name
-                              </h5>
-                            )}
-                            <span>New</span>
-                          </div>
+                  {listType === LIST_TYPES.INBOX && tempOrders.length > 0 ? (
+                    <TempOrder orders={tempOrders} />
+                  ) : (
+                    ''
+                  )}
 
-                          {props.temp.orders[0].item.length > 0 ? (
-                            <p>{props.temp.orders[0].item}</p>
-                          ) : (
-                            <p className="temp-placeholder">Items...</p>
-                          )}
-                        </div>
-                      </a>
-                    ) : (
-                      ''
-                    )}
-                  </li>
                   {Orders}
                 </ul>
               </div>
