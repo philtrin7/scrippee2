@@ -43,4 +43,10 @@ $color_3: #bdbac2;
   .primary {
     padding: 14px 0;
   }
+  button {
+    &:disabled:hover {
+      opacity: 0.65;
+      background: $color_2;
+    }
+  }
 }

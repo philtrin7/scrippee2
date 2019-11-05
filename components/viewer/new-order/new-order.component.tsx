@@ -7,6 +7,7 @@ import { Dispatch } from 'redux'
 import { toast } from 'react-toastify'
 import { Formik, Field, Form } from 'formik'
 import InputField from './fields/InputField'
+import PulseLoader from 'react-spinners/PulseLoader'
 
 import { Order } from '../../../redux/list/list.types'
 import { formatValidationErrors } from '../../../lib/utils/formatError'
@@ -26,7 +27,7 @@ interface Props {
 }
 
 const NewOrderViewer: React.FC<Props> = (props) => {
-  const [createOrder] = useCreateOrderMutation()
+  const [createOrder, { loading }] = useCreateOrderMutation()
 
   const handleSubmit = async (
     data: CreateOrderMutationVariables,
@@ -43,6 +44,7 @@ const NewOrderViewer: React.FC<Props> = (props) => {
         }
       })
       resetForm()
+      toast.success('Order successfully created')
       props.clearTempOrder()
     } catch (ApolloError) {
       const validationErrors = formatValidationErrors(ApolloError)
@@ -115,7 +117,11 @@ const NewOrderViewer: React.FC<Props> = (props) => {
                   />
                   <div className="new-order-footer">
                     <button className="btn primary" type="submit">
-                      Create Order
+                      {loading ? (
+                        <PulseLoader margin={'2px'} color={'white'} size={8} />
+                      ) : (
+                        'Create Order'
+                      )}
                     </button>
                   </div>
                 </Form>
