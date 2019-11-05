@@ -56,7 +56,10 @@ const InputField = ({
             }
             handleChange(e)
           }}
-          className={`form-control ${hasValue ? 'hasValue' : ''}`}
+          value={value}
+          className={`form-control ${
+            hasValue && value !== '' ? 'hasValue' : ''
+          }`}
         />
       </div>
       <style jsx>{inputFieldStyles}</style>

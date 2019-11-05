@@ -29,7 +29,8 @@ const NewOrderViewer: React.FC<Props> = (props) => {
 
   const handleSubmit = async (
     data: CreateOrderMutationVariables,
-    setErrors: Function
+    setErrors: Function,
+    resetForm: Function
   ) => {
     try {
       await createOrder({
@@ -40,6 +41,7 @@ const NewOrderViewer: React.FC<Props> = (props) => {
           contactNum: data.contactNum
         }
       })
+      resetForm()
     } catch (ApolloError) {
       const validationErrors = formatValidationErrors(ApolloError)
       if (validationErrors) {
@@ -80,7 +82,9 @@ const NewOrderViewer: React.FC<Props> = (props) => {
                 contactNum: '',
                 email: ''
               }}
-              onSubmit={(data, { setErrors }) => handleSubmit(data, setErrors)}
+              onSubmit={(data, { setErrors, resetForm }) =>
+                handleSubmit(data, setErrors, resetForm)
+              }
               validateOnBlur={false}
               validateOnChange={false}
             >
