@@ -53,12 +53,13 @@ const InputField = ({
           value={storedTempValue || value}
           onChange={(e) => {
             if (e.target.value.length > 0) {
-              if (name === 'customerName') {
-                setTempOrder({ customerName: e.target.value })
-              }
-              if (name === 'item') {
-                setTempOrder({ item: e.target.value })
-              }
+              setTempOrder(name, e.target.value)
+              // if (name === 'customerName') {
+              //   setTempOrder({ customerName: e.target.value })
+              // }
+              // if (name === 'item') {
+              //   setTempOrder({ item: e.target.value })
+              // }
             } else {
               clearField(name)
             }
@@ -79,8 +80,8 @@ const mapStateToProps = (state: RootState) => ({
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  setTempOrder: (object: { [key: string]: string }) =>
-    dispatch(setTempOrder(object)),
+  setTempOrder: (field: string, value: string) =>
+    dispatch(setTempOrder(field, value)),
   clearField: (field: string) => dispatch(clearField(field))
 })
 

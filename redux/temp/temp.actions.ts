@@ -6,10 +6,11 @@ export const newTempOrder = () => {
   }
 }
 
-export const setTempOrder = (object: { [key: string]: string }) => {
+export const setTempOrder = (field: string, value: string) => {
   return {
     type: TempActionTypes.SET_TEMP_ORDER,
-    payload: object
+    field,
+    value
   }
 }
 

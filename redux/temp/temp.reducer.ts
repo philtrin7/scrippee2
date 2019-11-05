@@ -22,19 +22,18 @@ export const tempReducer: Reducer<TempState, any> = (
       }
 
     case TempActionTypes.SET_TEMP_ORDER:
-      let newState = { ...state }
+      let newState: any = { ...state }
+      if (newState.orders.length > 0) {
+        newState.orders[0][action.field] = action.value
+      }
 
-      if (action.payload.customerName) {
-        newState.orders[0].customerName = action.payload.customerName
-      }
-      if (action.payload.item) {
-        newState.orders[0].item = action.payload.item
-      }
       return newState
 
     case TempActionTypes.CLEAR_FIELD:
       let tempState: any = { ...state }
-      tempState.orders[0][action.payload] = ''
+      if (tempState.orders.length > 0) {
+        tempState.orders[0][action.payload] = ''
+      }
 
       return tempState
 
