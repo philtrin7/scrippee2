@@ -54,12 +54,6 @@ const InputField = ({
           onChange={(e) => {
             if (e.target.value.length > 0) {
               setTempOrder(name, e.target.value)
-              // if (name === 'customerName') {
-              //   setTempOrder({ customerName: e.target.value })
-              // }
-              // if (name === 'item') {
-              //   setTempOrder({ item: e.target.value })
-              // }
             } else {
               clearField(name)
             }

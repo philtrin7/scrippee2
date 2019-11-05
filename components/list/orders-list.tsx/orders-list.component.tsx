@@ -12,7 +12,10 @@ import {
   fetchInboxListStart
 } from '../../../redux/list/list.actions'
 import { newTempOrder } from '../../../redux/temp/temp.actions'
-import { setNewOrderView } from '../../../redux/viewer/viewer.actions'
+import {
+  setNewOrderView,
+  setViewerToDefault
+} from '../../../redux/viewer/viewer.actions'
 
 import OrderComponent from './order/order.components'
 import { PulseSpinner } from '../../loading-spinner/PulseSpinner'
@@ -25,6 +28,8 @@ interface OrdersListPropTypes {
   fetchArchiveListStart: Function
   setNewOrderView: Function
   newTempOrder: Function
+  switchToInbox: Function
+  setViewToDefault: Function
   orders: Order[]
   loading: Boolean
   viewer: ViewerState
@@ -88,6 +93,7 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
                         setArchiveList('active')
                         setCurrentList('inactive')
                         props.fetchArchiveListStart()
+                        props.setViewToDefault()
                       }}
                     >
                       Archive
@@ -102,6 +108,7 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
                   className="btn round"
                   onClick={() => {
                     props.setNewOrderView()
+                    props.switchToInbox()
                     if (tempOrders.length === 0) {
                       props.newTempOrder()
                     }
@@ -139,7 +146,9 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   fetchInboxListStart: () => dispatch(fetchInboxListStart()),
   fetchArchiveListStart: () => dispatch(fetchArchiveListStart()),
   setNewOrderView: () => dispatch(setNewOrderView()),
-  newTempOrder: () => dispatch(newTempOrder())
+  newTempOrder: () => dispatch(newTempOrder()),
+  switchToInbox: () => dispatch(fetchInboxListStart()),
+  setViewToDefault: () => dispatch(setViewerToDefault())
 })
 
 export default connect(
