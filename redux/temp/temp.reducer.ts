@@ -20,6 +20,7 @@ export const tempReducer: Reducer<TempState, any> = (
           }
         ]
       }
+
     case TempActionTypes.SET_TEMP_ORDER:
       let newState = { ...state }
 
@@ -30,6 +31,13 @@ export const tempReducer: Reducer<TempState, any> = (
         newState.orders[0].item = action.payload.item
       }
       return newState
+
+    case TempActionTypes.CLEAR_FIELD:
+      let tempState: any = { ...state }
+      tempState.orders[0][action.payload] = ''
+
+      return tempState
+
     case TempActionTypes.CLEAR_TEMP_ORDER:
       return {
         ...state,

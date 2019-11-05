@@ -1,8 +1,11 @@
-import React, { useState, DetailedHTMLProps, InputHTMLAttributes } from 'react'
+import React, { DetailedHTMLProps, InputHTMLAttributes } from 'react'
 import { connect } from 'react-redux'
-import { FieldProps } from 'formik'
 import { Dispatch } from 'redux'
-import { setTempOrder } from '../../../../redux/temp/temp.actions'
+import { FieldProps } from 'formik'
+
+import { setTempOrder, clearField } from '../../../../redux/temp/temp.actions'
+import { TempState } from '../../../../redux/temp/temp.types'
+import { RootState } from '../../../../redux/store'
 
 import inputFieldStyles from './inputField.styles.scss'
 
@@ -14,20 +17,30 @@ type FormikPropTypes = DetailedHTMLProps<
 
 interface ReduxProps {
   setTempOrder: Function
+  clearTempOrder: Function
+  clearField: Function
+  temp: TempState
 }
 
 const InputField = ({
+  temp,
   form,
   field,
   setTempOrder,
+  clearTempOrder,
+  clearField,
   ...formikProps
 }: FormikPropTypes & ReduxProps) => {
   const { errors, touched, handleChange } = form
-  const { onChange, value, ...fields } = field
+  const { onChange, value, name, ...fields } = field
+  const errorMessage = touched[name] && errors[name]
 
-  const errorMessage = touched[fields.name] && errors[fields.name]
+  const getValueByKey = (obj: any, key: any) => {
+    return Object.values(obj).find((value) => obj[key] === value)
+  }
 
-  const [hasValue, setHasValue] = useState(false)
+  const tempOrder = temp.orders[0]
+  const storedTempValue = getValueByKey(tempOrder, name)
 
   return (
     <div>
@@ -36,29 +49,23 @@ const InputField = ({
         <input
           {...fields}
           {...formikProps}
+          name={name}
+          value={storedTempValue || value}
           onChange={(e) => {
             if (e.target.value.length > 0) {
-              setHasValue(true)
-              if (fields.name === 'customerName') {
+              if (name === 'customerName') {
                 setTempOrder({ customerName: e.target.value })
               }
-              if (fields.name === 'item') {
+              if (name === 'item') {
                 setTempOrder({ item: e.target.value })
               }
             } else {
-              setHasValue(false)
-              if (fields.name === 'customerName') {
-                setTempOrder({ customerName: ' ' })
-              }
-              if (fields.name === 'item') {
-                setTempOrder({ item: ' ' })
-              }
+              clearField(name)
             }
             handleChange(e)
           }}
-          value={value}
           className={`form-control ${
-            hasValue && value !== '' ? 'hasValue' : ''
+            storedTempValue || value !== '' ? 'hasValue' : ''
           }`}
         />
       </div>
@@ -67,12 +74,17 @@ const InputField = ({
   )
 }
 
+const mapStateToProps = (state: RootState) => ({
+  temp: state.temp
+})
+
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   setTempOrder: (object: { [key: string]: string }) =>
-    dispatch(setTempOrder(object))
+    dispatch(setTempOrder(object)),
+  clearField: (field: string) => dispatch(clearField(field))
 })
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(InputField)

@@ -18,3 +18,10 @@ export const clearTempOrder = () => {
     type: TempActionTypes.CLEAR_TEMP_ORDER
   }
 }
+
+export const clearField = (field: string) => {
+  return {
+    type: TempActionTypes.CLEAR_FIELD,
+    payload: field
+  }
+}
