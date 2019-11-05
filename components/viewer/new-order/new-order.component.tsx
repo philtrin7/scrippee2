@@ -15,15 +15,14 @@ import {
   CreateOrderMutationVariables
 } from '../../../generated/graphql'
 
-import newOrderViewerStyles from './new-order.styles.scss'
 import { clearTempOrder } from '../../../redux/temp/temp.actions'
-import { setViewerToDefault } from '../../../redux/viewer/viewer.actions'
+
+import newOrderViewerStyles from './new-order.styles.scss'
 
 type OrderForm = Pick<Order, 'customerName' | 'item' | 'contactNum' | 'email'>
 
 interface Props {
   clearTempOrder: Function
-  setDefaultView: Function
 }
 
 const NewOrderViewer: React.FC<Props> = (props) => {
@@ -44,7 +43,7 @@ const NewOrderViewer: React.FC<Props> = (props) => {
         }
       })
       resetForm()
-      props.setDefaultView()
+      props.clearTempOrder()
     } catch (ApolloError) {
       const validationErrors = formatValidationErrors(ApolloError)
       if (validationErrors) {
@@ -131,8 +130,7 @@ const NewOrderViewer: React.FC<Props> = (props) => {
 }
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  clearTempOrder: () => dispatch(clearTempOrder()),
-  setDefaultView: () => dispatch(setViewerToDefault())
+  clearTempOrder: () => dispatch(clearTempOrder())
 })
 
 export default connect(
