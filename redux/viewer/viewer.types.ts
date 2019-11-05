@@ -3,6 +3,7 @@ export interface ViewerState {
 }
 
 export enum ViewerActionTypes {
+  DEFAULT_VIEW = 'DEFAULT_VIEW',
   NEW_ORDER_VIEW = 'NEW_ORDER_VIEW'
 }
 

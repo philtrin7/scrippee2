@@ -17,11 +17,13 @@ import {
 
 import newOrderViewerStyles from './new-order.styles.scss'
 import { clearTempOrder } from '../../../redux/temp/temp.actions'
+import { setViewerToDefault } from '../../../redux/viewer/viewer.actions'
 
 type OrderForm = Pick<Order, 'customerName' | 'item' | 'contactNum' | 'email'>
 
 interface Props {
   clearTempOrder: Function
+  setDefaultView: Function
 }
 
 const NewOrderViewer: React.FC<Props> = (props) => {
@@ -42,6 +44,7 @@ const NewOrderViewer: React.FC<Props> = (props) => {
         }
       })
       resetForm()
+      props.setDefaultView()
     } catch (ApolloError) {
       const validationErrors = formatValidationErrors(ApolloError)
       if (validationErrors) {
@@ -128,7 +131,8 @@ const NewOrderViewer: React.FC<Props> = (props) => {
 }
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  clearTempOrder: () => dispatch(clearTempOrder())
+  clearTempOrder: () => dispatch(clearTempOrder()),
+  setDefaultView: () => dispatch(setViewerToDefault())
 })
 
 export default connect(

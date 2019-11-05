@@ -16,6 +16,11 @@ export const viewerReducer: Reducer<ViewerState, any> = (
         ...state,
         type: VIEWER_TYPES.NEW_ORDER
       }
+    case ViewerActionTypes.DEFAULT_VIEW:
+      return {
+        ...state,
+        type: null
+      }
     case TempActionTypes.CLEAR_TEMP_ORDER:
       return {
         ...state,
