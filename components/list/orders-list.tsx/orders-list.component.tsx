@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import ReactSVG from 'react-svg'
 
 import { connect } from 'react-redux'
@@ -42,9 +42,6 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
   const { listType } = props.list
   const { orders: tempOrders } = props.temp
 
-  const [currentList, setCurrentList] = useState('active')
-  const [archiveList, setArchiveList] = useState('')
-
   let Orders: any = null
   if (loading) {
     Orders = <PulseSpinner loading={loading} />
@@ -76,10 +73,10 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
                 <ul className="nav">
                   <li>
                     <a
-                      className={`filter-btn ${currentList}`}
+                      className={`filter-btn ${
+                        listType === LIST_TYPES.INBOX ? 'active' : ''
+                      }`}
                       onClick={() => {
-                        setArchiveList('inactive')
-                        setCurrentList('active')
                         props.fetchInboxListStart()
                       }}
                     >
@@ -88,10 +85,10 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
                   </li>
                   <li>
                     <a
-                      className={`filter-btn ${archiveList}`}
+                      className={`filter-btn ${
+                        listType === LIST_TYPES.ARCHIVE ? 'active' : ''
+                      }`}
                       onClick={() => {
-                        setArchiveList('active')
-                        setCurrentList('inactive')
                         props.fetchArchiveListStart()
                         props.setViewToDefault()
                       }}
