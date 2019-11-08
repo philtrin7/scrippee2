@@ -513,7 +513,14 @@ a.dropdown-item {
 
 /* 3. Discussions
 ====================
->>> Order.component.tsx
+>>> Order.component.tsx */
+.orders-list .middle .order-fragments {
+  width: 100%;
+}
+.orders-list .middle .order-fragments .order-divider {
+  margin: 15px 0;
+  border-top: 1px solid #bdbac2;
+}
 
 /* 4. Users
 ====================

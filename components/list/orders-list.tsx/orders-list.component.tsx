@@ -64,10 +64,11 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
     })
 
     Orders = (
-      <React.Fragment>
-        {todays}
-        {others}
-      </React.Fragment>
+      <div className="order-fragments">
+        <React.Fragment>{todays}</React.Fragment>
+        <div className="order-divider"></div>
+        <React.Fragment>{others}</React.Fragment>
+      </div>
     )
   } else if (archive && archive.length > 0) {
     Orders = archive.map((order) => {
@@ -143,7 +144,6 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
                 >
                   <ReactSVG src="/static/img/svg/new-order.svg" />
                 </button>
-                <hr />
                 <ul className="nav order">
                   {listType === LIST_TYPES.INBOX && tempOrders.length > 0 ? (
                     <TempOrder orders={tempOrders} />
