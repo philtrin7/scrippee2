@@ -13,7 +13,9 @@ import { Order } from '../../../redux/list/list.types'
 import { formatValidationErrors } from '../../../lib/utils/formatError'
 import {
   useCreateOrderMutation,
-  CreateOrderMutationVariables
+  CreateOrderMutationVariables,
+  UserQuery,
+  UserDocument
 } from '../../../generated/graphql'
 
 import { clearTempOrder } from '../../../redux/temp/temp.actions'
@@ -41,6 +43,25 @@ const NewOrderViewer: React.FC<Props> = (props) => {
           customerName: data.customerName,
           email: data.email,
           contactNum: data.contactNum
+        },
+        update: (store, { data }) => {
+          if (!data) {
+            return null
+          }
+          if (data.createOrder) {
+            const dataStore = store.readQuery<UserQuery>({
+              query: UserDocument
+            })
+            if (dataStore && dataStore.user && dataStore.user.orders.inbox) {
+              const { todays } = dataStore.user.orders.inbox
+              todays.unshift(data.createOrder)
+
+              store.writeQuery<UserQuery>({
+                query: UserDocument,
+                data: dataStore
+              })
+            }
+          }
         }
       })
       resetForm()
