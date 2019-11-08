@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactSVG from 'react-svg'
+import Router from 'next/router'
 
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
@@ -74,6 +75,7 @@ const NewOrderViewer: React.FC<Props> = (props) => {
         setErrors(validationErrors)
       } else if (error.graphQLErrors[0].extensions.code === 'FORBIDDEN') {
         toast.error(error.graphQLErrors[0].extensions.exception.stacktrace[0])
+        Router.push('/signin')
       } else {
         console.log('Error: ', 'Unexpected error. Path: ["createOrder"]')
       }
