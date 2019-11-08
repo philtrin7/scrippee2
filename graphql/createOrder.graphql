@@ -9,5 +9,13 @@ mutation CreateOrder(
     customerName: $customerName
     contactNum: $contactNum
     email: $email
-  )
+  ) {
+    id
+    customerName
+    item
+    contactNum
+    email
+    archive
+    createdAt
+  }
 }

@@ -30,7 +30,7 @@ export type Mutation = {
   signin: SigninData,
   signup: Scalars['Boolean'],
   logout: Scalars['Boolean'],
-  createOrder: Scalars['Boolean'],
+  createOrder: Order,
 };
 
 
@@ -110,7 +110,10 @@ export type CreateOrderMutationVariables = {
 
 export type CreateOrderMutation = (
   { __typename?: 'Mutation' }
-  & Pick<Mutation, 'createOrder'>
+  & { createOrder: (
+    { __typename?: 'Order' }
+    & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'archive' | 'createdAt'>
+  ) }
 );
 
 export type LogoutMutationVariables = {};
@@ -239,7 +242,15 @@ export type ByeLazyQueryHookResult = ReturnType<typeof useByeLazyQuery>;
 export type ByeQueryResult = ApolloReactCommon.QueryResult<ByeQuery, ByeQueryVariables>;
 export const CreateOrderDocument = gql`
     mutation CreateOrder($item: String!, $customerName: String!, $contactNum: String, $email: String) {
-  createOrder(item: $item, customerName: $customerName, contactNum: $contactNum, email: $email)
+  createOrder(item: $item, customerName: $customerName, contactNum: $contactNum, email: $email) {
+    id
+    customerName
+    item
+    contactNum
+    email
+    archive
+    createdAt
+  }
 }
     `;
 export type CreateOrderMutationFn = ApolloReactCommon.MutationFunction<CreateOrderMutation, CreateOrderMutationVariables>;

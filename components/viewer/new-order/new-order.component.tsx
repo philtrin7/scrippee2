@@ -46,11 +46,13 @@ const NewOrderViewer: React.FC<Props> = (props) => {
       resetForm()
       toast.success('Order successfully created')
       props.clearTempOrder()
-    } catch (ApolloError) {
-      const validationErrors = formatValidationErrors(ApolloError)
+    } catch (error) {
+      const validationErrors = formatValidationErrors(error)
       if (validationErrors) {
         toast.error('There were problem(s) creating your order.')
         setErrors(validationErrors)
+      } else if (error.graphQLErrors[0].extensions.code === 'FORBIDDEN') {
+        toast.error(error.graphQLErrors[0].extensions.exception.stacktrace[0])
       } else {
         console.log('Error: ', 'Unexpected error. Path: ["createOrder"]')
       }
