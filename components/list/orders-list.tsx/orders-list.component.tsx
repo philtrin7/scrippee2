@@ -28,7 +28,6 @@ interface OrdersListPropTypes {
   fetchArchiveListStart: Function
   setNewOrderView: Function
   newTempOrder: Function
-  switchToInbox: Function
   setViewToDefault: Function
   orders: Orders
   loading: Boolean
@@ -38,21 +37,29 @@ interface OrdersListPropTypes {
 }
 
 const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
-  const { loading, orders } = props
+  const {
+    loading,
+    orders: { inbox, archive }
+  } = props
   const { listType, listIsLoading } = props.list
   const { orders: tempOrders } = props.temp
+
+  const {
+    fetchInboxListStart,
+    fetchArchiveListStart,
+    setNewOrderView,
+    setViewToDefault,
+    newTempOrder
+  } = props
 
   let Orders: any = null
   if (loading || listIsLoading) {
     Orders = <PulseSpinner loading={true} />
-  } else if (
-    orders.inbox &&
-    (orders.inbox.others.length > 0 || orders.inbox.todays.length > 0)
-  ) {
-    const todays = orders.inbox.todays.map((order) => {
+  } else if (inbox && (inbox.others.length > 0 || inbox.todays.length > 0)) {
+    const todays = inbox.todays.map((order) => {
       return <OrderComponent key={order.id} order={order} />
     })
-    const others = orders.inbox.others.map((order) => {
+    const others = inbox.others.map((order) => {
       return <OrderComponent key={order.id} order={order} />
     })
 
@@ -62,8 +69,8 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
         {others}
       </React.Fragment>
     )
-  } else if (orders.archive && orders.archive.length > 0) {
-    Orders = orders.archive.map((order) => {
+  } else if (archive && archive.length > 0) {
+    Orders = archive.map((order) => {
       return <OrderComponent key={order.id} order={order} />
     })
   } else {
@@ -109,8 +116,8 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
                       }`}
                       onClick={() => {
                         if (listType !== LIST_TYPES.ARCHIVE) {
-                          props.fetchArchiveListStart()
-                          props.setViewToDefault()
+                          fetchArchiveListStart()
+                          setViewToDefault()
                         }
                       }}
                     >
@@ -125,11 +132,13 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
                   type="button"
                   className="btn round"
                   onClick={() => {
-                    props.setNewOrderView()
-                    props.switchToInbox()
-                    if (tempOrders.length === 0) {
-                      props.newTempOrder()
+                    if (listType !== LIST_TYPES.INBOX) {
+                      fetchInboxListStart()
                     }
+                    if (tempOrders.length === 0) {
+                      newTempOrder()
+                    }
+                    setNewOrderView()
                   }}
                 >
                   <ReactSVG src="/static/img/svg/new-order.svg" />
@@ -165,7 +174,6 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   fetchArchiveListStart: () => dispatch(fetchArchiveListStart()),
   setNewOrderView: () => dispatch(setNewOrderView()),
   newTempOrder: () => dispatch(newTempOrder()),
-  switchToInbox: () => dispatch(fetchInboxListStart()),
   setViewToDefault: () => dispatch(setViewerToDefault())
 })
 
