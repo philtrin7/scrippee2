@@ -1,4 +1,4 @@
-import { ListActionTypes, OrderList } from './list.types'
+import { ListActionTypes, Orders } from './list.types'
 
 export const fetchInboxListStart = () => {
   return {
@@ -10,9 +10,9 @@ export const fetchArchiveListStart = () => {
     type: ListActionTypes.FETCH_ARCHIVE_LIST_START
   }
 }
-export const fetchList = (orderList: OrderList) => {
+export const fetchList = (orders: Orders) => {
   return {
     type: ListActionTypes.FETCH_LIST_SUCCESS,
-    payload: orderList
+    orders
   }
 }

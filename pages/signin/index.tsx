@@ -7,19 +7,19 @@ import { setAccessToken } from '../../lib/accessToken'
 import {
   useSigninMutation,
   UserDocument,
-  UserQuery
+  UserQuery,
+  Orders
 } from '../../generated/graphql'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { RootState } from '../../redux/store'
 import { User, AlertsArray } from '../../redux/auth/auth.types'
-import { OrderList } from '../../redux/list/list.types'
 import {
   clearAlerts,
   signinUser,
   signinFail
 } from '../../redux/auth/auth.actions'
-import { fetchList } from '../../redux/list/list.actions'
+import { fetchList, fetchInboxListStart } from '../../redux/list/list.actions'
 
 import PulseLoader from 'react-spinners/PulseLoader'
 import signinPageStyles from './signin-page.styles.scss'
@@ -28,6 +28,7 @@ interface SigninPagePropTypes {
   clearAlertsArr: Function
   signinCurrentUser: Function
   signinFailed: Function
+  fetchInboxListStart: Function
   fetchList: Function
   alerts: AlertsArray
 }
@@ -39,7 +40,13 @@ const SigninPage: React.FC<SigninPagePropTypes> = (props) => {
 
   const [signin, { loading }] = useSigninMutation()
 
-  const { clearAlertsArr, signinCurrentUser, signinFailed, fetchList } = props
+  const {
+    clearAlertsArr,
+    signinCurrentUser,
+    signinFailed,
+    fetchList,
+    fetchInboxListStart
+  } = props
 
   useEffect(() => {
     if (alerts.length > 0) {
@@ -74,7 +81,7 @@ const SigninPage: React.FC<SigninPagePropTypes> = (props) => {
             store.writeQuery<UserQuery>({
               query: UserDocument,
               data: {
-                user: { ...data.signin.auth.user, inbox: data.signin.list }
+                user: { ...data.signin.auth.user, orders: data.signin.orders }
               }
             })
           }
@@ -82,10 +89,10 @@ const SigninPage: React.FC<SigninPagePropTypes> = (props) => {
       })
       if (response && response.data) {
         const { user, accessToken } = response.data.signin.auth
-        const { list } = response.data.signin
+        const { orders } = response.data.signin
         setAccessToken(accessToken)
         signinCurrentUser(user)
-        fetchList(list)
+        fetchInboxListStart() && fetchList(orders.inbox)
         Router.push('/')
       }
     } catch (err) {
@@ -161,7 +168,8 @@ const mapStateToProps = (state: RootState) => {
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   signinCurrentUser: (currentUser: User) => dispatch(signinUser(currentUser)),
   signinFailed: () => dispatch(signinFail()),
-  fetchList: (orderList: OrderList) => dispatch(fetchList(orderList)),
+  fetchInboxListStart: () => dispatch(fetchInboxListStart()),
+  fetchList: (orders: Orders) => dispatch(fetchList(orders)),
   clearAlertsArr: () => dispatch(clearAlerts())
 })
 

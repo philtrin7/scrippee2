@@ -19,6 +19,12 @@ export type AuthPayload = {
 };
 
 
+export type InboxOrders = {
+   __typename?: 'InboxOrders',
+  todays: Array<Order>,
+  others: Array<Order>,
+};
+
 export type Mutation = {
    __typename?: 'Mutation',
   signin: SigninData,
@@ -60,10 +66,10 @@ export type Order = {
   updatedAt: Scalars['DateTime'],
 };
 
-export type OrderList = {
-   __typename?: 'OrderList',
-  orders: Array<Order>,
-  listType?: Maybe<Scalars['String']>,
+export type Orders = {
+   __typename?: 'Orders',
+  inbox?: Maybe<InboxOrders>,
+  archive?: Maybe<Array<Order>>,
 };
 
 export type Query = {
@@ -76,35 +82,15 @@ export type Query = {
 export type SigninData = {
    __typename?: 'SigninData',
   auth: AuthPayload,
-  list: OrderList,
+  orders: Orders,
 };
 
 export type User = {
    __typename?: 'User',
   id: Scalars['ID'],
   email: Scalars['String'],
-  inbox: OrderList,
-  archive: OrderList,
+  orders: Orders,
 };
-
-export type ArchiveOrdersQueryVariables = {};
-
-
-export type ArchiveOrdersQuery = (
-  { __typename?: 'Query' }
-  & { user: Maybe<(
-    { __typename?: 'User' }
-    & Pick<User, 'id'>
-    & { archive: (
-      { __typename?: 'OrderList' }
-      & Pick<OrderList, 'listType'>
-      & { orders: Array<(
-        { __typename?: 'Order' }
-        & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'archive' | 'createdAt'>
-      )> }
-    ) }
-  )> }
-);
 
 export type ByeQueryVariables = {};
 
@@ -125,25 +111,6 @@ export type CreateOrderMutationVariables = {
 export type CreateOrderMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'createOrder'>
-);
-
-export type InboxOrdersQueryVariables = {};
-
-
-export type InboxOrdersQuery = (
-  { __typename?: 'Query' }
-  & { user: Maybe<(
-    { __typename?: 'User' }
-    & Pick<User, 'id'>
-    & { inbox: (
-      { __typename?: 'OrderList' }
-      & Pick<OrderList, 'listType'>
-      & { orders: Array<(
-        { __typename?: 'Order' }
-        & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'archive' | 'createdAt'>
-      )> }
-    ) }
-  )> }
 );
 
 export type LogoutMutationVariables = {};
@@ -182,13 +149,21 @@ export type SigninMutation = (
         { __typename?: 'User' }
         & Pick<User, 'id' | 'email'>
       )> }
-    ), list: (
-      { __typename?: 'OrderList' }
-      & Pick<OrderList, 'listType'>
-      & { orders: Array<(
+    ), orders: (
+      { __typename?: 'Orders' }
+      & { inbox: Maybe<(
+        { __typename?: 'InboxOrders' }
+        & { todays: Array<(
+          { __typename?: 'Order' }
+          & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'archive' | 'createdAt'>
+        )>, others: Array<(
+          { __typename?: 'Order' }
+          & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'archive' | 'createdAt'>
+        )> }
+      )>, archive: Maybe<Array<(
         { __typename?: 'Order' }
         & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'archive' | 'createdAt'>
-      )> }
+      )>> }
     ) }
   ) }
 );
@@ -211,63 +186,27 @@ export type UserQuery = (
   { __typename?: 'Query' }
   & { user: Maybe<(
     { __typename?: 'User' }
-    & Pick<User, 'id' | 'email'>
-    & { inbox: (
-      { __typename?: 'OrderList' }
-      & Pick<OrderList, 'listType'>
-      & { orders: Array<(
+    & Pick<User, 'id'>
+    & { orders: (
+      { __typename?: 'Orders' }
+      & { inbox: Maybe<(
+        { __typename?: 'InboxOrders' }
+        & { todays: Array<(
+          { __typename?: 'Order' }
+          & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'archive' | 'createdAt'>
+        )>, others: Array<(
+          { __typename?: 'Order' }
+          & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'archive' | 'createdAt'>
+        )> }
+      )>, archive: Maybe<Array<(
         { __typename?: 'Order' }
         & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'archive' | 'createdAt'>
-      )> }
+      )>> }
     ) }
   )> }
 );
 
 
-export const ArchiveOrdersDocument = gql`
-    query ArchiveOrders {
-  user {
-    id
-    archive {
-      listType
-      orders {
-        id
-        customerName
-        item
-        contactNum
-        email
-        archive
-        createdAt
-      }
-    }
-  }
-}
-    `;
-
-/**
- * __useArchiveOrdersQuery__
- *
- * To run a query within a React component, call `useArchiveOrdersQuery` and pass it any options that fit your needs.
- * When your component renders, `useArchiveOrdersQuery` returns an object from Apollo Client that contains loading, error, and data properties 
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useArchiveOrdersQuery({
- *   variables: {
- *   },
- * });
- */
-export function useArchiveOrdersQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<ArchiveOrdersQuery, ArchiveOrdersQueryVariables>) {
-        return ApolloReactHooks.useQuery<ArchiveOrdersQuery, ArchiveOrdersQueryVariables>(ArchiveOrdersDocument, baseOptions);
-      }
-export function useArchiveOrdersLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<ArchiveOrdersQuery, ArchiveOrdersQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<ArchiveOrdersQuery, ArchiveOrdersQueryVariables>(ArchiveOrdersDocument, baseOptions);
-        }
-export type ArchiveOrdersQueryHookResult = ReturnType<typeof useArchiveOrdersQuery>;
-export type ArchiveOrdersLazyQueryHookResult = ReturnType<typeof useArchiveOrdersLazyQuery>;
-export type ArchiveOrdersQueryResult = ApolloReactCommon.QueryResult<ArchiveOrdersQuery, ArchiveOrdersQueryVariables>;
 export const ByeDocument = gql`
     query Bye {
   bye
@@ -331,50 +270,6 @@ export function useCreateOrderMutation(baseOptions?: ApolloReactHooks.MutationHo
 export type CreateOrderMutationHookResult = ReturnType<typeof useCreateOrderMutation>;
 export type CreateOrderMutationResult = ApolloReactCommon.MutationResult<CreateOrderMutation>;
 export type CreateOrderMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateOrderMutation, CreateOrderMutationVariables>;
-export const InboxOrdersDocument = gql`
-    query InboxOrders {
-  user {
-    id
-    inbox {
-      listType
-      orders {
-        id
-        customerName
-        item
-        contactNum
-        email
-        archive
-        createdAt
-      }
-    }
-  }
-}
-    `;
-
-/**
- * __useInboxOrdersQuery__
- *
- * To run a query within a React component, call `useInboxOrdersQuery` and pass it any options that fit your needs.
- * When your component renders, `useInboxOrdersQuery` returns an object from Apollo Client that contains loading, error, and data properties 
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useInboxOrdersQuery({
- *   variables: {
- *   },
- * });
- */
-export function useInboxOrdersQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<InboxOrdersQuery, InboxOrdersQueryVariables>) {
-        return ApolloReactHooks.useQuery<InboxOrdersQuery, InboxOrdersQueryVariables>(InboxOrdersDocument, baseOptions);
-      }
-export function useInboxOrdersLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<InboxOrdersQuery, InboxOrdersQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<InboxOrdersQuery, InboxOrdersQueryVariables>(InboxOrdersDocument, baseOptions);
-        }
-export type InboxOrdersQueryHookResult = ReturnType<typeof useInboxOrdersQuery>;
-export type InboxOrdersLazyQueryHookResult = ReturnType<typeof useInboxOrdersLazyQuery>;
-export type InboxOrdersQueryResult = ApolloReactCommon.QueryResult<InboxOrdersQuery, InboxOrdersQueryVariables>;
 export const LogoutDocument = gql`
     mutation Logout {
   logout
@@ -447,9 +342,28 @@ export const SigninDocument = gql`
         email
       }
     }
-    list {
-      listType
-      orders {
+    orders {
+      inbox {
+        todays {
+          id
+          customerName
+          item
+          contactNum
+          email
+          archive
+          createdAt
+        }
+        others {
+          id
+          customerName
+          item
+          contactNum
+          email
+          archive
+          createdAt
+        }
+      }
+      archive {
         id
         customerName
         item
@@ -523,10 +437,28 @@ export const UserDocument = gql`
     query User {
   user {
     id
-    email
-    inbox {
-      listType
-      orders {
+    orders {
+      inbox {
+        todays {
+          id
+          customerName
+          item
+          contactNum
+          email
+          archive
+          createdAt
+        }
+        others {
+          id
+          customerName
+          item
+          contactNum
+          email
+          archive
+          createdAt
+        }
+      }
+      archive {
         id
         customerName
         item

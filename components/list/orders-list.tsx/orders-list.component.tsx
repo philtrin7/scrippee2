@@ -6,7 +6,7 @@ import { Dispatch } from 'redux'
 import { RootState } from '../../../redux/store'
 import { ViewerState } from '../../../redux/viewer/viewer.types'
 import { TempState } from '../../../redux/temp/temp.types'
-import { Order, ListState, LIST_TYPES } from '../../../redux/list/list.types'
+import { LIST_TYPES, ListState, Orders } from '../../../redux/list/list.types'
 import {
   fetchArchiveListStart,
   fetchInboxListStart
@@ -17,11 +17,11 @@ import {
   setViewerToDefault
 } from '../../../redux/viewer/viewer.actions'
 
+import TempOrder from './temp-order/temp-order.component'
 import OrderComponent from './order/order.components'
 import { PulseSpinner } from '../../loading-spinner/PulseSpinner'
 
 import ordersListStyles from './orders-list.styles.scss'
-import TempOrder from './temp-order/temp-order.component'
 
 interface OrdersListPropTypes {
   fetchInboxListStart: Function
@@ -30,7 +30,7 @@ interface OrdersListPropTypes {
   newTempOrder: Function
   switchToInbox: Function
   setViewToDefault: Function
-  orders: Order[]
+  orders: Orders
   loading: Boolean
   viewer: ViewerState
   temp: TempState
@@ -45,8 +45,15 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
   let Orders: any = null
   if (loading) {
     Orders = <PulseSpinner loading={loading} />
-  } else if (orders.length > 0) {
-    Orders = orders.map((order) => {
+  } else if (
+    orders.inbox &&
+    (orders.inbox.others.length > 0 || orders.inbox.todays.length > 0)
+  ) {
+    Orders = orders.inbox.others.map((order) => {
+      return <OrderComponent key={order.id} order={order} />
+    })
+  } else if (orders.archive && orders.archive.length > 0) {
+    Orders = orders.archive.map((order) => {
       return <OrderComponent key={order.id} order={order} />
     })
   } else {

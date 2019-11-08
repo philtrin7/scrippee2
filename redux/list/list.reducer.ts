@@ -1,13 +1,18 @@
-import { ListActionTypes, ListState, LIST_TYPES } from './list.types'
+import { ListActionTypes, ListState, LIST_TYPES, Orders } from './list.types'
 import { Reducer } from 'redux'
 import { AuthActionTypes } from '../auth/auth.types'
 
+interface ListActionPayload {
+  type: ListActionTypes | AuthActionTypes.SIGNOUT_SUCCESS
+  orders: Orders
+}
+
 const INITIAL_STATE: ListState = {
-  orders: [],
+  orders: {},
   listType: null
 }
 
-export const listReducer: Reducer<ListState, any> = (
+export const listReducer: Reducer<ListState, ListActionPayload> = (
   state = INITIAL_STATE,
   action
 ) => {
@@ -23,14 +28,28 @@ export const listReducer: Reducer<ListState, any> = (
         listType: LIST_TYPES.ARCHIVE
       }
     case ListActionTypes.FETCH_LIST_SUCCESS:
-      return {
-        ...state,
-        listType: action.payload.listType,
-        orders: action.payload.orders
+      if (state.listType === LIST_TYPES.INBOX && action.orders.inbox) {
+        return {
+          ...state,
+          orders: { inbox: action.orders.inbox }
+        }
+      } else if (
+        state.listType === LIST_TYPES.ARCHIVE &&
+        action.orders.archive
+      ) {
+        return {
+          ...state,
+          orders: {
+            archive: action.orders.archive
+          }
+        }
+      } else {
+        return state
       }
+
     case AuthActionTypes.SIGNOUT_SUCCESS:
       return {
-        orders: [],
+        orders: {},
         listType: null
       }
     default:
