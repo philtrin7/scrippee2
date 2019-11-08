@@ -9,7 +9,8 @@ interface ListActionPayload {
 
 const INITIAL_STATE: ListState = {
   orders: {},
-  listType: null
+  listType: null,
+  listIsLoading: false
 }
 
 export const listReducer: Reducer<ListState, ListActionPayload> = (
@@ -20,17 +21,22 @@ export const listReducer: Reducer<ListState, ListActionPayload> = (
     case ListActionTypes.FETCH_INBOX_LIST_START:
       return {
         ...state,
-        listType: LIST_TYPES.INBOX
+        listType: LIST_TYPES.INBOX,
+        listIsLoading: true,
+        orders: {}
       }
     case ListActionTypes.FETCH_ARCHIVE_LIST_START:
       return {
         ...state,
-        listType: LIST_TYPES.ARCHIVE
+        listType: LIST_TYPES.ARCHIVE,
+        listIsLoading: true,
+        orders: {}
       }
     case ListActionTypes.FETCH_LIST_SUCCESS:
       if (state.listType === LIST_TYPES.INBOX && action.orders.inbox) {
         return {
           ...state,
+          listIsLoading: false,
           orders: { inbox: action.orders.inbox }
         }
       } else if (
@@ -39,6 +45,7 @@ export const listReducer: Reducer<ListState, ListActionPayload> = (
       ) {
         return {
           ...state,
+          listIsLoading: false,
           orders: {
             archive: action.orders.archive
           }
@@ -50,6 +57,7 @@ export const listReducer: Reducer<ListState, ListActionPayload> = (
     case AuthActionTypes.SIGNOUT_SUCCESS:
       return {
         orders: {},
+        listIsLoading: false,
         listType: null
       }
     default:

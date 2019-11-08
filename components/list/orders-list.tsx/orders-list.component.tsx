@@ -39,12 +39,12 @@ interface OrdersListPropTypes {
 
 const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
   const { loading, orders } = props
-  const { listType } = props.list
+  const { listType, listIsLoading } = props.list
   const { orders: tempOrders } = props.temp
 
   let Orders: any = null
-  if (loading) {
-    Orders = <PulseSpinner loading={loading} />
+  if (loading || listIsLoading) {
+    Orders = <PulseSpinner loading={true} />
   } else if (
     orders.inbox &&
     (orders.inbox.others.length > 0 || orders.inbox.todays.length > 0)
@@ -94,7 +94,9 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
                         listType === LIST_TYPES.INBOX ? 'active' : ''
                       }`}
                       onClick={() => {
-                        props.fetchInboxListStart()
+                        if (listType !== LIST_TYPES.INBOX) {
+                          props.fetchInboxListStart()
+                        }
                       }}
                     >
                       Inbox
@@ -106,8 +108,10 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
                         listType === LIST_TYPES.ARCHIVE ? 'active' : ''
                       }`}
                       onClick={() => {
-                        props.fetchArchiveListStart()
-                        props.setViewToDefault()
+                        if (listType !== LIST_TYPES.ARCHIVE) {
+                          props.fetchArchiveListStart()
+                          props.setViewToDefault()
+                        }
                       }}
                     >
                       Archive

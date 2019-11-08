@@ -13,6 +13,7 @@ export enum ListActionTypes {
 export interface ListState {
   orders: Orders
   listType: LIST_TYPES | null
+  listIsLoading: Boolean
 }
 
 export enum LIST_TYPES {
