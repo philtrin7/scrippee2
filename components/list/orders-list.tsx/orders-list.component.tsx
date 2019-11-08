@@ -49,9 +49,19 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
     orders.inbox &&
     (orders.inbox.others.length > 0 || orders.inbox.todays.length > 0)
   ) {
-    Orders = orders.inbox.others.map((order) => {
+    const todays = orders.inbox.todays.map((order) => {
       return <OrderComponent key={order.id} order={order} />
     })
+    const others = orders.inbox.others.map((order) => {
+      return <OrderComponent key={order.id} order={order} />
+    })
+
+    Orders = (
+      <React.Fragment>
+        {todays}
+        {others}
+      </React.Fragment>
+    )
   } else if (orders.archive && orders.archive.length > 0) {
     Orders = orders.archive.map((order) => {
       return <OrderComponent key={order.id} order={order} />
