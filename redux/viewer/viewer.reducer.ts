@@ -14,6 +14,7 @@ const INITIAL_STATE: ViewerState = {
 
 interface ViewerPayload {
   type: ViewerActionTypes | TempActionTypes.CLEAR_TEMP_ORDER
+
   order: Order
 }
 
