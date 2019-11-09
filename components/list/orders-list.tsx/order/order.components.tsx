@@ -1,18 +1,22 @@
 import React from 'react'
 import dayjs from 'dayjs'
-import { daysBetween } from '../../../../lib/utils/daysBetweenCalc'
+import { connect } from 'react-redux'
+import { Dispatch } from 'redux'
 
 import { Order } from '../../../../redux/list/list.types'
+import { daysBetween } from '../../../../lib/utils/daysBetweenCalc'
 import StatusCounter from '../../../status-counter/status-counter.component'
 
 import orderComponentStyles from './order.style.scss'
+import { selectOrder } from '../../../../redux/selectOrder/selectOrder.actions'
 
 interface Props {
+  selectOrder: Function
   order: Order
 }
 
 const OrderComponent: React.FC<Props> = (props) => {
-  const { createdAt, item, customerName } = props.order
+  const { id, createdAt, item, customerName } = props.order
 
   let days: number | null
   let userfriendlyDate: string = '-'
@@ -36,9 +40,13 @@ const OrderComponent: React.FC<Props> = (props) => {
     days = null
   }
 
+  const handleOnClick = () => {
+    props.selectOrder(id)
+  }
+
   return (
     <li>
-      <a href="#" className="filter direct">
+      <a href="#" className="filter direct" onClick={handleOnClick}>
         <div className="status">
           <StatusCounter daysPassed={days} />
         </div>
@@ -55,4 +63,11 @@ const OrderComponent: React.FC<Props> = (props) => {
   )
 }
 
-export default OrderComponent
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  selectOrder: (orderId: string) => dispatch(selectOrder(orderId))
+})
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(OrderComponent)

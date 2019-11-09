@@ -3,17 +3,23 @@ import { SelectOrderState, SelectOrderActionTypes } from './selectOrder.types'
 
 interface SelectOrderPayload {
   type: SelectOrderActionTypes
+  orderId: String
 }
 
 const INITIAL_STATE: SelectOrderState = {
   orderId: null
 }
 
-export const viewerReducer: Reducer<SelectOrderState, SelectOrderPayload> = (
-  state = INITIAL_STATE,
-  action
-) => {
+export const selectOrderReducer: Reducer<
+  SelectOrderState,
+  SelectOrderPayload
+> = (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case SelectOrderActionTypes.SELECT_ORDER:
+      return {
+        ...state,
+        orderId: action.orderId
+      }
     default:
       return state
   }

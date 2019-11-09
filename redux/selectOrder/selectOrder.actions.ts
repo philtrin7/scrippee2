@@ -1,7 +1,8 @@
 import { SelectOrderActionTypes } from './selectOrder.types'
 
-export const selectOrder = () => {
+export const selectOrder = (orderId: string) => {
   return {
-    type: SelectOrderActionTypes.SELECT_ORDER
+    type: SelectOrderActionTypes.SELECT_ORDER,
+    orderId
   }
 }
