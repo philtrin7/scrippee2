@@ -7,9 +7,28 @@ mutation Signin($email: String!, $password: String!) {
         email
       }
     }
-    list {
-      listType
-      orders {
+    orders {
+      inbox {
+        todays {
+          id
+          customerName
+          item
+          contactNum
+          email
+          archive
+          createdAt
+        }
+        others {
+          id
+          customerName
+          item
+          contactNum
+          email
+          archive
+          createdAt
+        }
+      }
+      archive {
         id
         customerName
         item

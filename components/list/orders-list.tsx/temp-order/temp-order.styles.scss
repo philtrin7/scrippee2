@@ -1,3 +1,5 @@
+$grey: #bdbac2;
+
 li {
   -ms-flex-preferred-size: 100%;
   flex-basis: 100%;
@@ -19,7 +21,7 @@ li {
 
     &.active {
       p {
-        color: #000;
+        color: #212529;
         white-space: pre-wrap;
       }
     }
@@ -37,9 +39,6 @@ li {
       margin-bottom: 10px;
     }
 
-    p {
-      color: #454545;
-    }
     h5 {
       font-size: 16px;
       font-weight: 600;
@@ -54,8 +53,12 @@ li {
       font-size: 15px;
       font-weight: 500;
       white-space: nowrap;
-      color: #8c8d8d;
+      color: #bdbac2;
       margin-left: 30px;
+    }
+    .temp-placeholder {
+      color: $grey !important;
+      font-style: italic;
     }
   }
 }

@@ -1,0 +1,21 @@
+mutation CreateOrder(
+  $item: String!
+  $customerName: String!
+  $contactNum: String
+  $email: String
+) {
+  createOrder(
+    item: $item
+    customerName: $customerName
+    contactNum: $contactNum
+    email: $email
+  ) {
+    id
+    customerName
+    item
+    contactNum
+    email
+    archive
+    createdAt
+  }
+}

@@ -2,11 +2,7 @@ import React, { useEffect } from 'react'
 import Router from 'next/router'
 import Head from 'next/head'
 
-import {
-  useUserQuery,
-  useInboxOrdersQuery,
-  useArchiveOrdersLazyQuery
-} from '../generated/graphql'
+import { useUserQuery } from '../generated/graphql'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { RootState } from '../redux/store'
@@ -18,8 +14,12 @@ import { signinUser, signinRequired } from '../redux/auth/auth.actions'
 import { AuthState, User } from '../redux/auth/auth.types'
 
 import OrdersList from '../components/list/orders-list.tsx/orders-list.component'
-import { fetchList } from '../redux/list/list.actions'
-import { ListState, LIST_TYPES, OrderList } from '../redux/list/list.types'
+import {
+  fetchList,
+  fetchInboxListStart,
+  fetchArchiveListStart
+} from '../redux/list/list.actions'
+import { ListState, LIST_TYPES, Orders } from '../redux/list/list.types'
 
 import Viewer from '../components/viewer/viewer.component'
 
@@ -27,23 +27,20 @@ interface IndexPageProps {
   signinUser: Function
   signinRedirect: Function
   fetchList: Function
+  fetchInboxListStart: Function
+  fetchArchiveListStart: Function
   auth: AuthState
   list: ListState
 }
 
 const IndexPage: React.FC<IndexPageProps> = (props) => {
-  const { data: userData } = useUserQuery()
+  const { data: userData, loading } = useUserQuery()
   const { currentUser } = props.auth
   const { signinUser, signinRedirect } = props
   const prevCurrentUser: User | null | undefined = usePrevious(currentUser)
 
-  const { orders, listType } = props.list
-  const { fetchList } = props
-  const { data: inboxOrders, loading: loadingInboxList } = useInboxOrdersQuery()
-  const [
-    getArchiveOrders,
-    { data: archiveOrders, loading: loadingArchiveList }
-  ] = useArchiveOrdersLazyQuery()
+  const { listType, orders } = props.list
+  const { fetchInboxListStart, fetchList } = props
 
   useEffect(() => {
     if (userData && userData.user) {
@@ -52,7 +49,8 @@ const IndexPage: React.FC<IndexPageProps> = (props) => {
         return
       } else {
         signinUser(user)
-        fetchList(user.inbox)
+        fetchInboxListStart()
+        fetchList(user.orders)
       }
     } else if (prevCurrentUser) {
       Router.push('/signin')
@@ -63,20 +61,14 @@ const IndexPage: React.FC<IndexPageProps> = (props) => {
   }, [userData])
 
   useEffect(() => {
-    if (listType === LIST_TYPES.INBOX) {
-      if (inboxOrders && inboxOrders.user) {
-        const { inbox } = inboxOrders.user
-        fetchList(inbox)
+    if (userData && userData.user) {
+      const { user } = userData
+
+      if (listType === LIST_TYPES.INBOX || listType === LIST_TYPES.ARCHIVE) {
+        fetchList(user.orders)
       }
     }
-    if (listType === LIST_TYPES.ARCHIVE) {
-      getArchiveOrders()
-      if (archiveOrders && archiveOrders.user) {
-        const { archive } = archiveOrders.user
-        fetchList(archive)
-      }
-    }
-  }, [listType, inboxOrders, archiveOrders])
+  }, [listType, userData])
 
   return (
     <div>
@@ -88,10 +80,7 @@ const IndexPage: React.FC<IndexPageProps> = (props) => {
           <nav className="navigation">
             <NavSideBar currentUser={currentUser} />
           </nav>
-          <OrdersList
-            orders={orders}
-            loading={loadingInboxList || loadingArchiveList}
-          />
+          <OrdersList orders={orders} loading={loading} />
 
           <Viewer />
         </div>
@@ -110,7 +99,9 @@ const mapStateToProps = (state: RootState) => {
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   signinUser: (user: User) => dispatch(signinUser(user)),
   signinRedirect: () => dispatch(signinRequired()),
-  fetchList: (orderList: OrderList) => dispatch(fetchList(orderList))
+  fetchInboxListStart: () => dispatch(fetchInboxListStart()),
+  fetchArchiveListStart: () => dispatch(fetchArchiveListStart()),
+  fetchList: (orders: Orders) => dispatch(fetchList(orders))
 })
 
 export default connect(

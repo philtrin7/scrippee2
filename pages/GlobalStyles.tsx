@@ -513,7 +513,14 @@ a.dropdown-item {
 
 /* 3. Discussions
 ====================
->>> Order.component.tsx
+>>> Order.component.tsx */
+.orders-list .middle .order-fragments {
+  width: 100%;
+}
+.orders-list .middle .order-fragments .order-divider {
+  margin: 15px 0;
+  border-top: 2px dashed #bdbac2;
+}
 
 /* 4. Users
 ====================
@@ -1205,7 +1212,7 @@ a.dropdown-item {
     margin-top: 30px;
   }
   .orders-list {
-    width: 336px;
+    width: 376px;
     height: 100vh;
   }
   .viewer {
@@ -1339,6 +1346,7 @@ a.dropdown-item {
     overflow: hidden;
   }
 }
+
 `
 
 export default GlobalStyles

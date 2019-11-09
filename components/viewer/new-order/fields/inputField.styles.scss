@@ -1,0 +1,23 @@
+input.hasValue {
+  background-color: rgb(232, 240, 254) !important;
+  background-image: none !important;
+  color: rgb(0, 0, 0) !important;
+}
+
+.form-control {
+  padding: 0 20px;
+  height: 55px;
+
+  &:focus {
+    box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+    border: 1px solid rgba(81, 203, 238, 1);
+  }
+}
+.with-error {
+  box-shadow: 0 0 5px #cea0a5;
+  border: 1px solid #cea0a5;
+}
+
+.error-msg {
+  color: #cb2431;
+}
