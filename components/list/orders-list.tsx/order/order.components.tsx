@@ -9,14 +9,18 @@ import StatusCounter from '../../../status-counter/status-counter.component'
 
 import orderComponentStyles from './order.style.scss'
 import { selectOrder } from '../../../../redux/selectOrder/selectOrder.actions'
+import { RootState } from '../../../../redux/store'
+import { SelectOrderState } from '../../../../redux/selectOrder/selectOrder.types'
 
 interface Props {
   selectOrder: Function
   order: Order
+  selectedOrder: SelectOrderState
 }
 
 const OrderComponent: React.FC<Props> = (props) => {
   const { id, createdAt, item, customerName } = props.order
+  const { selectedOrder } = props
 
   let days: number | null
   let userfriendlyDate: string = '-'
@@ -40,13 +44,27 @@ const OrderComponent: React.FC<Props> = (props) => {
     days = null
   }
 
+  const isActive = () => {
+    if (selectedOrder.orderId === id) {
+      return true
+    } else {
+      return false
+    }
+  }
+
+  console.log(isActive)
+
   const handleOnClick = () => {
     props.selectOrder(id)
   }
 
   return (
     <li>
-      <a href="#" className="filter direct" onClick={handleOnClick}>
+      <a
+        href="#"
+        className={`filter direct ${isActive() ? 'active' : ''}`}
+        onClick={handleOnClick}
+      >
         <div className="status">
           <StatusCounter daysPassed={days} />
         </div>
@@ -63,11 +81,15 @@ const OrderComponent: React.FC<Props> = (props) => {
   )
 }
 
+const mapStateToProps = (state: RootState) => ({
+  selectedOrder: state.selectOrder
+})
+
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   selectOrder: (orderId: string) => dispatch(selectOrder(orderId))
 })
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(OrderComponent)
