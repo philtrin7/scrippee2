@@ -1,4 +1,4 @@
-import { ViewerActionTypes } from './viewer.types'
+import { ViewerActionTypes, Order } from './viewer.types'
 
 export const setNewOrderView = () => {
   return {
@@ -12,8 +12,9 @@ export const setViewerToDefault = () => {
   }
 }
 
-export const setOrderView = () => {
+export const setOrderView = (order: Order) => {
   return {
-    type: ViewerActionTypes.SET_ORDER_VIEW
+    type: ViewerActionTypes.SET_ORDER_VIEW,
+    order
   }
 }

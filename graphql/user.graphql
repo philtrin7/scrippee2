@@ -11,6 +11,7 @@ query User {
           email
           archive
           createdAt
+          updatedAt
         }
         others {
           id
@@ -20,6 +21,7 @@ query User {
           email
           archive
           createdAt
+          updatedAt
         }
       }
       archive {
@@ -30,6 +32,7 @@ query User {
         email
         archive
         createdAt
+        updatedAt
       }
     }
   }

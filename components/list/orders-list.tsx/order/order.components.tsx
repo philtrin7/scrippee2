@@ -8,7 +8,7 @@ import { RootState } from '../../../../redux/store'
 import { SelectOrderState } from '../../../../redux/selectOrder/selectOrder.types'
 import { setOrderView } from '../../../../redux/viewer/viewer.actions'
 
-import { Order } from '../../../../redux/list/list.types'
+import { Order } from '../../../../generated/graphql'
 import { daysBetween } from '../../../../lib/utils/daysBetweenCalc'
 import StatusCounter from '../../../status-counter/status-counter.component'
 
@@ -58,7 +58,7 @@ const OrderComponent: React.FC<Props> = (props) => {
 
   const handleOnClick = () => {
     selectOrder(id)
-    setOrderView()
+    setOrderView(props.order)
   }
 
   return (
@@ -90,7 +90,7 @@ const mapStateToProps = (state: RootState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   selectOrder: (orderId: string) => dispatch(selectOrder(orderId)),
-  setOrderView: () => dispatch(setOrderView())
+  setOrderView: (order: Order) => dispatch(setOrderView(order))
 })
 
 export default connect(

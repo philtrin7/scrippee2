@@ -112,7 +112,7 @@ export type CreateOrderMutation = (
   { __typename?: 'Mutation' }
   & { createOrder: (
     { __typename?: 'Order' }
-    & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'archive' | 'createdAt'>
+    & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'archive' | 'createdAt' | 'updatedAt'>
   ) }
 );
 
@@ -158,14 +158,14 @@ export type SigninMutation = (
         { __typename?: 'InboxOrders' }
         & { todays: Array<(
           { __typename?: 'Order' }
-          & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'archive' | 'createdAt'>
+          & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'archive' | 'createdAt' | 'updatedAt'>
         )>, others: Array<(
           { __typename?: 'Order' }
-          & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'archive' | 'createdAt'>
+          & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'archive' | 'createdAt' | 'updatedAt'>
         )> }
       )>, archive: Maybe<Array<(
         { __typename?: 'Order' }
-        & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'archive' | 'createdAt'>
+        & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'archive' | 'createdAt' | 'updatedAt'>
       )>> }
     ) }
   ) }
@@ -196,14 +196,14 @@ export type UserQuery = (
         { __typename?: 'InboxOrders' }
         & { todays: Array<(
           { __typename?: 'Order' }
-          & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'archive' | 'createdAt'>
+          & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'archive' | 'createdAt' | 'updatedAt'>
         )>, others: Array<(
           { __typename?: 'Order' }
-          & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'archive' | 'createdAt'>
+          & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'archive' | 'createdAt' | 'updatedAt'>
         )> }
       )>, archive: Maybe<Array<(
         { __typename?: 'Order' }
-        & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'archive' | 'createdAt'>
+        & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'archive' | 'createdAt' | 'updatedAt'>
       )>> }
     ) }
   )> }
@@ -250,6 +250,7 @@ export const CreateOrderDocument = gql`
     email
     archive
     createdAt
+    updatedAt
   }
 }
     `;
@@ -363,6 +364,7 @@ export const SigninDocument = gql`
           email
           archive
           createdAt
+          updatedAt
         }
         others {
           id
@@ -372,6 +374,7 @@ export const SigninDocument = gql`
           email
           archive
           createdAt
+          updatedAt
         }
       }
       archive {
@@ -382,6 +385,7 @@ export const SigninDocument = gql`
         email
         archive
         createdAt
+        updatedAt
       }
     }
   }
@@ -458,6 +462,7 @@ export const UserDocument = gql`
           email
           archive
           createdAt
+          updatedAt
         }
         others {
           id
@@ -467,6 +472,7 @@ export const UserDocument = gql`
           email
           archive
           createdAt
+          updatedAt
         }
       }
       archive {
@@ -477,6 +483,7 @@ export const UserDocument = gql`
         email
         archive
         createdAt
+        updatedAt
       }
     }
   }

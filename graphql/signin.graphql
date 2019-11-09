@@ -17,6 +17,7 @@ mutation Signin($email: String!, $password: String!) {
           email
           archive
           createdAt
+          updatedAt
         }
         others {
           id
@@ -26,6 +27,7 @@ mutation Signin($email: String!, $password: String!) {
           email
           archive
           createdAt
+          updatedAt
         }
       }
       archive {
@@ -36,6 +38,7 @@ mutation Signin($email: String!, $password: String!) {
         email
         archive
         createdAt
+        updatedAt
       }
     }
   }

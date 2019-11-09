@@ -16,7 +16,8 @@ interface Props {
 
 const Viewer: React.FC<Props> = (props) => {
   let Viewer: any = props.viewer.type
-  if (Viewer === null) {
+
+  if (!Viewer) {
     Viewer = (
       <div>
         <HeaderViewer />
