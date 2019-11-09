@@ -66,7 +66,11 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
     Orders = (
       <div className="order-fragments">
         <React.Fragment>{todays}</React.Fragment>
-        <div className="order-divider"></div>
+        {inbox.todays.length > 0 || tempOrders.length > 0 ? (
+          <hr className="order-divider" />
+        ) : (
+          ''
+        )}
         <React.Fragment>{others}</React.Fragment>
       </div>
     )

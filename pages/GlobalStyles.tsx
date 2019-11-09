@@ -519,7 +519,7 @@ a.dropdown-item {
 }
 .orders-list .middle .order-fragments .order-divider {
   margin: 15px 0;
-  border-top: 1px solid #bdbac2;
+  border-top: 2px dashed #bdbac2;
 }
 
 /* 4. Users
