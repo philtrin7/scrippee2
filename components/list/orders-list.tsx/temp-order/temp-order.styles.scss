@@ -13,16 +13,13 @@ li {
 
   a {
     display: block;
-    padding: 25px 0;
-    border-bottom: 2px solid #fbfbfb;
+    padding: 15px 10px;
 
     &:hover {
-      border-bottom: 2px solid #007bff;
+      background: #e9ebeb;
     }
 
     &.active {
-      border-bottom: 2px solid #007bff;
-
       p {
         color: #212529;
         white-space: pre-wrap;

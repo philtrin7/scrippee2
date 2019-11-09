@@ -17,7 +17,7 @@ const TempOrder: React.FC<Props> = (props) => {
 
   return (
     <li>
-      <a href="#" className="filter direct active">
+      <a href="#" className="filter direct">
         <div className="status">
           <StatusCounter daysPassed={0} />
         </div>

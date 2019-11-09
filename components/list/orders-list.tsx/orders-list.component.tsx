@@ -148,6 +148,7 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
                 >
                   <ReactSVG src="/static/img/svg/new-order.svg" />
                 </button>
+                <hr />
                 <ul className="nav order">
                   {listType === LIST_TYPES.INBOX && tempOrders.length > 0 ? (
                     <TempOrder orders={tempOrders} />
