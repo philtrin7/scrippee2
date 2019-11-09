@@ -1,41 +1,39 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import StatusCounter from '../../../status-counter/status-counter.component'
 
 import tempOrderStyles from './temp-order.styles.scss'
 import { processString } from '../../../../lib/utils/processString'
-import { RootState } from '../../../../redux/store'
-import { SelectOrderState } from '../../../../redux/selectOrder/selectOrder.types'
+import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { selectNewOrder } from '../../../../redux/selectOrder/selectOrder.actions'
+import { RootState } from '../../../../redux/store'
+import { TempState } from '../../../../redux/temp/temp.types'
+import { SelectOrderState } from '../../../../redux/selectOrder/selectOrder.types'
 import { setNewOrderView } from '../../../../redux/viewer/viewer.actions'
 
 interface Props {
   selectNewOrder: Function
   setNewOrderView: Function
-  selectedOrder: SelectOrderState
-  orders: any
+  tempOrder: TempState
+  selectOrder: SelectOrderState
 }
 
 const TempOrder: React.FC<Props> = (props) => {
-  const tempOrder = props.orders[0]
-  const { customerName, item } = tempOrder
-  const { selectedOrder, selectNewOrder, setNewOrderView } = props
+  const { customerName, item } = props.tempOrder.orders[0]
+  const { orderId } = props.selectOrder
 
   const processedCustomerName = processString(customerName, 14, 28)
   const processedItem = processString(item, 18, 36)
 
   const handleOnClick = () => {
-    selectNewOrder() && setNewOrderView()
+    props.selectNewOrder()
+    props.setNewOrderView()
   }
 
   return (
     <li>
       <a
-        href="#"
-        className={`filter direct ${
-          selectedOrder.orderId === 'NEW' ? 'active' : ''
-        }`}
+        className={`filter direct ${orderId === 'NEW' ? 'active' : ''}`}
         onClick={handleOnClick}
       >
         <div className="status">
@@ -64,7 +62,8 @@ const TempOrder: React.FC<Props> = (props) => {
 }
 
 const mapStateToProps = (state: RootState) => ({
-  selectedOrder: state.selectOrder
+  tempOrder: state.temp,
+  selectOrder: state.selectOrder
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({

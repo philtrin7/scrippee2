@@ -155,7 +155,7 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
                 <hr />
                 <ul className="nav order">
                   {listType === LIST_TYPES.INBOX && tempOrders.length > 0 ? (
-                    <TempOrder orders={tempOrders} />
+                    <TempOrder />
                   ) : (
                     ''
                   )}
