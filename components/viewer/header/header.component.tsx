@@ -1,12 +1,12 @@
 import React from 'react'
 import ReactSVG from 'react-svg'
-
-import { Order } from '../../../generated/graphql'
-
-import SwipeLogo from '../../../static/img/swipe-logo-replace-me.png'
-import headerViewerStyles from './header.styles.scss'
 import dayjs from 'dayjs'
 import { daysBetween } from '../../../lib/utils/daysBetweenCalc'
+
+import { Order } from '../../../generated/graphql'
+import StatusCounter from '../../status-counter/status-counter.component'
+
+import headerViewerStyles from './header.styles.scss'
 
 interface Props {
   order: Order
@@ -39,7 +39,9 @@ const HeaderViewer: React.FC<Props> = (props) => {
     <div className="container">
       <div className="top">
         <div className="headline">
-          <img src={SwipeLogo} alt="avatar" />
+          <div className="status">
+            <StatusCounter daysPassed={days} />
+          </div>
           <div className="content">
             <h5>{customerName}</h5>
             <span>{LastUpdated}</span>
