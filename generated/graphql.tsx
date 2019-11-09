@@ -60,7 +60,7 @@ export type Order = {
   item: Scalars['String'],
   contactNum?: Maybe<Scalars['String']>,
   email?: Maybe<Scalars['String']>,
-  createdBy: User,
+  belongsTo: User,
   archive: Scalars['Boolean'],
   createdAt: Scalars['DateTime'],
   updatedAt: Scalars['DateTime'],
