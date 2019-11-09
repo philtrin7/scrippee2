@@ -15,13 +15,20 @@ interface Props {
 }
 
 const Viewer: React.FC<Props> = (props) => {
-  let Viewer: any = props.viewer.type
+  const { order } = props.viewer
 
+  let Viewer: any = props.viewer.type
   if (!Viewer) {
     Viewer = (
       <div>
-        <HeaderViewer />
+        <h3>Viewer Undefined</h3>
         <ConvoViewer />
+      </div>
+    )
+  } else if (Viewer === VIEWER_TYPES.ORDER && order) {
+    Viewer = (
+      <div>
+        <HeaderViewer order={order} />
       </div>
     )
   } else if (Viewer === VIEWER_TYPES.NEW_ORDER) {

@@ -1,21 +1,48 @@
 import React from 'react'
 import ReactSVG from 'react-svg'
 
+import { Order } from '../../../generated/graphql'
+
 import SwipeLogo from '../../../static/img/swipe-logo-replace-me.png'
-
 import headerViewerStyles from './header.styles.scss'
+import dayjs from 'dayjs'
+import { daysBetween } from '../../../lib/utils/daysBetweenCalc'
 
-interface Props {}
+interface Props {
+  order: Order
+}
 
-const HeaderViewer: React.FC<Props> = () => {
+const HeaderViewer: React.FC<Props> = (props) => {
+  const { customerName, updatedAt } = props.order
+
+  let LastUpdated: any = ''
+  const days = daysBetween(updatedAt)
+  const updatedAtTime = dayjs(updatedAt).format('h:mm a')
+
+  if (typeof days === 'number') {
+    if (days === 0) {
+      LastUpdated = `Last updated today at ${updatedAtTime}`
+    } else if (days === 1) {
+      LastUpdated = `Last updated yesterday at ${updatedAtTime}`
+    } else if (days > 1 && days <= 5) {
+      const updatedAtDay = dayjs(updatedAt).format('dddd D MMM')
+      LastUpdated = `Last updated on ${updatedAtDay}`
+    } else {
+      const updatedAtDate = dayjs(updatedAt).format('D/MM/YY')
+      LastUpdated = `Last updated on ${updatedAtDate}`
+    }
+  } else {
+    // Must be a number
+    LastUpdated = ''
+  }
   return (
     <div className="container">
       <div className="top">
         <div className="headline">
           <img src={SwipeLogo} alt="avatar" />
           <div className="content">
-            <h5>Quincy Hensen</h5>
-            <span>Away</span>
+            <h5>{customerName}</h5>
+            <span>{LastUpdated}</span>
           </div>
         </div>
         <ul>
