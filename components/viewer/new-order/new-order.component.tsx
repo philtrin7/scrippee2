@@ -10,16 +10,18 @@ import { Formik, Field, Form } from 'formik'
 import InputField from './fields/InputField'
 import PulseLoader from 'react-spinners/PulseLoader'
 
-import { Order } from '../../../redux/list/list.types'
 import { formatValidationErrors } from '../../../lib/utils/formatError'
 import {
   useCreateOrderMutation,
   CreateOrderMutationVariables,
   UserQuery,
-  UserDocument
+  UserDocument,
+  Order
 } from '../../../generated/graphql'
 
 import { clearTempOrder } from '../../../redux/temp/temp.actions'
+import { selectOrder } from '../../../redux/selectOrder/selectOrder.actions'
+import { setOrderView } from '../../../redux/viewer/viewer.actions'
 
 import newOrderViewerStyles from './new-order.styles.scss'
 
@@ -27,6 +29,8 @@ type OrderForm = Pick<Order, 'customerName' | 'item' | 'contactNum' | 'email'>
 
 interface Props {
   clearTempOrder: Function
+  selectOrder: Function
+  setOrderView: Function
 }
 
 const NewOrderViewer: React.FC<Props> = (props) => {
@@ -38,7 +42,7 @@ const NewOrderViewer: React.FC<Props> = (props) => {
     resetForm: Function
   ) => {
     try {
-      await createOrder({
+      const response = await createOrder({
         variables: {
           item: data.item,
           customerName: data.customerName,
@@ -65,9 +69,13 @@ const NewOrderViewer: React.FC<Props> = (props) => {
           }
         }
       })
-      resetForm()
-      toast.success('Order successfully created')
-      props.clearTempOrder()
+      if (response && response.data) {
+        resetForm()
+        toast.success('Order successfully created')
+        props.clearTempOrder()
+        props.selectOrder(response.data.createOrder.id)
+        props.setOrderView(response.data.createOrder)
+      }
     } catch (error) {
       const validationErrors = formatValidationErrors(error)
       if (validationErrors) {
@@ -161,7 +169,9 @@ const NewOrderViewer: React.FC<Props> = (props) => {
 }
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  clearTempOrder: () => dispatch(clearTempOrder())
+  clearTempOrder: () => dispatch(clearTempOrder()),
+  selectOrder: (orderId: string) => dispatch(selectOrder(orderId)),
+  setOrderView: (order: Order) => dispatch(setOrderView(order))
 })
 
 export default connect(

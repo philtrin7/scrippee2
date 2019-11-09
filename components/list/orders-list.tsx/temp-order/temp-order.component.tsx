@@ -1,15 +1,17 @@
 import React from 'react'
-import StatusCounter from '../../../status-counter/status-counter.component'
-
-import tempOrderStyles from './temp-order.styles.scss'
-import { processString } from '../../../../lib/utils/processString'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
+import { processString } from '../../../../lib/utils/processString'
+
 import { selectNewOrder } from '../../../../redux/selectOrder/selectOrder.actions'
 import { RootState } from '../../../../redux/store'
 import { TempState } from '../../../../redux/temp/temp.types'
 import { SelectOrderState } from '../../../../redux/selectOrder/selectOrder.types'
 import { setNewOrderView } from '../../../../redux/viewer/viewer.actions'
+
+import StatusCounter from '../../../status-counter/status-counter.component'
+
+import tempOrderStyles from './temp-order.styles.scss'
 
 interface Props {
   selectNewOrder: Function
