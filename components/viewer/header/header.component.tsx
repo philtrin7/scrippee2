@@ -15,25 +15,25 @@ interface Props {
 const HeaderViewer: React.FC<Props> = (props) => {
   const { customerName, updatedAt } = props.order
 
-  let LastUpdated: any = ''
+  let lastUpdatedMsg: any = ''
   const days = daysBetween(updatedAt)
   const updatedAtTime = dayjs(updatedAt).format('h:mm a')
 
   if (typeof days === 'number') {
     if (days === 0) {
-      LastUpdated = `Last updated today at ${updatedAtTime}`
+      lastUpdatedMsg = `Last updated today at ${updatedAtTime}`
     } else if (days === 1) {
-      LastUpdated = `Last updated yesterday at ${updatedAtTime}`
+      lastUpdatedMsg = `Last updated yesterday at ${updatedAtTime}`
     } else if (days > 1 && days <= 5) {
       const updatedAtDay = dayjs(updatedAt).format('dddd D MMM')
-      LastUpdated = `Last updated on ${updatedAtDay}`
+      lastUpdatedMsg = `Last updated on ${updatedAtDay}`
     } else {
       const updatedAtDate = dayjs(updatedAt).format('D/MM/YY')
-      LastUpdated = `Last updated on ${updatedAtDate}`
+      lastUpdatedMsg = `Last updated on ${updatedAtDate}`
     }
   } else {
     // Must be a number
-    LastUpdated = ''
+    lastUpdatedMsg = ''
   }
   return (
     <div className="container">
@@ -44,7 +44,7 @@ const HeaderViewer: React.FC<Props> = (props) => {
           </div>
           <div className="content">
             <h5>{customerName}</h5>
-            <span>{LastUpdated}</span>
+            <span>{lastUpdatedMsg}</span>
           </div>
         </div>
         <ul>
