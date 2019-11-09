@@ -6,3 +6,9 @@ export const selectOrder = (orderId: string) => {
     orderId
   }
 }
+
+export const selectNewOrder = () => {
+  return {
+    type: SelectOrderActionTypes.SELECT_NEW_ORDER
+  }
+}

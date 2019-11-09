@@ -20,6 +20,11 @@ export const selectOrderReducer: Reducer<
         ...state,
         orderId: action.orderId
       }
+    case SelectOrderActionTypes.SELECT_NEW_ORDER:
+      return {
+        ...state,
+        orderId: 'NEW'
+      }
     default:
       return state
   }

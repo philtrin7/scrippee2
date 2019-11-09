@@ -22,6 +22,7 @@ import OrderComponent from './order/order.components'
 import { PulseSpinner } from '../../loading-spinner/PulseSpinner'
 
 import ordersListStyles from './orders-list.styles.scss'
+import { selectNewOrder } from '../../../redux/selectOrder/selectOrder.actions'
 
 interface OrdersListPropTypes {
   fetchInboxListStart: Function
@@ -29,6 +30,7 @@ interface OrdersListPropTypes {
   setNewOrderView: Function
   newTempOrder: Function
   setViewToDefault: Function
+  selectNewOrder: Function
   orders: Orders
   loading: Boolean
   viewer: ViewerState
@@ -49,7 +51,8 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
     fetchArchiveListStart,
     setNewOrderView,
     setViewToDefault,
-    newTempOrder
+    newTempOrder,
+    selectNewOrder
   } = props
 
   let Orders: any = null
@@ -144,6 +147,7 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
                       newTempOrder()
                     }
                     setNewOrderView()
+                    selectNewOrder()
                   }}
                 >
                   <ReactSVG src="/static/img/svg/new-order.svg" />
@@ -179,7 +183,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   fetchArchiveListStart: () => dispatch(fetchArchiveListStart()),
   setNewOrderView: () => dispatch(setNewOrderView()),
   newTempOrder: () => dispatch(newTempOrder()),
-  setViewToDefault: () => dispatch(setViewerToDefault())
+  setViewToDefault: () => dispatch(setViewerToDefault()),
+  selectNewOrder: () => dispatch(selectNewOrder())
 })
 
 export default connect(
