@@ -11,3 +11,9 @@ export const setViewerToDefault = () => {
     type: ViewerActionTypes.DEFAULT_VIEW
   }
 }
+
+export const setOrderView = () => {
+  return {
+    type: ViewerActionTypes.SET_ORDER_VIEW
+  }
+}

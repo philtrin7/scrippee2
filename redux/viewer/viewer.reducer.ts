@@ -6,7 +6,11 @@ const INITIAL_STATE: ViewerState = {
   type: null
 }
 
-export const viewerReducer: Reducer<ViewerState, any> = (
+interface ViewerPayload {
+  type: ViewerActionTypes | TempActionTypes.CLEAR_TEMP_ORDER
+}
+
+export const viewerReducer: Reducer<ViewerState, ViewerPayload> = (
   state = INITIAL_STATE,
   action
 ) => {
@@ -20,6 +24,11 @@ export const viewerReducer: Reducer<ViewerState, any> = (
       return {
         ...state,
         type: null
+      }
+    case ViewerActionTypes.SET_ORDER_VIEW:
+      return {
+        ...state,
+        type: VIEWER_TYPES.ORDER
       }
     case TempActionTypes.CLEAR_TEMP_ORDER:
       return {

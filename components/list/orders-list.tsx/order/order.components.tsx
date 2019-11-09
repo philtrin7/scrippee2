@@ -3,24 +3,28 @@ import dayjs from 'dayjs'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 
+import { selectOrder } from '../../../../redux/selectOrder/selectOrder.actions'
+import { RootState } from '../../../../redux/store'
+import { SelectOrderState } from '../../../../redux/selectOrder/selectOrder.types'
+import { setOrderView } from '../../../../redux/viewer/viewer.actions'
+
 import { Order } from '../../../../redux/list/list.types'
 import { daysBetween } from '../../../../lib/utils/daysBetweenCalc'
 import StatusCounter from '../../../status-counter/status-counter.component'
 
 import orderComponentStyles from './order.style.scss'
-import { selectOrder } from '../../../../redux/selectOrder/selectOrder.actions'
-import { RootState } from '../../../../redux/store'
-import { SelectOrderState } from '../../../../redux/selectOrder/selectOrder.types'
 
 interface Props {
   selectOrder: Function
+  setOrderView: Function
   order: Order
   selectedOrder: SelectOrderState
 }
 
 const OrderComponent: React.FC<Props> = (props) => {
   const { id, createdAt, item, customerName } = props.order
-  const { selectedOrder } = props
+  const { selectOrder, selectedOrder } = props
+  const { setOrderView } = props
 
   let days: number | null
   let userfriendlyDate: string = '-'
@@ -52,10 +56,9 @@ const OrderComponent: React.FC<Props> = (props) => {
     }
   }
 
-  console.log(isActive)
-
   const handleOnClick = () => {
-    props.selectOrder(id)
+    selectOrder(id)
+    setOrderView()
   }
 
   return (
@@ -86,7 +89,8 @@ const mapStateToProps = (state: RootState) => ({
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  selectOrder: (orderId: string) => dispatch(selectOrder(orderId))
+  selectOrder: (orderId: string) => dispatch(selectOrder(orderId)),
+  setOrderView: () => dispatch(setOrderView())
 })
 
 export default connect(
