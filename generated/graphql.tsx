@@ -18,6 +18,24 @@ export type AuthPayload = {
   user?: Maybe<User>,
 };
 
+export type Comment = {
+   __typename?: 'Comment',
+  id: Scalars['ID'],
+  convo: Convo,
+  text: Scalars['String'],
+  createdAt: Scalars['DateTime'],
+  updatedAt: Scalars['DateTime'],
+};
+
+export type Convo = {
+   __typename?: 'Convo',
+  id: Scalars['ID'],
+  order: Order,
+  comments: Array<Comment>,
+  createdAt: Scalars['DateTime'],
+  updatedAt: Scalars['DateTime'],
+};
+
 
 export type InboxOrders = {
    __typename?: 'InboxOrders',
