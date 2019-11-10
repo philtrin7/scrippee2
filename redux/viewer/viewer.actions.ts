@@ -1,4 +1,5 @@
-import { ViewerActionTypes, Order } from './viewer.types'
+import { ViewerActionTypes } from './viewer.types'
+import { Order } from '../../generated/graphql'
 
 export const setNewOrderView = () => {
   return {

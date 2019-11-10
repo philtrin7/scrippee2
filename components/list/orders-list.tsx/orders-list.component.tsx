@@ -6,7 +6,7 @@ import { Dispatch } from 'redux'
 import { RootState } from '../../../redux/store'
 import { ViewerState } from '../../../redux/viewer/viewer.types'
 import { TempState } from '../../../redux/temp/temp.types'
-import { LIST_TYPES, ListState, Orders } from '../../../redux/list/list.types'
+import { LIST_TYPES, ListState } from '../../../redux/list/list.types'
 import {
   fetchArchiveListStart,
   fetchInboxListStart
@@ -16,13 +16,14 @@ import {
   setNewOrderView,
   setViewerToDefault
 } from '../../../redux/viewer/viewer.actions'
+import { selectNewOrder } from '../../../redux/selectOrder/selectOrder.actions'
+import { Orders } from '../../../generated/graphql'
 
 import TempOrder from './temp-order/temp-order.component'
 import OrderComponent from './order/order.components'
 import { PulseSpinner } from '../../loading-spinner/PulseSpinner'
 
 import ordersListStyles from './orders-list.styles.scss'
-import { selectNewOrder } from '../../../redux/selectOrder/selectOrder.actions'
 
 interface OrdersListPropTypes {
   fetchInboxListStart: Function

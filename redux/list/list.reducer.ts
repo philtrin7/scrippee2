@@ -1,6 +1,7 @@
-import { ListActionTypes, ListState, LIST_TYPES, Orders } from './list.types'
+import { ListActionTypes, ListState, LIST_TYPES } from './list.types'
 import { Reducer } from 'redux'
 import { AuthActionTypes } from '../auth/auth.types'
+import { Orders } from '../../generated/graphql'
 
 interface ListActionPayload {
   type: ListActionTypes | AuthActionTypes.SIGNOUT_SUCCESS

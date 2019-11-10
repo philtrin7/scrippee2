@@ -1,4 +1,4 @@
-import { Order } from '../list/list.types'
+import { Order } from '../../generated/graphql'
 
 export interface TempState {
   orders: NewOrder[]

@@ -1,11 +1,7 @@
-import {
-  ViewerState,
-  ViewerActionTypes,
-  VIEWER_TYPES,
-  Order
-} from './viewer.types'
+import { ViewerState, ViewerActionTypes, VIEWER_TYPES } from './viewer.types'
 import { Reducer } from 'redux'
 import { TempActionTypes } from '../temp/temp.types'
+import { Order } from '../../generated/graphql'
 
 const INITIAL_STATE: ViewerState = {
   type: undefined,
@@ -14,7 +10,6 @@ const INITIAL_STATE: ViewerState = {
 
 interface ViewerPayload {
   type: ViewerActionTypes | TempActionTypes.CLEAR_TEMP_ORDER
-
   order: Order
 }
 

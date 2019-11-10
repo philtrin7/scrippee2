@@ -1,26 +1,25 @@
 import React, { useEffect } from 'react'
 import Router from 'next/router'
 import Head from 'next/head'
+import usePrevious from '../lib/usePreviousState'
 
-import { useUserQuery } from '../generated/graphql'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { RootState } from '../redux/store'
-import usePrevious from '../lib/usePreviousState'
-
-import NavSideBar from '../components/navigation/nav-sidebar.component'
-import Layout from '../components/Layout'
 import { signinUser, signinRequired } from '../redux/auth/auth.actions'
 import { AuthState, User } from '../redux/auth/auth.types'
-
-import OrdersList from '../components/list/orders-list.tsx/orders-list.component'
 import {
   fetchList,
   fetchInboxListStart,
   fetchArchiveListStart
 } from '../redux/list/list.actions'
-import { ListState, LIST_TYPES, Orders } from '../redux/list/list.types'
+import { ListState, LIST_TYPES } from '../redux/list/list.types'
 
+import { useUserQuery, Orders } from '../generated/graphql'
+
+import NavSideBar from '../components/navigation/nav-sidebar.component'
+import Layout from '../components/Layout'
+import OrdersList from '../components/list/orders-list.tsx/orders-list.component'
 import Viewer from '../components/viewer/viewer.component'
 
 interface IndexPageProps {
