@@ -1,5 +1,5 @@
 import { ViewerActionTypes } from './viewer.types'
-import { Order } from '../../generated/graphql'
+import { Order, Convo } from '../../generated/graphql'
 
 export const setNewOrderView = () => {
   return {
@@ -17,5 +17,14 @@ export const setOrderView = (order: Order) => {
   return {
     type: ViewerActionTypes.SET_ORDER_VIEW,
     order
+  }
+}
+
+export const fetchConvo = (
+  convo: Pick<Convo, 'id' | 'updatedAt' | 'createdAt'>
+) => {
+  return {
+    type: ViewerActionTypes.FETCH_CONVO,
+    convo
   }
 }

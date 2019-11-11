@@ -23,7 +23,7 @@ interface Props {
 
 const OrderComponent: React.FC<Props> = (props) => {
   const { id, createdAt, item, customerName } = props.order
-  const { selectOrder, selectedOrder } = props
+  const { selectOrder, selectedOrder, order } = props
   const { setOrderView } = props
 
   let days: number | null
@@ -58,7 +58,7 @@ const OrderComponent: React.FC<Props> = (props) => {
 
   const handleOnClick = () => {
     selectOrder(id)
-    setOrderView(props.order)
+    setOrderView(order)
   }
 
   return (
