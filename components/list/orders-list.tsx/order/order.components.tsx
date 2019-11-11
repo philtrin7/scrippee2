@@ -12,7 +12,7 @@ import { Order } from '../../../../generated/graphql'
 import { daysBetween } from '../../../../lib/utils/daysBetweenCalc'
 import StatusCounter from '../../../status-counter/status-counter.component'
 
-import orderComponentStyles from './order.style.scss'
+import orderComponentStyles from './order.styles.scss'
 
 interface Props {
   selectOrder: Function

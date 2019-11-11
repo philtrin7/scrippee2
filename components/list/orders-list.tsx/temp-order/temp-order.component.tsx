@@ -11,7 +11,7 @@ import { setNewOrderView } from '../../../../redux/viewer/viewer.actions'
 
 import StatusCounter from '../../../status-counter/status-counter.component'
 
-import tempOrderStyles from './temp-order.styles.scss'
+import orderComponentStyles from '../order/order.styles.scss'
 
 interface Props {
   selectNewOrder: Function
@@ -58,7 +58,7 @@ const TempOrder: React.FC<Props> = (props) => {
           )}
         </div>
       </a>
-      <style jsx>{tempOrderStyles}</style>
+      <style jsx>{orderComponentStyles}</style>
     </li>
   )
 }

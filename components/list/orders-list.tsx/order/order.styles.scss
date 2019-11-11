@@ -1,3 +1,5 @@
+$grey: #bdbac2;
+
 li {
   -ms-flex-preferred-size: 100%;
   flex-basis: 100%;
@@ -57,6 +59,10 @@ li {
       white-space: nowrap;
       color: #8c8d8d;
       margin-left: 30px;
+    }
+    .temp-placeholder {
+      color: $grey !important;
+      font-style: italic;
     }
   }
 }
