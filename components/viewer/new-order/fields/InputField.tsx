@@ -1,4 +1,8 @@
-import React, { DetailedHTMLProps, InputHTMLAttributes } from 'react'
+import React, {
+  DetailedHTMLProps,
+  InputHTMLAttributes,
+  TextareaHTMLAttributes
+} from 'react'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { FieldProps } from 'formik'
@@ -13,7 +17,11 @@ type FormikPropTypes = DetailedHTMLProps<
   InputHTMLAttributes<HTMLInputElement>,
   HTMLInputElement
 > &
-  FieldProps
+  FieldProps &
+  DetailedHTMLProps<
+    TextareaHTMLAttributes<HTMLTextAreaElement>,
+    HTMLTextAreaElement
+  >
 
 interface ReduxProps {
   setTempOrder: Function
@@ -46,23 +54,43 @@ const InputField = ({
     <div>
       {errorMessage && <div className="error-msg">{errorMessage}</div>}
       <div className={`form-group ${errorMessage ? 'with-error' : ''}`}>
-        <input
-          {...fields}
-          {...formikProps}
-          name={name}
-          value={storedTempValue || value}
-          onChange={(e) => {
-            if (e.target.value.length > 0) {
-              setTempOrder(name, e.target.value)
-            } else {
-              clearField(name)
-            }
-            handleChange(e)
-          }}
-          className={`form-control ${
-            storedTempValue || value !== '' ? 'hasValue' : ''
-          }`}
-        />
+        {name === 'item' ? (
+          <textarea
+            {...fields}
+            {...formikProps}
+            name={name}
+            value={storedTempValue || value}
+            onChange={(e) => {
+              if (e.target.value.length > 0) {
+                setTempOrder(name, e.target.value)
+              } else {
+                clearField(name)
+              }
+              handleChange(e)
+            }}
+            className={`form-control ${
+              storedTempValue || value !== '' ? 'hasValue' : ''
+            }`}
+          />
+        ) : (
+          <input
+            {...fields}
+            {...formikProps}
+            name={name}
+            value={storedTempValue || value}
+            onChange={(e) => {
+              if (e.target.value.length > 0) {
+                setTempOrder(name, e.target.value)
+              } else {
+                clearField(name)
+              }
+              handleChange(e)
+            }}
+            className={`form-control ${
+              storedTempValue || value !== '' ? 'hasValue' : ''
+            }`}
+          />
+        )}
       </div>
       <style jsx>{inputFieldStyles}</style>
     </div>

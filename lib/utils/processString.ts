@@ -4,7 +4,7 @@ export const processString = (
   max: number
 ): string => {
   // trim whitespaces from original string
-  const originalString = string.trim()
+  const originalString = string.trim().replace(/\n/g, ' ')
 
   // create test string with trimmed
   const testString = originalString.substring(0, min)
@@ -30,5 +30,4 @@ export const processString = (
     const processedString = `${originalString.substring(0, max).trim()}...`
     return processedString
   }
-  return originalString
 }
