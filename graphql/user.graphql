@@ -9,6 +9,8 @@ query User {
           item
           contactNum
           email
+          quote
+          deposit
           archive
           createdAt
           updatedAt
@@ -19,6 +21,8 @@ query User {
           item
           contactNum
           email
+          quote
+          deposit
           archive
           createdAt
           updatedAt
@@ -30,6 +34,8 @@ query User {
         item
         contactNum
         email
+        quote
+        deposit
         archive
         createdAt
         updatedAt

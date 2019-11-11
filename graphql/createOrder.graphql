@@ -3,18 +3,24 @@ mutation CreateOrder(
   $customerName: String!
   $contactNum: String
   $email: String
+  $quote: String
+  $deposit: String
 ) {
   createOrder(
     item: $item
     customerName: $customerName
     contactNum: $contactNum
     email: $email
+    quote: $quote
+    deposit: $deposit
   ) {
     id
     customerName
     item
     contactNum
     email
+    quote
+    deposit
     archive
     createdAt
     updatedAt
