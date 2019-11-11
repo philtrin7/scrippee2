@@ -24,7 +24,11 @@ const Viewer: React.FC<Props> = (props) => {
   const { order } = props.viewer
   let Viewer: any = props.viewer.type
 
-  if (!order || !Viewer) {
+  if (Viewer === VIEWER_TYPES.NEW_ORDER) {
+    return <NewOrderViewer />
+  }
+
+  if (!order) {
     return <DefaultView />
   }
 
@@ -54,12 +58,6 @@ const Viewer: React.FC<Props> = (props) => {
         ) : (
           <ConvoViewer />
         )}
-      </div>
-    )
-  } else if (Viewer === VIEWER_TYPES.NEW_ORDER) {
-    Viewer = (
-      <div>
-        <NewOrderViewer />
       </div>
     )
   } else {

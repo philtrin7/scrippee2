@@ -23,7 +23,7 @@ import { clearTempOrder } from '../../../redux/temp/temp.actions'
 import { selectOrder } from '../../../redux/selectOrder/selectOrder.actions'
 import { setOrderView } from '../../../redux/viewer/viewer.actions'
 
-import newOrderViewerStyles from './new-order.styles.scss'
+import viewerStyles from '../viewer.styles.scss'
 
 type OrderForm = Pick<Order, 'customerName' | 'item' | 'contactNum' | 'email'>
 
@@ -90,80 +90,95 @@ const NewOrderViewer: React.FC<Props> = (props) => {
     }
   }
   return (
-    <div className="new-order-viewer">
-      <div className="new-order-content">
-        <div className="new-order-header">
-          <h5>
-            New Order
-            <ReactSVG wrapper={'span'} src="/static/img/svg/new-order.svg" />
-          </h5>
+    <div className="viewer">
+      <div className="tab-content">
+        <div className="tab-pane fade show active" id="chat1" role="tabpanel">
+          <div className="item">
+            <div className="content">
+              <div className="new-order">
+                <div className="new-order-header">
+                  <h5>
+                    New Order
+                    <ReactSVG
+                      wrapper={'span'}
+                      src="/static/img/svg/new-order.svg"
+                    />
+                  </h5>
 
-          <button
-            type="button"
-            className="btn round"
-            onClick={() => {
-              props.clearTempOrder()
-            }}
-          >
-            <i>
-              <ReactSVG src="/static/img/svg/close.svg" />
-            </i>
-          </button>
-        </div>
-        <div className="new-order-body">
-          <div className="details">
-            <Formik<OrderForm>
-              initialValues={{
-                customerName: '',
-                item: '',
-                contactNum: '',
-                email: ''
-              }}
-              onSubmit={(data, { setErrors, resetForm }) =>
-                handleSubmit(data, setErrors, resetForm)
-              }
-              validateOnBlur={false}
-              validateOnChange={false}
-            >
-              {() => (
-                <Form>
-                  <Field
-                    name="customerName"
-                    placeholder="Customer name"
-                    component={InputField}
-                  />
-                  <Field
-                    name="item"
-                    placeholder="Items"
-                    component={InputField}
-                  />
-                  <Field
-                    name="contactNum"
-                    placeholder="Contact number"
-                    component={InputField}
-                  />
-                  <Field
-                    type="email"
-                    name="email"
-                    placeholder="Email"
-                    component={InputField}
-                  />
-                  <div className="new-order-footer">
-                    <button className="btn primary" type="submit">
-                      {loading ? (
-                        <PulseLoader margin={'2px'} color={'white'} size={8} />
-                      ) : (
-                        'Create Order'
+                  <button
+                    type="button"
+                    className="btn round"
+                    onClick={() => {
+                      props.clearTempOrder()
+                    }}
+                  >
+                    <i>
+                      <ReactSVG src="/static/img/svg/close.svg" />
+                    </i>
+                  </button>
+                </div>
+                <div className="new-order-body">
+                  <div className="details">
+                    <Formik<OrderForm>
+                      initialValues={{
+                        customerName: '',
+                        item: '',
+                        contactNum: '',
+                        email: ''
+                      }}
+                      onSubmit={(data, { setErrors, resetForm }) =>
+                        handleSubmit(data, setErrors, resetForm)
+                      }
+                      validateOnBlur={false}
+                      validateOnChange={false}
+                    >
+                      {() => (
+                        <Form>
+                          <Field
+                            name="customerName"
+                            placeholder="Customer name"
+                            component={InputField}
+                          />
+                          <Field
+                            name="item"
+                            placeholder="Items"
+                            component={InputField}
+                          />
+                          <Field
+                            name="contactNum"
+                            placeholder="Contact number"
+                            component={InputField}
+                          />
+                          <Field
+                            type="email"
+                            name="email"
+                            placeholder="Email"
+                            component={InputField}
+                          />
+                          <div className="new-order-footer">
+                            <button className="btn primary" type="submit">
+                              {loading ? (
+                                <PulseLoader
+                                  margin={'2px'}
+                                  color={'white'}
+                                  size={8}
+                                />
+                              ) : (
+                                'Create Order'
+                              )}
+                            </button>
+                          </div>
+                        </Form>
                       )}
-                    </button>
+                    </Formik>
                   </div>
-                </Form>
-              )}
-            </Formik>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      <style jsx>{newOrderViewerStyles}</style>
+      <style jsx>{viewerStyles}</style>
     </div>
   )
 }

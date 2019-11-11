@@ -2,6 +2,7 @@ import { ViewerState, ViewerActionTypes, VIEWER_TYPES } from './viewer.types'
 import { Reducer } from 'redux'
 import { TempActionTypes } from '../temp/temp.types'
 import { Order, Convo } from '../../generated/graphql'
+import { AuthActionTypes } from '../auth/auth.types'
 
 const INITIAL_STATE: ViewerState = {
   type: undefined,
@@ -10,7 +11,10 @@ const INITIAL_STATE: ViewerState = {
 }
 
 interface ViewerPayload {
-  type: ViewerActionTypes | TempActionTypes.CLEAR_TEMP_ORDER
+  type:
+    | ViewerActionTypes
+    | TempActionTypes.CLEAR_TEMP_ORDER
+    | AuthActionTypes.SIGNOUT_SUCCESS
   order: Order
   convo: Pick<Convo, 'id' | 'updatedAt' | 'createdAt'>
 }
@@ -42,9 +46,11 @@ export const viewerReducer: Reducer<ViewerState, ViewerPayload> = (
         convo: action.convo
       }
     case TempActionTypes.CLEAR_TEMP_ORDER:
+    case AuthActionTypes.SIGNOUT_SUCCESS:
       return {
-        ...state,
-        type: undefined
+        type: undefined,
+        order: undefined,
+        convo: undefined
       }
     default:
       return state
