@@ -17,5 +17,6 @@ mutation CreateOrder(
     email
     archive
     createdAt
+    updatedAt
   }
 }

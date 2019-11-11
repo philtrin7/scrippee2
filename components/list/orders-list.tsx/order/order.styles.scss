@@ -12,6 +12,7 @@ li {
   }
 
   a {
+    cursor: pointer;
     display: block;
     padding: 15px 10px;
 
@@ -20,8 +21,9 @@ li {
     }
 
     &.active {
+      background: #e9ebeb;
       p {
-        color: #212529;
+        color: #000;
         white-space: pre-wrap;
       }
     }
@@ -39,6 +41,9 @@ li {
       margin-bottom: 10px;
     }
 
+    p {
+      color: #454545;
+    }
     h5 {
       font-size: 16px;
       font-weight: 600;
@@ -53,7 +58,7 @@ li {
       font-size: 15px;
       font-weight: 500;
       white-space: nowrap;
-      color: #bdbac2;
+      color: #8c8d8d;
       margin-left: 30px;
     }
     .temp-placeholder {

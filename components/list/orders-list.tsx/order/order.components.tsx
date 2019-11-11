@@ -1,18 +1,30 @@
 import React from 'react'
 import dayjs from 'dayjs'
-import { daysBetween } from '../../../../lib/utils/daysBetweenCalc'
+import { connect } from 'react-redux'
+import { Dispatch } from 'redux'
 
-import { Order } from '../../../../redux/list/list.types'
+import { selectOrder } from '../../../../redux/selectOrder/selectOrder.actions'
+import { RootState } from '../../../../redux/store'
+import { SelectOrderState } from '../../../../redux/selectOrder/selectOrder.types'
+import { setOrderView } from '../../../../redux/viewer/viewer.actions'
+
+import { Order } from '../../../../generated/graphql'
+import { daysBetween } from '../../../../lib/utils/daysBetweenCalc'
 import StatusCounter from '../../../status-counter/status-counter.component'
 
-import orderComponentStyles from './order.style.scss'
+import orderComponentStyles from './order.styles.scss'
 
 interface Props {
+  selectOrder: Function
+  setOrderView: Function
   order: Order
+  selectedOrder: SelectOrderState
 }
 
 const OrderComponent: React.FC<Props> = (props) => {
-  const { createdAt, item, customerName } = props.order
+  const { id, createdAt, item, customerName } = props.order
+  const { selectOrder, selectedOrder, order } = props
+  const { setOrderView } = props
 
   let days: number | null
   let userfriendlyDate: string = '-'
@@ -36,9 +48,26 @@ const OrderComponent: React.FC<Props> = (props) => {
     days = null
   }
 
+  const isActive = () => {
+    if (selectedOrder.orderId === id) {
+      return true
+    } else {
+      return false
+    }
+  }
+
+  const handleOnClick = () => {
+    selectOrder(id)
+    setOrderView(order)
+  }
+
   return (
     <li>
-      <a href="#" className="filter direct">
+      <a
+        href="#"
+        className={`filter direct ${isActive() ? 'active' : ''}`}
+        onClick={handleOnClick}
+      >
         <div className="status">
           <StatusCounter daysPassed={days} />
         </div>
@@ -55,4 +84,16 @@ const OrderComponent: React.FC<Props> = (props) => {
   )
 }
 
-export default OrderComponent
+const mapStateToProps = (state: RootState) => ({
+  selectedOrder: state.selectOrder
+})
+
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  selectOrder: (orderId: string) => dispatch(selectOrder(orderId)),
+  setOrderView: (order: Order) => dispatch(setOrderView(order))
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(OrderComponent)

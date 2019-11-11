@@ -1,23 +1,43 @@
 import React from 'react'
-import StatusCounter from '../../../status-counter/status-counter.component'
-
-import tempOrderStyles from './temp-order.styles.scss'
+import { connect } from 'react-redux'
+import { Dispatch } from 'redux'
 import { processString } from '../../../../lib/utils/processString'
 
+import { selectNewOrder } from '../../../../redux/selectOrder/selectOrder.actions'
+import { RootState } from '../../../../redux/store'
+import { TempState } from '../../../../redux/temp/temp.types'
+import { SelectOrderState } from '../../../../redux/selectOrder/selectOrder.types'
+import { setNewOrderView } from '../../../../redux/viewer/viewer.actions'
+
+import StatusCounter from '../../../status-counter/status-counter.component'
+
+import orderComponentStyles from '../order/order.styles.scss'
+
 interface Props {
-  orders: any
+  selectNewOrder: Function
+  setNewOrderView: Function
+  tempOrder: TempState
+  selectOrder: SelectOrderState
 }
 
 const TempOrder: React.FC<Props> = (props) => {
-  const tempOrder = props.orders[0]
-  const { customerName, item } = tempOrder
+  const { customerName, item } = props.tempOrder.orders[0]
+  const { orderId } = props.selectOrder
 
   const processedCustomerName = processString(customerName, 14, 28)
   const processedItem = processString(item, 18, 36)
 
+  const handleOnClick = () => {
+    props.selectNewOrder()
+    props.setNewOrderView()
+  }
+
   return (
     <li>
-      <a href="#" className="filter direct">
+      <a
+        className={`filter direct ${orderId === 'NEW' ? 'active' : ''}`}
+        onClick={handleOnClick}
+      >
         <div className="status">
           <StatusCounter daysPassed={0} />
         </div>
@@ -38,9 +58,22 @@ const TempOrder: React.FC<Props> = (props) => {
           )}
         </div>
       </a>
-      <style jsx>{tempOrderStyles}</style>
+      <style jsx>{orderComponentStyles}</style>
     </li>
   )
 }
 
-export default TempOrder
+const mapStateToProps = (state: RootState) => ({
+  tempOrder: state.temp,
+  selectOrder: state.selectOrder
+})
+
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  selectNewOrder: () => dispatch(selectNewOrder()),
+  setNewOrderView: () => dispatch(setNewOrderView())
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TempOrder)

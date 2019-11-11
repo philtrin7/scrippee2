@@ -6,7 +6,7 @@ import { Dispatch } from 'redux'
 import { RootState } from '../../../redux/store'
 import { ViewerState } from '../../../redux/viewer/viewer.types'
 import { TempState } from '../../../redux/temp/temp.types'
-import { LIST_TYPES, ListState, Orders } from '../../../redux/list/list.types'
+import { LIST_TYPES, ListState } from '../../../redux/list/list.types'
 import {
   fetchArchiveListStart,
   fetchInboxListStart
@@ -16,6 +16,8 @@ import {
   setNewOrderView,
   setViewerToDefault
 } from '../../../redux/viewer/viewer.actions'
+import { selectNewOrder } from '../../../redux/selectOrder/selectOrder.actions'
+import { Orders } from '../../../generated/graphql'
 
 import TempOrder from './temp-order/temp-order.component'
 import OrderComponent from './order/order.components'
@@ -29,6 +31,7 @@ interface OrdersListPropTypes {
   setNewOrderView: Function
   newTempOrder: Function
   setViewToDefault: Function
+  selectNewOrder: Function
   orders: Orders
   loading: Boolean
   viewer: ViewerState
@@ -49,7 +52,8 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
     fetchArchiveListStart,
     setNewOrderView,
     setViewToDefault,
-    newTempOrder
+    newTempOrder,
+    selectNewOrder
   } = props
 
   let Orders: any = null
@@ -144,6 +148,7 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
                       newTempOrder()
                     }
                     setNewOrderView()
+                    selectNewOrder()
                   }}
                 >
                   <ReactSVG src="/static/img/svg/new-order.svg" />
@@ -151,7 +156,7 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
                 <hr />
                 <ul className="nav order">
                   {listType === LIST_TYPES.INBOX && tempOrders.length > 0 ? (
-                    <TempOrder orders={tempOrders} />
+                    <TempOrder />
                   ) : (
                     ''
                   )}
@@ -179,7 +184,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   fetchArchiveListStart: () => dispatch(fetchArchiveListStart()),
   setNewOrderView: () => dispatch(setNewOrderView()),
   newTempOrder: () => dispatch(newTempOrder()),
-  setViewToDefault: () => dispatch(setViewerToDefault())
+  setViewToDefault: () => dispatch(setViewerToDefault()),
+  selectNewOrder: () => dispatch(selectNewOrder())
 })
 
 export default connect(

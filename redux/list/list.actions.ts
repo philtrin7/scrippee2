@@ -1,4 +1,5 @@
-import { ListActionTypes, Orders } from './list.types'
+import { ListActionTypes } from './list.types'
+import { Orders } from '../../generated/graphql'
 
 export const fetchInboxListStart = () => {
   return {

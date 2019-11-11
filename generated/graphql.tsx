@@ -18,6 +18,24 @@ export type AuthPayload = {
   user?: Maybe<User>,
 };
 
+export type Comment = {
+   __typename?: 'Comment',
+  id: Scalars['ID'],
+  convo: Convo,
+  text: Scalars['String'],
+  createdAt: Scalars['DateTime'],
+  updatedAt: Scalars['DateTime'],
+};
+
+export type Convo = {
+   __typename?: 'Convo',
+  id: Scalars['ID'],
+  order: Order,
+  comments: Array<Comment>,
+  createdAt: Scalars['DateTime'],
+  updatedAt: Scalars['DateTime'],
+};
+
 
 export type InboxOrders = {
    __typename?: 'InboxOrders',
@@ -60,8 +78,9 @@ export type Order = {
   item: Scalars['String'],
   contactNum?: Maybe<Scalars['String']>,
   email?: Maybe<Scalars['String']>,
-  createdBy: User,
+  belongsTo: User,
   archive: Scalars['Boolean'],
+  convo: Convo,
   createdAt: Scalars['DateTime'],
   updatedAt: Scalars['DateTime'],
 };
@@ -77,6 +96,12 @@ export type Query = {
   bye: Scalars['String'],
   me?: Maybe<User>,
   user?: Maybe<User>,
+  getConvo: Convo,
+};
+
+
+export type QueryGetConvoArgs = {
+  orderId: Scalars['ID']
 };
 
 export type SigninData = {
@@ -112,7 +137,20 @@ export type CreateOrderMutation = (
   { __typename?: 'Mutation' }
   & { createOrder: (
     { __typename?: 'Order' }
-    & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'archive' | 'createdAt'>
+    & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'archive' | 'createdAt' | 'updatedAt'>
+  ) }
+);
+
+export type GetConvoQueryVariables = {
+  orderId: Scalars['ID']
+};
+
+
+export type GetConvoQuery = (
+  { __typename?: 'Query' }
+  & { getConvo: (
+    { __typename?: 'Convo' }
+    & Pick<Convo, 'id' | 'updatedAt' | 'createdAt'>
   ) }
 );
 
@@ -158,14 +196,14 @@ export type SigninMutation = (
         { __typename?: 'InboxOrders' }
         & { todays: Array<(
           { __typename?: 'Order' }
-          & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'archive' | 'createdAt'>
+          & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'archive' | 'createdAt' | 'updatedAt'>
         )>, others: Array<(
           { __typename?: 'Order' }
-          & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'archive' | 'createdAt'>
+          & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'archive' | 'createdAt' | 'updatedAt'>
         )> }
       )>, archive: Maybe<Array<(
         { __typename?: 'Order' }
-        & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'archive' | 'createdAt'>
+        & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'archive' | 'createdAt' | 'updatedAt'>
       )>> }
     ) }
   ) }
@@ -196,14 +234,14 @@ export type UserQuery = (
         { __typename?: 'InboxOrders' }
         & { todays: Array<(
           { __typename?: 'Order' }
-          & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'archive' | 'createdAt'>
+          & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'archive' | 'createdAt' | 'updatedAt'>
         )>, others: Array<(
           { __typename?: 'Order' }
-          & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'archive' | 'createdAt'>
+          & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'archive' | 'createdAt' | 'updatedAt'>
         )> }
       )>, archive: Maybe<Array<(
         { __typename?: 'Order' }
-        & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'archive' | 'createdAt'>
+        & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'archive' | 'createdAt' | 'updatedAt'>
       )>> }
     ) }
   )> }
@@ -250,6 +288,7 @@ export const CreateOrderDocument = gql`
     email
     archive
     createdAt
+    updatedAt
   }
 }
     `;
@@ -281,6 +320,41 @@ export function useCreateOrderMutation(baseOptions?: ApolloReactHooks.MutationHo
 export type CreateOrderMutationHookResult = ReturnType<typeof useCreateOrderMutation>;
 export type CreateOrderMutationResult = ApolloReactCommon.MutationResult<CreateOrderMutation>;
 export type CreateOrderMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateOrderMutation, CreateOrderMutationVariables>;
+export const GetConvoDocument = gql`
+    query GetConvo($orderId: ID!) {
+  getConvo(orderId: $orderId) {
+    id
+    updatedAt
+    createdAt
+  }
+}
+    `;
+
+/**
+ * __useGetConvoQuery__
+ *
+ * To run a query within a React component, call `useGetConvoQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetConvoQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetConvoQuery({
+ *   variables: {
+ *      orderId: // value for 'orderId'
+ *   },
+ * });
+ */
+export function useGetConvoQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetConvoQuery, GetConvoQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetConvoQuery, GetConvoQueryVariables>(GetConvoDocument, baseOptions);
+      }
+export function useGetConvoLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetConvoQuery, GetConvoQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetConvoQuery, GetConvoQueryVariables>(GetConvoDocument, baseOptions);
+        }
+export type GetConvoQueryHookResult = ReturnType<typeof useGetConvoQuery>;
+export type GetConvoLazyQueryHookResult = ReturnType<typeof useGetConvoLazyQuery>;
+export type GetConvoQueryResult = ApolloReactCommon.QueryResult<GetConvoQuery, GetConvoQueryVariables>;
 export const LogoutDocument = gql`
     mutation Logout {
   logout
@@ -363,6 +437,7 @@ export const SigninDocument = gql`
           email
           archive
           createdAt
+          updatedAt
         }
         others {
           id
@@ -372,6 +447,7 @@ export const SigninDocument = gql`
           email
           archive
           createdAt
+          updatedAt
         }
       }
       archive {
@@ -382,6 +458,7 @@ export const SigninDocument = gql`
         email
         archive
         createdAt
+        updatedAt
       }
     }
   }
@@ -458,6 +535,7 @@ export const UserDocument = gql`
           email
           archive
           createdAt
+          updatedAt
         }
         others {
           id
@@ -467,6 +545,7 @@ export const UserDocument = gql`
           email
           archive
           createdAt
+          updatedAt
         }
       }
       archive {
@@ -477,6 +556,7 @@ export const UserDocument = gql`
         email
         archive
         createdAt
+        updatedAt
       }
     }
   }

@@ -1,5 +1,6 @@
 import { TempState, TempActionTypes } from './temp.types'
 import { Reducer } from 'redux'
+import { AuthActionTypes } from '../auth/auth.types'
 
 const INITIAL_STATE: TempState = {
   orders: []
@@ -38,6 +39,7 @@ export const tempReducer: Reducer<TempState, any> = (
       return tempState
 
     case TempActionTypes.CLEAR_TEMP_ORDER:
+    case AuthActionTypes.SIGNOUT_SUCCESS:
       return {
         ...state,
         orders: []

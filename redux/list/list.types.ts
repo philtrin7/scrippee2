@@ -1,8 +1,4 @@
-import { Order as _Order, Orders as _Orders } from '../../generated/graphql'
-
-export interface Order extends _Order {}
-
-export interface Orders extends _Orders {}
+import { Orders } from '../../generated/graphql'
 
 export enum ListActionTypes {
   FETCH_INBOX_LIST_START = 'FETCH_INBOX_LIST_START',

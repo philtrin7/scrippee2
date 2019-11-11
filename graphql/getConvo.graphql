@@ -1,0 +1,7 @@
+query GetConvo($orderId: ID!) {
+  getConvo(orderId: $orderId) {
+    id
+    updatedAt
+    createdAt
+  }
+}
