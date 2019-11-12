@@ -1,6 +1,12 @@
 query Convo($orderId: ID!) {
   convo(orderId: $orderId) {
     id
+    comments {
+      id
+      text
+      createdAt
+      updatedAt
+    }
     updatedAt
     createdAt
   }
