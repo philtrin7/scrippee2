@@ -2,30 +2,51 @@ import React from "react";
 import ReactSVG from "react-svg";
 
 import { Formik, Form, Field } from "formik";
-import { Comment } from "../../../generated/graphql";
+import {
+  useCreateCommentMutation,
+  CreateCommentMutationVariables,
+  MutationCreateCommentArgs
+} from "../../../generated/graphql";
 import ClipLoader from "react-spinners/ClipLoader";
 
 import commentFormStyles from "./comment-form.styles.scss";
 
-type CommentForm = Pick<Comment, "text">;
+type CommentForm = MutationCreateCommentArgs;
 
-interface Props {}
+interface Props {
+  convoId: string;
+}
 
-const CommentForm: React.FC<Props> = () => {
-  const handleSubmit = () => {};
+const CommentForm: React.FC<Props> = props => {
+  const [createComment] = useCreateCommentMutation();
+
+  const handleSubmit = async (data: CreateCommentMutationVariables) => {
+    try {
+      const response = await createComment({
+        variables: {
+          convoId: props.convoId,
+          text: data.text
+        }
+      });
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="bottom">
       <Formik<CommentForm>
         initialValues={{
+          convoId: "test",
           text: ""
         }}
-        onSubmit={_data => handleSubmit()}
+        onSubmit={data => handleSubmit(data)}
         validateOnBlur={false}
         validateOnChange={false}
       >
         {() => (
-          <Form className="test">
+          <Form>
             <Field
               className="form-control"
               name="text"

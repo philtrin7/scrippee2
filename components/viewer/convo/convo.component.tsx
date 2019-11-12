@@ -1,14 +1,17 @@
 import React from "react";
 import ReactSVG from "react-svg";
 
+import { Convo } from "../../../generated/graphql";
 import SwipeLogo from "../../../static/img/swipe-logo-replace-me.png";
 import CommentForm from "../comment-form/comment-form.component";
 
 import convoViewerStyles from "./convo.styles.scss";
 
-interface Props {}
+interface Props {
+  convo: Pick<Convo, "id" | "updatedAt" | "createdAt">;
+}
 
-const ConvoViewer: React.FC<Props> = () => {
+const ConvoViewer: React.FC<Props> = props => {
   return (
     <div>
       <div className="middle">
@@ -117,7 +120,7 @@ const ConvoViewer: React.FC<Props> = () => {
         </div>
       </div>
       <div className="container comment-form">
-        <CommentForm />
+        <CommentForm convoId={props.convo.id} />
       </div>
       <style jsx>{convoViewerStyles}</style>
     </div>
