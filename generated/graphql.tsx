@@ -49,6 +49,7 @@ export type Mutation = {
   signup: Scalars['Boolean'],
   logout: Scalars['Boolean'],
   createOrder: Order,
+  createComment: Comment,
 };
 
 
@@ -71,6 +72,12 @@ export type MutationCreateOrderArgs = {
   email?: Maybe<Scalars['String']>,
   quote?: Maybe<Scalars['String']>,
   deposit?: Maybe<Scalars['String']>
+};
+
+
+export type MutationCreateCommentArgs = {
+  convoId: Scalars['ID'],
+  text: Scalars['String']
 };
 
 export type Order = {
@@ -127,6 +134,20 @@ export type ByeQueryVariables = {};
 export type ByeQuery = (
   { __typename?: 'Query' }
   & Pick<Query, 'bye'>
+);
+
+export type CreateCommentMutationVariables = {
+  convoId: Scalars['ID'],
+  text: Scalars['String']
+};
+
+
+export type CreateCommentMutation = (
+  { __typename?: 'Mutation' }
+  & { createComment: (
+    { __typename?: 'Comment' }
+    & Pick<Comment, 'text' | 'createdAt' | 'updatedAt'>
+  ) }
 );
 
 export type CreateOrderMutationVariables = {
@@ -284,6 +305,41 @@ export function useByeLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOpti
 export type ByeQueryHookResult = ReturnType<typeof useByeQuery>;
 export type ByeLazyQueryHookResult = ReturnType<typeof useByeLazyQuery>;
 export type ByeQueryResult = ApolloReactCommon.QueryResult<ByeQuery, ByeQueryVariables>;
+export const CreateCommentDocument = gql`
+    mutation CreateComment($convoId: ID!, $text: String!) {
+  createComment(convoId: $convoId, text: $text) {
+    text
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export type CreateCommentMutationFn = ApolloReactCommon.MutationFunction<CreateCommentMutation, CreateCommentMutationVariables>;
+
+/**
+ * __useCreateCommentMutation__
+ *
+ * To run a mutation, you first call `useCreateCommentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateCommentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createCommentMutation, { data, loading, error }] = useCreateCommentMutation({
+ *   variables: {
+ *      convoId: // value for 'convoId'
+ *      text: // value for 'text'
+ *   },
+ * });
+ */
+export function useCreateCommentMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreateCommentMutation, CreateCommentMutationVariables>) {
+        return ApolloReactHooks.useMutation<CreateCommentMutation, CreateCommentMutationVariables>(CreateCommentDocument, baseOptions);
+      }
+export type CreateCommentMutationHookResult = ReturnType<typeof useCreateCommentMutation>;
+export type CreateCommentMutationResult = ApolloReactCommon.MutationResult<CreateCommentMutation>;
+export type CreateCommentMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateCommentMutation, CreateCommentMutationVariables>;
 export const CreateOrderDocument = gql`
     mutation CreateOrder($item: String!, $customerName: String!, $contactNum: String, $email: String, $quote: String, $deposit: String) {
   createOrder(item: $item, customerName: $customerName, contactNum: $contactNum, email: $email, quote: $quote, deposit: $deposit) {
