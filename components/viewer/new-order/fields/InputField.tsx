@@ -107,7 +107,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   clearField: (field: string) => dispatch(clearField(field))
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(InputField)
+export default connect(mapStateToProps, mapDispatchToProps)(InputField)

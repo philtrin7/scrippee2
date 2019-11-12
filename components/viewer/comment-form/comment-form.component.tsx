@@ -1,24 +1,25 @@
-import React from "react";
-import ReactSVG from "react-svg";
+import React from 'react'
+import ReactSVG from 'react-svg'
 
-import { Formik, Form, Field } from "formik";
+import { Formik, Form, Field } from 'formik'
 import {
   useCreateCommentMutation,
   CreateCommentMutationVariables,
   MutationCreateCommentArgs
-} from "../../../generated/graphql";
-import ClipLoader from "react-spinners/ClipLoader";
+} from '../../../generated/graphql'
+import ClipLoader from 'react-spinners/ClipLoader'
+import InputFieldComment from './fields/inputFieldComment.component'
 
-import commentFormStyles from "./comment-form.styles.scss";
+import commentFormStyles from './comment-form.styles.scss'
 
-type CommentForm = MutationCreateCommentArgs;
+type CommentForm = MutationCreateCommentArgs
 
 interface Props {
-  convoId: string;
+  convoId: string
 }
 
-const CommentForm: React.FC<Props> = props => {
-  const [createComment] = useCreateCommentMutation();
+const CommentForm: React.FC<Props> = (props) => {
+  const [createComment, { loading }] = useCreateCommentMutation()
 
   const handleSubmit = async (data: CreateCommentMutationVariables) => {
     try {
@@ -27,22 +28,22 @@ const CommentForm: React.FC<Props> = props => {
           convoId: data.convoId,
           text: data.text
         }
-      });
+      })
 
-      console.log(response);
+      console.log(response)
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
-  };
+  }
 
   return (
     <div className="bottom">
       <Formik<CommentForm>
         initialValues={{
           convoId: props.convoId,
-          text: ""
+          text: ''
         }}
-        onSubmit={data => handleSubmit(data)}
+        onSubmit={(data) => handleSubmit(data)}
         validateOnBlur={false}
         validateOnChange={false}
       >
@@ -52,10 +53,14 @@ const CommentForm: React.FC<Props> = props => {
               className="form-control"
               name="text"
               placeholder="Add a comment"
+              component={InputFieldComment}
             />
             <button type="submit" className="btn prepend">
-              <ClipLoader color={"#bdbac2"} size={21} />
-              <ReactSVG src="/static/img/svg/send-plane.svg" />
+              {loading ? (
+                <ClipLoader color={'#bdbac2'} size={21} />
+              ) : (
+                <ReactSVG src="/static/img/svg/send-plane.svg" />
+              )}
             </button>
           </Form>
         )}
@@ -63,7 +68,7 @@ const CommentForm: React.FC<Props> = props => {
 
       <style jsx>{commentFormStyles}</style>
     </div>
-  );
-};
+  )
+}
 
-export default CommentForm;
+export default CommentForm
