@@ -24,10 +24,11 @@ const CommentForm: React.FC<Props> = props => {
     try {
       const response = await createComment({
         variables: {
-          convoId: props.convoId,
+          convoId: data.convoId,
           text: data.text
         }
       });
+
       console.log(response);
     } catch (error) {
       console.log(error);
@@ -38,7 +39,7 @@ const CommentForm: React.FC<Props> = props => {
     <div className="bottom">
       <Formik<CommentForm>
         initialValues={{
-          convoId: "test",
+          convoId: props.convoId,
           text: ""
         }}
         onSubmit={data => handleSubmit(data)}

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 
-import { Convo, useGetConvoLazyQuery } from "../../generated/graphql";
+import { Convo, useConvoLazyQuery } from "../../generated/graphql";
 import { RootState } from "../../redux/store";
 import { ViewerState, VIEWER_TYPES } from "../../redux/viewer/viewer.types";
 import { fetchConvo } from "../../redux/viewer/viewer.actions";
@@ -35,14 +35,14 @@ const Viewer: React.FC<Props> = props => {
   const [
     getConvo,
     { data: convoData, loading: loadingConvo }
-  ] = useGetConvoLazyQuery({
+  ] = useConvoLazyQuery({
     variables: { orderId: order.id }
   });
 
   useEffect(() => {
     getConvo();
     if (convoData) {
-      props.fetchConvo(convoData.getConvo);
+      props.fetchConvo(convoData.convo);
     }
   }, [convoData]);
 
@@ -56,7 +56,7 @@ const Viewer: React.FC<Props> = props => {
             <PulseSpinner loading={loadingConvo} />
           </div>
         ) : (
-          <ConvoViewer convo={convoData.getConvo} />
+          <ConvoViewer convo={convoData.convo} />
         )}
       </div>
     );

@@ -1,0 +1,7 @@
+query Convo($orderId: ID!) {
+  convo(orderId: $orderId) {
+    id
+    updatedAt
+    createdAt
+  }
+}

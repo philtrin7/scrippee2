@@ -107,11 +107,11 @@ export type Query = {
   bye: Scalars['String'],
   me?: Maybe<User>,
   currentUser?: Maybe<User>,
-  getConvo: Convo,
+  convo: Convo,
 };
 
 
-export type QueryGetConvoArgs = {
+export type QueryConvoArgs = {
   orderId: Scalars['ID']
 };
 
@@ -223,6 +223,19 @@ export type ByeQuery = (
   & Pick<Query, 'bye'>
 );
 
+export type ConvoQueryVariables = {
+  orderId: Scalars['ID']
+};
+
+
+export type ConvoQuery = (
+  { __typename?: 'Query' }
+  & { convo: (
+    { __typename?: 'Convo' }
+    & Pick<Convo, 'id' | 'updatedAt' | 'createdAt'>
+  ) }
+);
+
 export type CurrentUserQueryVariables = {};
 
 
@@ -248,19 +261,6 @@ export type CurrentUserQuery = (
       )>> }
     ) }
   )> }
-);
-
-export type GetConvoQueryVariables = {
-  orderId: Scalars['ID']
-};
-
-
-export type GetConvoQuery = (
-  { __typename?: 'Query' }
-  & { getConvo: (
-    { __typename?: 'Convo' }
-    & Pick<Convo, 'id' | 'updatedAt' | 'createdAt'>
-  ) }
 );
 
 export type MeQueryVariables = {};
@@ -525,6 +525,41 @@ export function useByeLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOpti
 export type ByeQueryHookResult = ReturnType<typeof useByeQuery>;
 export type ByeLazyQueryHookResult = ReturnType<typeof useByeLazyQuery>;
 export type ByeQueryResult = ApolloReactCommon.QueryResult<ByeQuery, ByeQueryVariables>;
+export const ConvoDocument = gql`
+    query Convo($orderId: ID!) {
+  convo(orderId: $orderId) {
+    id
+    updatedAt
+    createdAt
+  }
+}
+    `;
+
+/**
+ * __useConvoQuery__
+ *
+ * To run a query within a React component, call `useConvoQuery` and pass it any options that fit your needs.
+ * When your component renders, `useConvoQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useConvoQuery({
+ *   variables: {
+ *      orderId: // value for 'orderId'
+ *   },
+ * });
+ */
+export function useConvoQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<ConvoQuery, ConvoQueryVariables>) {
+        return ApolloReactHooks.useQuery<ConvoQuery, ConvoQueryVariables>(ConvoDocument, baseOptions);
+      }
+export function useConvoLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<ConvoQuery, ConvoQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<ConvoQuery, ConvoQueryVariables>(ConvoDocument, baseOptions);
+        }
+export type ConvoQueryHookResult = ReturnType<typeof useConvoQuery>;
+export type ConvoLazyQueryHookResult = ReturnType<typeof useConvoLazyQuery>;
+export type ConvoQueryResult = ApolloReactCommon.QueryResult<ConvoQuery, ConvoQueryVariables>;
 export const CurrentUserDocument = gql`
     query CurrentUser {
   currentUser {
@@ -597,41 +632,6 @@ export function useCurrentUserLazyQuery(baseOptions?: ApolloReactHooks.LazyQuery
 export type CurrentUserQueryHookResult = ReturnType<typeof useCurrentUserQuery>;
 export type CurrentUserLazyQueryHookResult = ReturnType<typeof useCurrentUserLazyQuery>;
 export type CurrentUserQueryResult = ApolloReactCommon.QueryResult<CurrentUserQuery, CurrentUserQueryVariables>;
-export const GetConvoDocument = gql`
-    query GetConvo($orderId: ID!) {
-  getConvo(orderId: $orderId) {
-    id
-    updatedAt
-    createdAt
-  }
-}
-    `;
-
-/**
- * __useGetConvoQuery__
- *
- * To run a query within a React component, call `useGetConvoQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetConvoQuery` returns an object from Apollo Client that contains loading, error, and data properties 
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetConvoQuery({
- *   variables: {
- *      orderId: // value for 'orderId'
- *   },
- * });
- */
-export function useGetConvoQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetConvoQuery, GetConvoQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetConvoQuery, GetConvoQueryVariables>(GetConvoDocument, baseOptions);
-      }
-export function useGetConvoLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetConvoQuery, GetConvoQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetConvoQuery, GetConvoQueryVariables>(GetConvoDocument, baseOptions);
-        }
-export type GetConvoQueryHookResult = ReturnType<typeof useGetConvoQuery>;
-export type GetConvoLazyQueryHookResult = ReturnType<typeof useGetConvoLazyQuery>;
-export type GetConvoQueryResult = ApolloReactCommon.QueryResult<GetConvoQuery, GetConvoQueryVariables>;
 export const MeDocument = gql`
     query Me {
   me {
