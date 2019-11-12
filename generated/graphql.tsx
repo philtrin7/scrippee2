@@ -68,7 +68,9 @@ export type MutationCreateOrderArgs = {
   item: Scalars['String'],
   customerName: Scalars['String'],
   contactNum?: Maybe<Scalars['String']>,
-  email?: Maybe<Scalars['String']>
+  email?: Maybe<Scalars['String']>,
+  quote?: Maybe<Scalars['String']>,
+  deposit?: Maybe<Scalars['String']>
 };
 
 export type Order = {
@@ -78,6 +80,8 @@ export type Order = {
   item: Scalars['String'],
   contactNum?: Maybe<Scalars['String']>,
   email?: Maybe<Scalars['String']>,
+  quote?: Maybe<Scalars['String']>,
+  deposit?: Maybe<Scalars['String']>,
   belongsTo: User,
   archive: Scalars['Boolean'],
   convo: Convo,
@@ -129,7 +133,9 @@ export type CreateOrderMutationVariables = {
   item: Scalars['String'],
   customerName: Scalars['String'],
   contactNum?: Maybe<Scalars['String']>,
-  email?: Maybe<Scalars['String']>
+  email?: Maybe<Scalars['String']>,
+  quote?: Maybe<Scalars['String']>,
+  deposit?: Maybe<Scalars['String']>
 };
 
 
@@ -137,7 +143,7 @@ export type CreateOrderMutation = (
   { __typename?: 'Mutation' }
   & { createOrder: (
     { __typename?: 'Order' }
-    & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'archive' | 'createdAt' | 'updatedAt'>
+    & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'quote' | 'deposit' | 'archive' | 'createdAt' | 'updatedAt'>
   ) }
 );
 
@@ -196,14 +202,14 @@ export type SigninMutation = (
         { __typename?: 'InboxOrders' }
         & { todays: Array<(
           { __typename?: 'Order' }
-          & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'archive' | 'createdAt' | 'updatedAt'>
+          & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'quote' | 'deposit' | 'archive' | 'createdAt' | 'updatedAt'>
         )>, others: Array<(
           { __typename?: 'Order' }
-          & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'archive' | 'createdAt' | 'updatedAt'>
+          & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'quote' | 'deposit' | 'archive' | 'createdAt' | 'updatedAt'>
         )> }
       )>, archive: Maybe<Array<(
         { __typename?: 'Order' }
-        & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'archive' | 'createdAt' | 'updatedAt'>
+        & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'quote' | 'deposit' | 'archive' | 'createdAt' | 'updatedAt'>
       )>> }
     ) }
   ) }
@@ -234,14 +240,14 @@ export type UserQuery = (
         { __typename?: 'InboxOrders' }
         & { todays: Array<(
           { __typename?: 'Order' }
-          & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'archive' | 'createdAt' | 'updatedAt'>
+          & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'quote' | 'deposit' | 'archive' | 'createdAt' | 'updatedAt'>
         )>, others: Array<(
           { __typename?: 'Order' }
-          & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'archive' | 'createdAt' | 'updatedAt'>
+          & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'quote' | 'deposit' | 'archive' | 'createdAt' | 'updatedAt'>
         )> }
       )>, archive: Maybe<Array<(
         { __typename?: 'Order' }
-        & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'archive' | 'createdAt' | 'updatedAt'>
+        & Pick<Order, 'id' | 'customerName' | 'item' | 'contactNum' | 'email' | 'quote' | 'deposit' | 'archive' | 'createdAt' | 'updatedAt'>
       )>> }
     ) }
   )> }
@@ -279,13 +285,15 @@ export type ByeQueryHookResult = ReturnType<typeof useByeQuery>;
 export type ByeLazyQueryHookResult = ReturnType<typeof useByeLazyQuery>;
 export type ByeQueryResult = ApolloReactCommon.QueryResult<ByeQuery, ByeQueryVariables>;
 export const CreateOrderDocument = gql`
-    mutation CreateOrder($item: String!, $customerName: String!, $contactNum: String, $email: String) {
-  createOrder(item: $item, customerName: $customerName, contactNum: $contactNum, email: $email) {
+    mutation CreateOrder($item: String!, $customerName: String!, $contactNum: String, $email: String, $quote: String, $deposit: String) {
+  createOrder(item: $item, customerName: $customerName, contactNum: $contactNum, email: $email, quote: $quote, deposit: $deposit) {
     id
     customerName
     item
     contactNum
     email
+    quote
+    deposit
     archive
     createdAt
     updatedAt
@@ -311,6 +319,8 @@ export type CreateOrderMutationFn = ApolloReactCommon.MutationFunction<CreateOrd
  *      customerName: // value for 'customerName'
  *      contactNum: // value for 'contactNum'
  *      email: // value for 'email'
+ *      quote: // value for 'quote'
+ *      deposit: // value for 'deposit'
  *   },
  * });
  */
@@ -435,6 +445,8 @@ export const SigninDocument = gql`
           item
           contactNum
           email
+          quote
+          deposit
           archive
           createdAt
           updatedAt
@@ -445,6 +457,8 @@ export const SigninDocument = gql`
           item
           contactNum
           email
+          quote
+          deposit
           archive
           createdAt
           updatedAt
@@ -456,6 +470,8 @@ export const SigninDocument = gql`
         item
         contactNum
         email
+        quote
+        deposit
         archive
         createdAt
         updatedAt
@@ -533,6 +549,8 @@ export const UserDocument = gql`
           item
           contactNum
           email
+          quote
+          deposit
           archive
           createdAt
           updatedAt
@@ -543,6 +561,8 @@ export const UserDocument = gql`
           item
           contactNum
           email
+          quote
+          deposit
           archive
           createdAt
           updatedAt
@@ -554,6 +574,8 @@ export const UserDocument = gql`
         item
         contactNum
         email
+        quote
+        deposit
         archive
         createdAt
         updatedAt

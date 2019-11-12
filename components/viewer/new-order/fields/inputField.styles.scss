@@ -21,3 +21,8 @@ input.hasValue {
 .error-msg {
   color: #cb2431;
 }
+
+textarea.form-control {
+  padding: 20px;
+  min-height: 100px;
+}

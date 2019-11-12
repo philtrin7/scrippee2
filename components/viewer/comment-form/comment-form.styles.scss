@@ -1,0 +1,21 @@
+.bottom {
+  padding: 30px 0;
+  border-top: 2px solid #f9f9f9;
+  form {
+    position: relative;
+  }
+  .form-control {
+    padding: 15.5px 50px 15.5px 20px;
+    height: 55px;
+    resize: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  .prepend {
+    padding: 0 15px;
+    left: auto;
+    right: 0;
+    fill: #bdbac2;
+  }
+}

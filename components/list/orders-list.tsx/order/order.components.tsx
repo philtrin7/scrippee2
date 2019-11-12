@@ -13,6 +13,7 @@ import { daysBetween } from '../../../../lib/utils/daysBetweenCalc'
 import StatusCounter from '../../../status-counter/status-counter.component'
 
 import orderComponentStyles from './order.styles.scss'
+import { processString } from '../../../../lib/utils/processString'
 
 interface Props {
   selectOrder: Function
@@ -25,6 +26,9 @@ const OrderComponent: React.FC<Props> = (props) => {
   const { id, createdAt, item, customerName } = props.order
   const { selectOrder, selectedOrder, order } = props
   const { setOrderView } = props
+
+  const processedItem = processString(item, 18, 36)
+  const processedCustomerName = processString(customerName, 14, 28)
 
   let days: number | null
   let userfriendlyDate: string = '-'
@@ -73,10 +77,10 @@ const OrderComponent: React.FC<Props> = (props) => {
         </div>
         <div className="content">
           <div className="headline">
-            <h5>{customerName}</h5>
+            <h5>{processedCustomerName}</h5>
             <span>{userfriendlyDate}</span>
           </div>
-          <p>{item}</p>
+          <p>{processedItem}</p>
         </div>
       </a>
       <style jsx>{orderComponentStyles}</style>

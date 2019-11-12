@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components'
+import { createGlobalStyle } from "styled-components";
 
 /* 
   Styles in this file is a mirror copy of _swipe.css
@@ -34,7 +34,7 @@ const GlobalStyles = createGlobalStyle`
 ====================*/
 body {
   background: #fbfbfb;
-  font-family: 'Inter UI', sans-serif;
+  font-family: "Inter UI", sans-serif;
   font-size: 16px;
   font-weight: 600;
   line-height: 1.7;
@@ -64,42 +64,42 @@ hr {
 ====================*/
 /* Inter UI */
 @font-face {
-  font-family: 'Inter UI';
+  font-family: "Inter UI";
   font-style: normal;
   font-weight: 400;
-  src: url('/static/fonts/inter-ui/Inter-UI-Regular.woff2?v=3.2')
-      format('woff2'),
-    url('/static/fonts/inter-ui/Inter-UI-Regular.woff?v=3.2') format('woff');
+  src: url("/static/fonts/inter-ui/Inter-UI-Regular.woff2?v=3.2")
+      format("woff2"),
+    url("/static/fonts/inter-ui/Inter-UI-Regular.woff?v=3.2") format("woff");
 }
 @font-face {
-  font-family: 'Inter UI';
+  font-family: "Inter UI";
   font-style: normal;
   font-weight: 500;
-  src: url('/static/fonts/inter-ui/Inter-UI-Medium.woff2?v=3.2') format('woff2'),
-    url('/static/fonts/inter-ui/Inter-UI-Medium.woff?v=3.2') format('woff');
+  src: url("/static/fonts/inter-ui/Inter-UI-Medium.woff2?v=3.2") format("woff2"),
+    url("/static/fonts/inter-ui/Inter-UI-Medium.woff?v=3.2") format("woff");
 }
 @font-face {
-  font-family: 'Inter UI';
+  font-family: "Inter UI";
   font-style: normal;
   font-weight: 600;
-  src: url('/static/fonts/inter-ui/Inter-UI-SemiBold.woff2?v=3.2')
-      format('woff2'),
-    url('/static/fonts/inter-ui/Inter-UI-SemiBold.woff?v=3.2') format('woff');
+  src: url("/static/fonts/inter-ui/Inter-UI-SemiBold.woff2?v=3.2")
+      format("woff2"),
+    url("/static/fonts/inter-ui/Inter-UI-SemiBold.woff?v=3.2") format("woff");
 }
 @font-face {
-  font-family: 'Inter UI';
+  font-family: "Inter UI";
   font-style: normal;
   font-weight: 700;
-  src: url('/static/fonts/inter-ui/Inter-UI-Bold.woff2?v=3.2') format('woff2'),
-    url('/static/fonts/inter-ui/Inter-UI-Bold.woff?v=3.2') format('woff');
+  src: url("/static/fonts/inter-ui/Inter-UI-Bold.woff2?v=3.2") format("woff2"),
+    url("/static/fonts/inter-ui/Inter-UI-Bold.woff?v=3.2") format("woff");
 }
 @font-face {
-  font-family: 'Inter UI';
+  font-family: "Inter UI";
   font-style: normal;
   font-weight: 800;
-  src: url('/static/fonts/inter-ui/Inter-UI-ExtraBold.woff2?v=3.2')
-      format('woff2'),
-    url('/static/fonts/inter-ui/Inter-UI-ExtraBold.woff?v=3.2') format('woff');
+  src: url("/static/fonts/inter-ui/Inter-UI-ExtraBold.woff2?v=3.2")
+      format("woff2"),
+    url("/static/fonts/inter-ui/Inter-UI-ExtraBold.woff?v=3.2") format("woff");
 }
 /* Forms
 ==================== */
@@ -109,7 +109,7 @@ hr {
   margin-right: -15px;
   margin-left: -15px;
 }
-.form-row > [class*='col-'] {
+.form-row > [class*="col-"] {
   padding-right: 15px;
   padding-left: 15px;
 }
@@ -161,7 +161,7 @@ hr {
   line-height: 0;
   margin-bottom: 0 !important;
 }
-input[type='search']::-webkit-search-cancel-button {
+input[type="search"]::-webkit-search-cancel-button {
   display: inline-block;
   width: 24px;
   height: 24px;
@@ -858,7 +858,24 @@ a.dropdown-item {
 }
 /* 7. Chat
 ====================
->>> viewer.component.tsx
+>>> viewer.component.tsx */
+.comment-form form {
+  position: relative;
+}
+.comment-form .form-control {
+  padding: 15.5px 50px 15.5px 20px;
+  height: 55px;
+  resize: none;
+}
+.comment-form .form-control::-webkit-scrollbar {
+  display: none;
+}
+.comment-form .prepend {
+  padding: 0 15px;
+  left: auto;
+  right: 0px;
+  fill: #bdbac2;
+}
 
 /* 8. Utility
 ====================
@@ -1347,6 +1364,6 @@ a.dropdown-item {
   }
 }
 
-`
+`;
 
-export default GlobalStyles
+export default GlobalStyles;

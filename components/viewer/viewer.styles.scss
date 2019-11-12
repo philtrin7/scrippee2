@@ -63,3 +63,15 @@ $color_3: #bdbac2;
     }
   }
 }
+
+.input-inline {
+  display: inline-flex;
+  flex-flow: inherit;
+  -ms-flex-flow: inherit;
+  .input-left {
+    margin-right: 7px;
+  }
+  .input-right {
+    margin-left: 7px;
+  }
+}

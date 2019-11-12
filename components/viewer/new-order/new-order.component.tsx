@@ -25,7 +25,10 @@ import { setOrderView } from '../../../redux/viewer/viewer.actions'
 
 import viewerStyles from '../viewer.styles.scss'
 
-type OrderForm = Pick<Order, 'customerName' | 'item' | 'contactNum' | 'email'>
+type OrderForm = Pick<
+  Order,
+  'customerName' | 'item' | 'contactNum' | 'email' | 'deposit' | 'quote'
+>
 
 interface Props {
   clearTempOrder: Function
@@ -47,7 +50,9 @@ const NewOrderViewer: React.FC<Props> = (props) => {
           item: data.item,
           customerName: data.customerName,
           email: data.email,
-          contactNum: data.contactNum
+          contactNum: data.contactNum,
+          quote: data.quote,
+          deposit: data.deposit
         },
         update: (store, { data }) => {
           if (!data) {
@@ -124,7 +129,9 @@ const NewOrderViewer: React.FC<Props> = (props) => {
                         customerName: '',
                         item: '',
                         contactNum: '',
-                        email: ''
+                        email: '',
+                        quote: '',
+                        deposit: ''
                       }}
                       onSubmit={(data, { setErrors, resetForm }) =>
                         handleSubmit(data, setErrors, resetForm)
@@ -155,6 +162,22 @@ const NewOrderViewer: React.FC<Props> = (props) => {
                             placeholder="Email"
                             component={InputField}
                           />
+                          <div className="input-inline">
+                            <div className="input-left">
+                              <Field
+                                name="quote"
+                                placeholder="Quote (optional)"
+                                component={InputField}
+                              />
+                            </div>
+                            <div className="input-right">
+                              <Field
+                                name="deposit"
+                                placeholder="Deposit (optional)"
+                                component={InputField}
+                              />
+                            </div>
+                          </div>
                           <div className="new-order-footer">
                             <button className="btn primary" type="submit">
                               {loading ? (
