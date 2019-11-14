@@ -31,7 +31,7 @@ export type Convo = {
    __typename?: 'Convo',
   id: Scalars['ID'],
   order: Order,
-  comments: Array<Comment>,
+  comments?: Maybe<Array<Comment>>,
   createdAt: Scalars['DateTime'],
   updatedAt: Scalars['DateTime'],
 };
@@ -108,11 +108,17 @@ export type Query = {
   me?: Maybe<User>,
   currentUser?: Maybe<User>,
   convo: Convo,
+  comments: Array<Comment>,
 };
 
 
 export type QueryConvoArgs = {
   orderId: Scalars['ID']
+};
+
+
+export type QueryCommentsArgs = {
+  convoId: Scalars['ID']
 };
 
 export type SigninData = {
@@ -223,6 +229,19 @@ export type ByeQuery = (
   & Pick<Query, 'bye'>
 );
 
+export type CommentsQueryVariables = {
+  convoId: Scalars['ID']
+};
+
+
+export type CommentsQuery = (
+  { __typename?: 'Query' }
+  & { comments: Array<(
+    { __typename?: 'Comment' }
+    & Pick<Comment, 'id' | 'text' | 'createdAt' | 'updatedAt'>
+  )> }
+);
+
 export type ConvoQueryVariables = {
   orderId: Scalars['ID']
 };
@@ -233,10 +252,6 @@ export type ConvoQuery = (
   & { convo: (
     { __typename?: 'Convo' }
     & Pick<Convo, 'id' | 'updatedAt' | 'createdAt'>
-    & { comments: Array<(
-      { __typename?: 'Comment' }
-      & Pick<Comment, 'id' | 'text' | 'createdAt' | 'updatedAt'>
-    )> }
   ) }
 );
 
@@ -529,16 +544,46 @@ export function useByeLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOpti
 export type ByeQueryHookResult = ReturnType<typeof useByeQuery>;
 export type ByeLazyQueryHookResult = ReturnType<typeof useByeLazyQuery>;
 export type ByeQueryResult = ApolloReactCommon.QueryResult<ByeQuery, ByeQueryVariables>;
+export const CommentsDocument = gql`
+    query Comments($convoId: ID!) {
+  comments(convoId: $convoId) {
+    id
+    text
+    createdAt
+    updatedAt
+  }
+}
+    `;
+
+/**
+ * __useCommentsQuery__
+ *
+ * To run a query within a React component, call `useCommentsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCommentsQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCommentsQuery({
+ *   variables: {
+ *      convoId: // value for 'convoId'
+ *   },
+ * });
+ */
+export function useCommentsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<CommentsQuery, CommentsQueryVariables>) {
+        return ApolloReactHooks.useQuery<CommentsQuery, CommentsQueryVariables>(CommentsDocument, baseOptions);
+      }
+export function useCommentsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<CommentsQuery, CommentsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<CommentsQuery, CommentsQueryVariables>(CommentsDocument, baseOptions);
+        }
+export type CommentsQueryHookResult = ReturnType<typeof useCommentsQuery>;
+export type CommentsLazyQueryHookResult = ReturnType<typeof useCommentsLazyQuery>;
+export type CommentsQueryResult = ApolloReactCommon.QueryResult<CommentsQuery, CommentsQueryVariables>;
 export const ConvoDocument = gql`
     query Convo($orderId: ID!) {
   convo(orderId: $orderId) {
     id
-    comments {
-      id
-      text
-      createdAt
-      updatedAt
-    }
     updatedAt
     createdAt
   }

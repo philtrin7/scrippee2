@@ -1,0 +1,8 @@
+query Comments($convoId: ID!) {
+  comments(convoId: $convoId) {
+    id
+    text
+    createdAt
+    updatedAt
+  }
+}

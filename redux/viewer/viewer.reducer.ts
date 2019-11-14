@@ -1,4 +1,9 @@
-import { ViewerState, ViewerActionTypes, VIEWER_TYPES } from './viewer.types'
+import {
+  ViewerState,
+  ViewerActionTypes,
+  VIEWER_TYPES,
+  Comments
+} from './viewer.types'
 import { Reducer } from 'redux'
 import { TempActionTypes } from '../temp/temp.types'
 import { Order, Convo } from '../../generated/graphql'
@@ -7,7 +12,8 @@ import { AuthActionTypes } from '../auth/auth.types'
 const INITIAL_STATE: ViewerState = {
   type: undefined,
   order: undefined,
-  convo: undefined
+  convo: undefined,
+  comments: undefined
 }
 
 interface ViewerPayload {
@@ -17,6 +23,7 @@ interface ViewerPayload {
     | AuthActionTypes.SIGNOUT_SUCCESS
   order: Order
   convo: Pick<Convo, 'id' | 'updatedAt' | 'createdAt'>
+  comments: Comments
 }
 
 export const viewerReducer: Reducer<ViewerState, ViewerPayload> = (
@@ -44,6 +51,11 @@ export const viewerReducer: Reducer<ViewerState, ViewerPayload> = (
       return {
         ...state,
         convo: action.convo
+      }
+    case ViewerActionTypes.FETCH_COMMENTS:
+      return {
+        ...state,
+        comments: action.comments
       }
     case TempActionTypes.CLEAR_TEMP_ORDER:
     case AuthActionTypes.SIGNOUT_SUCCESS:
