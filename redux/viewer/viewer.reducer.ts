@@ -2,7 +2,6 @@ import {
   ViewerState,
   ViewerActionTypes,
   VIEWER_TYPES,
-  Comments,
   OrderConvo
 } from './viewer.types'
 import { Reducer } from 'redux'
@@ -13,8 +12,7 @@ import { AuthActionTypes } from '../auth/auth.types'
 const INITIAL_STATE: ViewerState = {
   type: undefined,
   order: undefined,
-  convo: undefined,
-  comments: undefined
+  convo: undefined
 }
 
 interface ViewerPayload {
@@ -24,7 +22,6 @@ interface ViewerPayload {
     | AuthActionTypes.SIGNOUT_SUCCESS
   order: Order
   convo: OrderConvo
-  comments: Comments
 }
 
 export const viewerReducer: Reducer<ViewerState, ViewerPayload> = (
@@ -52,11 +49,6 @@ export const viewerReducer: Reducer<ViewerState, ViewerPayload> = (
       return {
         ...state,
         convo: action.convo
-      }
-    case ViewerActionTypes.FETCH_COMMENTS:
-      return {
-        ...state,
-        comments: action.comments
       }
     case TempActionTypes.CLEAR_TEMP_ORDER:
     case AuthActionTypes.SIGNOUT_SUCCESS:

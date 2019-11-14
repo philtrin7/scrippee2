@@ -1,4 +1,4 @@
-import { ViewerActionTypes, Comments, OrderConvo } from './viewer.types'
+import { ViewerActionTypes, OrderConvo } from './viewer.types'
 import { Order } from '../../generated/graphql'
 
 export const setNewOrderView = () => {
@@ -24,12 +24,5 @@ export const fetchConvo = (convo: OrderConvo) => {
   return {
     type: ViewerActionTypes.FETCH_CONVO,
     convo
-  }
-}
-
-export const fetchComments = (comments: Comments) => {
-  return {
-    type: ViewerActionTypes.FETCH_COMMENTS,
-    comments
   }
 }
