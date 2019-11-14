@@ -25,7 +25,7 @@ const CommentForm: React.FC<Props> = (props) => {
     try {
       const response = await createComment({
         variables: {
-          convoId: data.convoId,
+          convoId: props.convoId,
           text: data.text
         }
       })

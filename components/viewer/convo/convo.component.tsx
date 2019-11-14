@@ -1,16 +1,16 @@
 import React from 'react'
 
-import { OrderConvo } from '../../../redux/viewer/viewer.types'
-
 import CommentForm from '../comment-form/comment-form.component'
 
 import convoViewerStyles from './convo.styles.scss'
+import { OrderConvo } from '../../../redux/viewer/viewer.types'
 
 interface Props {
   convo: OrderConvo
 }
 
 const ConvoViewer: React.FC<Props> = (props) => {
+  const { convo } = props
   return (
     <div>
       <div className="middle">
@@ -30,7 +30,7 @@ const ConvoViewer: React.FC<Props> = (props) => {
         </div>
       </div>
       <div className="container comment-form">
-        <CommentForm convoId={props.convo.id} />
+        <CommentForm convoId={convo.id} />
       </div>
       <style jsx>{convoViewerStyles}</style>
     </div>

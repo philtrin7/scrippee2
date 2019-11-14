@@ -233,6 +233,10 @@ export type ConvoQuery = (
   & { convo: (
     { __typename?: 'Convo' }
     & Pick<Convo, 'id' | 'updatedAt' | 'createdAt'>
+    & { comments: Maybe<Array<(
+      { __typename?: 'Comment' }
+      & Pick<Comment, 'id' | 'text' | 'createdAt' | 'updatedAt'>
+    )>> }
   ) }
 );
 
@@ -529,6 +533,12 @@ export const ConvoDocument = gql`
     query Convo($orderId: ID!) {
   convo(orderId: $orderId) {
     id
+    comments {
+      id
+      text
+      createdAt
+      updatedAt
+    }
     updatedAt
     createdAt
   }

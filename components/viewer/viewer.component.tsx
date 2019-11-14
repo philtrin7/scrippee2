@@ -1,9 +1,13 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 
-import { Convo, useConvoLazyQuery } from '../../generated/graphql'
+import { useConvoLazyQuery } from '../../generated/graphql'
 import { RootState } from '../../redux/store'
-import { ViewerState, VIEWER_TYPES } from '../../redux/viewer/viewer.types'
+import {
+  ViewerState,
+  VIEWER_TYPES,
+  OrderConvo
+} from '../../redux/viewer/viewer.types'
 import { fetchConvo } from '../../redux/viewer/viewer.actions'
 import { Dispatch } from 'redux'
 
@@ -86,8 +90,7 @@ const mapStateToProps = (state: RootState) => {
 }
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  fetchConvo: (convo: Pick<Convo, 'id' | 'updatedAt' | 'createdAt'>) =>
-    dispatch(fetchConvo(convo))
+  fetchConvo: (convo: OrderConvo) => dispatch(fetchConvo(convo))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Viewer)
