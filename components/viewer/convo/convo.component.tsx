@@ -2,9 +2,9 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 
-import { Convo, useCommentsLazyQuery } from '../../../generated/graphql'
+import { useCommentsLazyQuery } from '../../../generated/graphql'
 import { fetchComments } from '../../../redux/viewer/viewer.actions'
-import { Comments } from '../../../redux/viewer/viewer.types'
+import { Comments, OrderConvo } from '../../../redux/viewer/viewer.types'
 import { RootState } from '../../../redux/store'
 
 import CommentForm from '../comment-form/comment-form.component'
@@ -13,7 +13,7 @@ import convoViewerStyles from './convo.styles.scss'
 
 interface Props {
   fetchComments: Function
-  convo: Pick<Convo, 'id' | 'updatedAt' | 'createdAt'>
+  convo: OrderConvo
   comments: Comments | undefined
 }
 

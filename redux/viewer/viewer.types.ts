@@ -5,10 +5,12 @@ export type Comments = Pick<
   'id' | 'text' | 'updatedAt' | 'createdAt'
 >[]
 
+export type OrderConvo = Pick<Convo, 'id' | 'updatedAt' | 'createdAt'>
+
 export interface ViewerState {
   type?: VIEWER_TYPES
   order?: Order
-  convo?: Pick<Convo, 'id' | 'updatedAt' | 'createdAt'>
+  convo?: OrderConvo
   comments?: Comments
 }
 
