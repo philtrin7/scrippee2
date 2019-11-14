@@ -1,17 +1,17 @@
-import React from "react";
-import ReactSVG from "react-svg";
+import React from 'react'
+import ReactSVG from 'react-svg'
 
-import { Convo } from "../../../generated/graphql";
-import SwipeLogo from "../../../static/img/swipe-logo-replace-me.png";
-import CommentForm from "../comment-form/comment-form.component";
+import { Convo } from '../../../generated/graphql'
+import SwipeLogo from '../../../static/img/swipe-logo-replace-me.png'
+import CommentForm from '../comment-form/comment-form.component'
 
-import convoViewerStyles from "./convo.styles.scss";
+import convoViewerStyles from './convo.styles.scss'
 
 interface Props {
-  convo: Pick<Convo, "id" | "updatedAt" | "createdAt">;
+  convo: Pick<Convo, 'id' | 'updatedAt' | 'createdAt'>
 }
 
-const ConvoViewer: React.FC<Props> = props => {
+const ConvoViewer: React.FC<Props> = (props) => {
   return (
     <div>
       <div className="middle">
@@ -49,11 +49,11 @@ const ConvoViewer: React.FC<Props> = props => {
                     <div className="attachment">
                       <a href="/" className="round">
                         <ReactSVG
-                          beforeInjection={svg => {
+                          beforeInjection={(svg) => {
                             svg.setAttribute(
-                              "style",
-                              "width: 20px; height: 20px"
-                            );
+                              'style',
+                              'width: 20px; height: 20px'
+                            )
                           }}
                           src="/static/img/svg/file-text.svg"
                         />
@@ -107,8 +107,8 @@ const ConvoViewer: React.FC<Props> = props => {
                 <span>
                   10:15pm
                   <ReactSVG
-                    beforeInjection={svg => {
-                      svg.setAttribute("style", "width: 20px; height: 20px");
+                    beforeInjection={(svg) => {
+                      svg.setAttribute('style', 'width: 20px; height: 20px')
                     }}
                     wrapper="span"
                     src="/static/img/svg/double-tick.svg"
@@ -124,7 +124,7 @@ const ConvoViewer: React.FC<Props> = props => {
       </div>
       <style jsx>{convoViewerStyles}</style>
     </div>
-  );
-};
+  )
+}
 
-export default ConvoViewer;
+export default ConvoViewer

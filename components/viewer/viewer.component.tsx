@@ -1,35 +1,36 @@
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
+import React, { useEffect } from 'react'
+import { connect } from 'react-redux'
 
-import { Convo, useConvoLazyQuery } from "../../generated/graphql";
-import { RootState } from "../../redux/store";
-import { ViewerState, VIEWER_TYPES } from "../../redux/viewer/viewer.types";
-import { fetchConvo } from "../../redux/viewer/viewer.actions";
-import { Dispatch } from "redux";
+import { Convo, useConvoLazyQuery } from '../../generated/graphql'
+import { RootState } from '../../redux/store'
+import { ViewerState, VIEWER_TYPES } from '../../redux/viewer/viewer.types'
+import { fetchConvo } from '../../redux/viewer/viewer.actions'
+import { Dispatch } from 'redux'
 
-import HeaderViewer from "./header/header.component";
-import ConvoViewer from "./convo/convo.component";
-import NewOrderViewer from "./new-order/new-order.component";
-import { DefaultView } from "./default/defaultView.component";
-import { PulseSpinner } from "../loading-spinner/PulseSpinner";
+import HeaderViewer from './header/header.component'
+import ConvoViewer from './convo/convo.component'
+import NewOrderViewer from './new-order/new-order.component'
+import { DefaultView } from './default/defaultView.component'
+import { PulseSpinner } from '../loading-spinner/PulseSpinner'
+import { ErrorPlaceholder } from './error/placeholder/error-placeholder.components'
 
-import viewerStyles from "./viewer.styles.scss";
+import viewerStyles from './viewer.styles.scss'
 
 interface Props {
-  fetchConvo: Function;
-  viewer: ViewerState;
+  fetchConvo: Function
+  viewer: ViewerState
 }
 
-const Viewer: React.FC<Props> = props => {
-  const { order } = props.viewer;
-  let Viewer: any = props.viewer.type;
+const Viewer: React.FC<Props> = (props) => {
+  const { order } = props.viewer
+  let Viewer: any = props.viewer.type
 
   if (Viewer === VIEWER_TYPES.NEW_ORDER) {
-    return <NewOrderViewer />;
+    return <NewOrderViewer />
   }
 
   if (!order) {
-    return <DefaultView />;
+    return <DefaultView />
   }
 
   const [
@@ -37,14 +38,14 @@ const Viewer: React.FC<Props> = props => {
     { data: convoData, loading: loadingConvo }
   ] = useConvoLazyQuery({
     variables: { orderId: order.id }
-  });
+  })
 
   useEffect(() => {
-    getConvo();
+    getConvo()
     if (convoData) {
-      props.fetchConvo(convoData.convo);
+      props.fetchConvo(convoData.convo)
     }
-  }, [convoData]);
+  }, [convoData])
 
   if (Viewer === VIEWER_TYPES.ORDER) {
     Viewer = (
@@ -59,9 +60,9 @@ const Viewer: React.FC<Props> = props => {
           <ConvoViewer convo={convoData.convo} />
         )}
       </div>
-    );
+    )
   } else {
-    Viewer = <div>Hmmm... this shouldn't have happened</div>;
+    Viewer = <ErrorPlaceholder />
   }
 
   return (
@@ -75,18 +76,18 @@ const Viewer: React.FC<Props> = props => {
       </div>
       <style jsx>{viewerStyles}</style>
     </div>
-  );
-};
+  )
+}
 
 const mapStateToProps = (state: RootState) => {
   return {
     viewer: state.viewer
-  };
-};
+  }
+}
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  fetchConvo: (convo: Pick<Convo, "id" | "updatedAt" | "createdAt">) =>
+  fetchConvo: (convo: Pick<Convo, 'id' | 'updatedAt' | 'createdAt'>) =>
     dispatch(fetchConvo(convo))
-});
+})
 
-export default connect(mapStateToProps, mapDispatchToProps)(Viewer);
+export default connect(mapStateToProps, mapDispatchToProps)(Viewer)
