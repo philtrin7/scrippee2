@@ -4,13 +4,23 @@ import CommentForm from '../comment-form/comment-form.component'
 
 import convoViewerStyles from './convo.styles.scss'
 import { OrderConvo } from '../../../redux/viewer/viewer.types'
+import { Order } from '../../../generated/graphql'
 
 interface Props {
   convo: OrderConvo
+  order: Order
 }
 
 const ConvoViewer: React.FC<Props> = (props) => {
-  const { convo } = props
+  const { convo, order } = props
+
+  let Comment: any = <p></p>
+  if (convo.comments) {
+    Comment = convo.comments.map((comment) => {
+      return <p key={comment.id}>{comment.text}</p>
+    })
+  }
+
   return (
     <div>
       <div className="middle">
@@ -19,9 +29,7 @@ const ConvoViewer: React.FC<Props> = (props) => {
             <li>
               <div className="content">
                 <div className="message">
-                  <div className="bubble">
-                    <p>Hello</p>
-                  </div>
+                  <div className="bubble">{Comment}</div>
                 </div>
                 <span>07:30am</span>
               </div>
@@ -30,7 +38,7 @@ const ConvoViewer: React.FC<Props> = (props) => {
         </div>
       </div>
       <div className="container comment-form">
-        <CommentForm convoId={convo.id} />
+        <CommentForm convoId={convo.id} order={order} />
       </div>
       <style jsx>{convoViewerStyles}</style>
     </div>

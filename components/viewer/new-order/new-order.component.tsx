@@ -1,43 +1,43 @@
-import React from "react";
-import ReactSVG from "react-svg";
-import Router from "next/router";
+import React from 'react'
+import ReactSVG from 'react-svg'
+import Router from 'next/router'
 
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
+import { connect } from 'react-redux'
+import { Dispatch } from 'redux'
 
-import { toast } from "react-toastify";
-import { Formik, Field, Form } from "formik";
-import InputField from "./fields/InputField";
-import PulseLoader from "react-spinners/PulseLoader";
+import { toast } from 'react-toastify'
+import { Formik, Field, Form } from 'formik'
+import InputField from './fields/InputField'
+import PulseLoader from 'react-spinners/PulseLoader'
 
-import { formatValidationErrors } from "../../../lib/utils/formatError";
+import { formatValidationErrors } from '../../../lib/utils/formatError'
 import {
   useCreateOrderMutation,
   CreateOrderMutationVariables,
   CurrentUserQuery,
   CurrentUserDocument,
   Order
-} from "../../../generated/graphql";
+} from '../../../generated/graphql'
 
-import { clearTempOrder } from "../../../redux/temp/temp.actions";
-import { selectOrder } from "../../../redux/selectOrder/selectOrder.actions";
-import { setOrderView } from "../../../redux/viewer/viewer.actions";
+import { clearTempOrder } from '../../../redux/temp/temp.actions'
+import { selectOrder } from '../../../redux/selectOrder/selectOrder.actions'
+import { setOrderView } from '../../../redux/viewer/viewer.actions'
 
-import viewerStyles from "../viewer.styles.scss";
+import viewerStyles from '../viewer.styles.scss'
 
 type OrderForm = Pick<
   Order,
-  "customerName" | "item" | "contactNum" | "email" | "deposit" | "quote"
->;
+  'customerName' | 'item' | 'contactNum' | 'email' | 'deposit' | 'quote'
+>
 
 interface Props {
-  clearTempOrder: Function;
-  selectOrder: Function;
-  setOrderView: Function;
+  clearTempOrder: Function
+  selectOrder: Function
+  setOrderView: Function
 }
 
-const NewOrderViewer: React.FC<Props> = props => {
-  const [createOrder, { loading }] = useCreateOrderMutation();
+const NewOrderViewer: React.FC<Props> = (props) => {
+  const [createOrder, { loading }] = useCreateOrderMutation()
 
   const handleSubmit = async (
     data: CreateOrderMutationVariables,
@@ -56,48 +56,48 @@ const NewOrderViewer: React.FC<Props> = props => {
         },
         update: (store, { data }) => {
           if (!data) {
-            return null;
+            return null
           }
           if (data.createOrder) {
             const dataStore = store.readQuery<CurrentUserQuery>({
               query: CurrentUserDocument
-            });
+            })
             if (
               dataStore &&
               dataStore.currentUser &&
               dataStore.currentUser.orders.inbox
             ) {
-              const { todays } = dataStore.currentUser.orders.inbox;
-              todays.unshift(data.createOrder);
+              const { todays } = dataStore.currentUser.orders.inbox
+              todays.unshift(data.createOrder)
 
               store.writeQuery<CurrentUserQuery>({
                 query: CurrentUserDocument,
                 data: dataStore
-              });
+              })
             }
           }
         }
-      });
+      })
       if (response && response.data) {
-        resetForm();
-        toast.success("Order successfully created");
-        props.clearTempOrder();
-        props.selectOrder(response.data.createOrder.id);
-        props.setOrderView(response.data.createOrder);
+        resetForm()
+        toast.success('Order successfully created')
+        props.clearTempOrder()
+        props.selectOrder(response.data.createOrder.id)
+        props.setOrderView(response.data.createOrder)
       }
     } catch (error) {
-      const validationErrors = formatValidationErrors(error);
+      const validationErrors = formatValidationErrors(error)
       if (validationErrors) {
-        toast.error("There were problem(s) creating your order.");
-        setErrors(validationErrors);
-      } else if (error.graphQLErrors[0].extensions.code === "FORBIDDEN") {
-        toast.error(error.graphQLErrors[0].extensions.exception.stacktrace[0]);
-        Router.push("/signin");
+        toast.error('There were problem(s) creating your order.')
+        setErrors(validationErrors)
+      } else if (error.graphQLErrors[0].extensions.code === 'FORBIDDEN') {
+        toast.error(error.graphQLErrors[0].extensions.exception.stacktrace[0])
+        Router.push('/signin')
       } else {
-        console.log("Error: ", 'Unexpected error. Path: ["createOrder"]');
+        console.log('Error: ', 'Unexpected error. Path: ["createOrder"]')
       }
     }
-  };
+  }
   return (
     <div className="viewer">
       <div className="tab-content">
@@ -109,7 +109,7 @@ const NewOrderViewer: React.FC<Props> = props => {
                   <h5>
                     New Order
                     <ReactSVG
-                      wrapper={"span"}
+                      wrapper={'span'}
                       src="/static/img/svg/new-order.svg"
                     />
                   </h5>
@@ -118,7 +118,7 @@ const NewOrderViewer: React.FC<Props> = props => {
                     type="button"
                     className="btn round"
                     onClick={() => {
-                      props.clearTempOrder();
+                      props.clearTempOrder()
                     }}
                   >
                     <i>
@@ -130,12 +130,12 @@ const NewOrderViewer: React.FC<Props> = props => {
                   <div className="details">
                     <Formik<OrderForm>
                       initialValues={{
-                        customerName: "",
-                        item: "",
-                        contactNum: "",
-                        email: "",
-                        quote: "",
-                        deposit: ""
+                        customerName: '',
+                        item: '',
+                        contactNum: '',
+                        email: '',
+                        quote: '',
+                        deposit: ''
                       }}
                       onSubmit={(data, { setErrors, resetForm }) =>
                         handleSubmit(data, setErrors, resetForm)
@@ -186,12 +186,12 @@ const NewOrderViewer: React.FC<Props> = props => {
                             <button className="btn primary" type="submit">
                               {loading ? (
                                 <PulseLoader
-                                  margin={"2px"}
-                                  color={"white"}
+                                  margin={'2px'}
+                                  color={'white'}
                                   size={8}
                                 />
                               ) : (
-                                "Create Order"
+                                'Create Order'
                               )}
                             </button>
                           </div>
@@ -207,13 +207,13 @@ const NewOrderViewer: React.FC<Props> = props => {
       </div>
       <style jsx>{viewerStyles}</style>
     </div>
-  );
-};
+  )
+}
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   clearTempOrder: () => dispatch(clearTempOrder()),
   selectOrder: (orderId: string) => dispatch(selectOrder(orderId)),
   setOrderView: (order: Order) => dispatch(setOrderView(order))
-});
+})
 
-export default connect(null, mapDispatchToProps)(NewOrderViewer);
+export default connect(null, mapDispatchToProps)(NewOrderViewer)

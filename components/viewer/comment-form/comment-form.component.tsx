@@ -5,31 +5,73 @@ import { Formik, Form, Field } from 'formik'
 import {
   useCreateCommentMutation,
   CreateCommentMutationVariables,
-  MutationCreateCommentArgs
+  MutationCreateCommentArgs,
+  ConvoQuery,
+  ConvoDocument,
+  Order
 } from '../../../generated/graphql'
 import ClipLoader from 'react-spinners/ClipLoader'
 import InputFieldComment from './fields/inputFieldComment.component'
 
 import commentFormStyles from './comment-form.styles.scss'
+import { connect } from 'react-redux'
+import { Dispatch } from 'redux'
+import { clearTempOrder } from '../../../redux/temp/temp.actions'
+import { selectOrder } from '../../../redux/selectOrder/selectOrder.actions'
+import { setOrderView } from '../../../redux/viewer/viewer.actions'
 
 type CommentForm = MutationCreateCommentArgs
 
 interface Props {
+  clearTempOrder: Function
+  setOrderView: Function
+  selectOrder: Function
   convoId: string
+  order: Order
 }
 
 const CommentForm: React.FC<Props> = (props) => {
   const [createComment, { loading }] = useCreateCommentMutation()
 
-  const handleSubmit = async (data: CreateCommentMutationVariables) => {
+  const handleSubmit = async (
+    formData: CreateCommentMutationVariables,
+    resetForm: Function
+  ) => {
     try {
       const response = await createComment({
         variables: {
           convoId: props.convoId,
-          text: data.text
+          text: formData.text
+        },
+        update: (store, { data }) => {
+          if (!data) {
+            return null
+          }
+          if (data.createComment) {
+            const dataStore = store.readQuery<ConvoQuery>({
+              query: ConvoDocument,
+              variables: { orderId: props.order.id }
+            })
+
+            if (dataStore && dataStore.convo && dataStore.convo.comments) {
+              const { comments } = dataStore.convo
+              comments.push(data.createComment)
+
+              store.writeQuery<ConvoQuery>({
+                query: ConvoDocument,
+                variables: { orderId: props.order.id },
+                data: {
+                  convo: dataStore.convo
+                }
+              })
+            }
+          }
         }
       })
-
+      if (response && response.data) {
+        resetForm()
+        props.setOrderView(props.order)
+      }
       console.log(response)
     } catch (error) {
       console.log(error)
@@ -43,7 +85,7 @@ const CommentForm: React.FC<Props> = (props) => {
           convoId: props.convoId,
           text: ''
         }}
-        onSubmit={(data) => handleSubmit(data)}
+        onSubmit={(data, { resetForm }) => handleSubmit(data, resetForm)}
         validateOnBlur={false}
         validateOnChange={false}
       >
@@ -71,4 +113,10 @@ const CommentForm: React.FC<Props> = (props) => {
   )
 }
 
-export default CommentForm
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  clearTempOrder: () => dispatch(clearTempOrder()),
+  selectOrder: (orderId: string) => dispatch(selectOrder(orderId)),
+  setOrderView: (order: Order) => dispatch(setOrderView(order))
+})
+
+export default connect(null, mapDispatchToProps)(CommentForm)

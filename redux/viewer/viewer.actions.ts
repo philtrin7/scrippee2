@@ -26,3 +26,9 @@ export const fetchConvo = (convo: OrderConvo) => {
     convo
   }
 }
+
+export const createCommentSuccess = () => {
+  return {
+    type: ViewerActionTypes.CREATE_COMMENT_SUCCESS
+  }
+}

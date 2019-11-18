@@ -193,7 +193,7 @@ export type CreateCommentMutation = (
   { __typename?: 'Mutation' }
   & { createComment: (
     { __typename?: 'Comment' }
-    & Pick<Comment, 'text' | 'createdAt' | 'updatedAt'>
+    & Pick<Comment, 'id' | 'text' | 'createdAt' | 'updatedAt'>
   ) }
 );
 
@@ -421,6 +421,7 @@ export type SignupMutationOptions = ApolloReactCommon.BaseMutationOptions<Signup
 export const CreateCommentDocument = gql`
     mutation CreateComment($convoId: ID!, $text: String!) {
   createComment(convoId: $convoId, text: $text) {
+    id
     text
     createdAt
     updatedAt

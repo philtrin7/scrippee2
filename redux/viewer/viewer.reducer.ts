@@ -50,6 +50,7 @@ export const viewerReducer: Reducer<ViewerState, ViewerPayload> = (
         ...state,
         convo: action.convo
       }
+
     case TempActionTypes.CLEAR_TEMP_ORDER:
     case AuthActionTypes.SIGNOUT_SUCCESS:
       return {

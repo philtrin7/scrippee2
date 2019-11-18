@@ -61,7 +61,7 @@ const Viewer: React.FC<Props> = (props) => {
             <PulseSpinner loading={loadingConvo} />
           </div>
         ) : (
-          <ConvoViewer convo={convoData.convo} />
+          <ConvoViewer convo={convoData.convo} order={order} />
         )}
       </div>
     )
