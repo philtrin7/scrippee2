@@ -239,7 +239,7 @@ export type CurrentUserQuery = (
   { __typename?: 'Query' }
   & { currentUser: Maybe<(
     { __typename?: 'User' }
-    & Pick<User, 'id'>
+    & Pick<User, 'id' | 'email'>
     & { orders: (
       { __typename?: 'Orders' }
       & { inbox: Maybe<(
@@ -565,6 +565,7 @@ export const CurrentUserDocument = gql`
     query CurrentUser {
   currentUser {
     id
+    email
     orders {
       inbox {
         todays {

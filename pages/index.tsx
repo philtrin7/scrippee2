@@ -6,7 +6,7 @@ import usePrevious from '../lib/usePreviousState'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { RootState } from '../redux/store'
-import { signinUser, signinRequired } from '../redux/auth/auth.actions'
+import { signinRequired, getCurrentUser } from '../redux/auth/auth.actions'
 import { AuthState, User } from '../redux/auth/auth.types'
 import {
   fetchList,
@@ -23,7 +23,7 @@ import OrdersList from '../components/list/orders-list.tsx/orders-list.component
 import Viewer from '../components/viewer/viewer.component'
 
 interface IndexPageProps {
-  signinUser: Function
+  getCurrentUser: Function
   signinRedirect: Function
   fetchList: Function
   fetchInboxListStart: Function
@@ -35,7 +35,7 @@ interface IndexPageProps {
 const IndexPage: React.FC<IndexPageProps> = (props) => {
   const { data: currentUserData, loading } = useCurrentUserQuery()
   const { user } = props.auth
-  const { signinUser, signinRedirect } = props
+  const { getCurrentUser, signinRedirect } = props
   const prevCurrentUser: User | null | undefined = usePrevious(user)
 
   const { listType, orders } = props.list
@@ -46,10 +46,14 @@ const IndexPage: React.FC<IndexPageProps> = (props) => {
       const { currentUser } = currentUserData
       if (user !== null && user.id === currentUser.id) {
         return
-      } else {
-        signinUser(currentUser)
+      } else if (currentUser) {
+        const { id, email, orders } = currentUser
+        getCurrentUser({ id, email })
         fetchInboxListStart()
-        fetchList(currentUser.orders)
+        fetchList(orders)
+      } else {
+        signinRedirect()
+        Router.push('/signin')
       }
     } else if (prevCurrentUser) {
       Router.push('/signin')
@@ -64,7 +68,6 @@ const IndexPage: React.FC<IndexPageProps> = (props) => {
       const { currentUser } = currentUserData
 
       if (listType === LIST_TYPES.INBOX || listType === LIST_TYPES.ARCHIVE) {
-        console.log('fetchList')
         fetchList(currentUser.orders)
       }
     }
@@ -97,7 +100,8 @@ const mapStateToProps = (state: RootState) => {
 }
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  signinUser: (user: User) => dispatch(signinUser(user)),
+  getCurrentUser: (currentUser: { id: string; email: string }) =>
+    dispatch(getCurrentUser(currentUser)),
   signinRedirect: () => dispatch(signinRequired()),
   fetchInboxListStart: () => dispatch(fetchInboxListStart()),
   fetchArchiveListStart: () => dispatch(fetchArchiveListStart()),

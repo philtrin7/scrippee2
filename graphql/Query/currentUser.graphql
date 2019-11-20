@@ -1,6 +1,7 @@
 query CurrentUser {
   currentUser {
     id
+    email
     orders {
       inbox {
         todays {

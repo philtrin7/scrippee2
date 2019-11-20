@@ -1,16 +1,23 @@
 import { AuthActionTypes, User } from './auth.types'
 
-export const signinUser = (currentUser: User) => {
+export const signinUser = (user: User) => {
   return {
     type: AuthActionTypes.SIGNIN_SUCCESS,
-    payload: currentUser
+    user
   }
 }
 
 export const signinRequired = () => {
   return {
     type: AuthActionTypes.SIGNIN_REQUIRED,
-    payload: { type: 'warn', message: 'To continue, please sign in.' }
+    signinErrMsg: { type: 'warn', message: 'To continue, please sign in.' }
+  }
+}
+
+export const getCurrentUser = (currentUser: { id: string; email: string }) => {
+  return {
+    type: AuthActionTypes.GET_CURRENT_USER,
+    currentUser
   }
 }
 
@@ -29,7 +36,7 @@ export const signinFail = () => {
 export const signoutSuccess = () => {
   return {
     type: AuthActionTypes.SIGNOUT_SUCCESS,
-    payload: { type: 'success', message: 'Successfully signed out.' }
+    signoutSuccMsg: { type: 'success', message: 'Successfully signed out.' }
   }
 }
 
