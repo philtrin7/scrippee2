@@ -1,44 +1,44 @@
-import React, { useState, useEffect } from "react";
-import ReactSVG from "react-svg";
-import { toast } from "react-toastify";
-import Router from "next/router";
-import { setAccessToken } from "../../lib/accessToken";
+import React, { useState, useEffect } from 'react'
+import ReactSVG from 'react-svg'
+import { toast } from 'react-toastify'
+import Router from 'next/router'
+import { setAccessToken } from '../../lib/accessToken'
 
 import {
   useSigninMutation,
   CurrentUserDocument,
   CurrentUserQuery,
   Orders
-} from "../../generated/graphql";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { RootState } from "../../redux/store";
-import { User, AlertsArray } from "../../redux/auth/auth.types";
+} from '../../generated/graphql'
+import { connect } from 'react-redux'
+import { Dispatch } from 'redux'
+import { RootState } from '../../redux/store'
+import { User, AlertsArray } from '../../redux/auth/auth.types'
 import {
   clearAlerts,
   signinUser,
   signinFail
-} from "../../redux/auth/auth.actions";
-import { fetchList, fetchInboxListStart } from "../../redux/list/list.actions";
+} from '../../redux/auth/auth.actions'
+import { fetchList, fetchInboxListStart } from '../../redux/list/list.actions'
 
-import PulseLoader from "react-spinners/PulseLoader";
-import signinPageStyles from "./signin-page.styles.scss";
+import PulseLoader from 'react-spinners/PulseLoader'
+import signinPageStyles from './signin-page.styles.scss'
 
 interface SigninPagePropTypes {
-  clearAlertsArr: Function;
-  signinCurrentUser: Function;
-  signinFailed: Function;
-  fetchInboxListStart: Function;
-  fetchList: Function;
-  alerts: AlertsArray;
+  clearAlertsArr: Function
+  signinCurrentUser: Function
+  signinFailed: Function
+  fetchInboxListStart: Function
+  fetchList: Function
+  alerts: AlertsArray
 }
 
-const SigninPage: React.FC<SigninPagePropTypes> = props => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [alerts, setAlerts] = useState(props.alerts);
+const SigninPage: React.FC<SigninPagePropTypes> = (props) => {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [alerts, setAlerts] = useState(props.alerts)
 
-  const [signin, { loading }] = useSigninMutation();
+  const [signin, { loading }] = useSigninMutation()
 
   const {
     clearAlertsArr,
@@ -46,26 +46,26 @@ const SigninPage: React.FC<SigninPagePropTypes> = props => {
     signinFailed,
     fetchList,
     fetchInboxListStart
-  } = props;
+  } = props
 
   useEffect(() => {
     if (alerts.length > 0) {
-      alerts.map(alert => {
-        const { type, message } = alert;
-        if (type === "warn") {
-          toast.warn(message);
-        } else if (type === "error") {
-          toast.error(message);
-        } else if (type === "success") {
-          toast.success(message);
+      alerts.map((alert) => {
+        const { type, message } = alert
+        if (type === 'warn') {
+          toast.warn(message)
+        } else if (type === 'error') {
+          toast.error(message)
+        } else if (type === 'success') {
+          toast.success(message)
         }
-        clearAlertsArr();
-      });
+        clearAlertsArr()
+      })
     }
-  }, [alerts]);
+  }, [alerts])
 
   const handleSubmit = async (e: any) => {
-    e.preventDefault();
+    e.preventDefault()
 
     try {
       const response = await signin({
@@ -75,39 +75,43 @@ const SigninPage: React.FC<SigninPagePropTypes> = props => {
         },
         update: (store, { data }) => {
           if (!data) {
-            return null;
+            return null
           }
-          if (data.signin.auth.user) {
+          if (data.signin.user) {
             store.writeQuery<CurrentUserQuery>({
               query: CurrentUserDocument,
               data: {
                 currentUser: {
-                  ...data.signin.auth.user,
+                  ...data.signin.user,
                   orders: data.signin.orders
                 }
               }
-            });
+            })
           }
         }
-      });
+      })
       if (response && response.data) {
-        const { user, accessToken } = response.data.signin.auth;
-        const { orders } = response.data.signin;
-        setAccessToken(accessToken);
-        signinCurrentUser(user);
-        fetchInboxListStart() && fetchList(orders.inbox);
-        Router.push("/");
+        const { user, accessToken } = response.data.signin
+        if (accessToken && user) {
+          setAccessToken(accessToken)
+          signinCurrentUser(user)
+        }
+        const { orders } = response.data.signin
+        if (orders) {
+          fetchInboxListStart() && fetchList(orders.inbox)
+        }
+        Router.push('/')
       }
     } catch (err) {
       setAlerts([
         {
-          type: "error",
+          type: 'error',
           message: err.graphQLErrors[0].message
         }
-      ]);
-      signinFailed();
+      ])
+      signinFailed()
     }
-  };
+  }
 
   return (
     <div>
@@ -121,7 +125,7 @@ const SigninPage: React.FC<SigninPagePropTypes> = props => {
                   type="email"
                   className="form-control"
                   placeholder="Email"
-                  onChange={e => setEmail(e.target.value)}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
                   autoFocus
                 />
@@ -134,7 +138,7 @@ const SigninPage: React.FC<SigninPagePropTypes> = props => {
                   type="password"
                   className="form-control"
                   placeholder="Password"
-                  onChange={e => setPassword(e.target.value)}
+                  onChange={(e) => setPassword(e.target.value)}
                   required
                 />
 
@@ -145,9 +149,9 @@ const SigninPage: React.FC<SigninPagePropTypes> = props => {
               <a href="/">Forgot Password?</a>
               <button type="submit" className="btn primary">
                 {loading ? (
-                  <PulseLoader margin={"2px"} color={"white"} size={8} />
+                  <PulseLoader margin={'2px'} color={'white'} size={8} />
                 ) : (
-                  "Sign In"
+                  'Sign In'
                 )}
               </button>
               <span>
@@ -159,14 +163,12 @@ const SigninPage: React.FC<SigninPagePropTypes> = props => {
       </div>
       <style jsx>{signinPageStyles}</style>
     </div>
-  );
-};
+  )
+}
 
-const mapStateToProps = (state: RootState) => {
-  return {
-    alerts: state.auth.alerts
-  };
-};
+const mapStateToProps = (state: RootState) => ({
+  alerts: state.auth.alerts
+})
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   signinCurrentUser: (currentUser: User) => dispatch(signinUser(currentUser)),
@@ -174,6 +176,6 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   fetchInboxListStart: () => dispatch(fetchInboxListStart()),
   fetchList: (orders: Orders) => dispatch(fetchList(orders)),
   clearAlertsArr: () => dispatch(clearAlerts())
-});
+})
 
-export default connect(mapStateToProps, mapDispatchToProps)(SigninPage);
+export default connect(mapStateToProps, mapDispatchToProps)(SigninPage)

@@ -12,12 +12,6 @@ export type Scalars = {
   DateTime: any,
 };
 
-export type AuthPayload = {
-   __typename?: 'AuthPayload',
-  accessToken: Scalars['String'],
-  user?: Maybe<User>,
-};
-
 export type Comment = {
    __typename?: 'Comment',
   id: Scalars['ID'],
@@ -117,7 +111,8 @@ export type QueryConvoArgs = {
 
 export type SigninData = {
    __typename?: 'SigninData',
-  auth: AuthPayload,
+  accessToken: Scalars['String'],
+  user?: Maybe<User>,
   orders: Orders,
 };
 
@@ -146,14 +141,11 @@ export type SigninMutation = (
   { __typename?: 'Mutation' }
   & { signin: (
     { __typename?: 'SigninData' }
-    & { auth: (
-      { __typename?: 'AuthPayload' }
-      & Pick<AuthPayload, 'accessToken'>
-      & { user: Maybe<(
-        { __typename?: 'User' }
-        & Pick<User, 'id' | 'email'>
-      )> }
-    ), orders: (
+    & Pick<SigninData, 'accessToken'>
+    & { user: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'email'>
+    )>, orders: (
       { __typename?: 'Orders' }
       & { inbox: Maybe<(
         { __typename?: 'InboxOrders' }
@@ -311,12 +303,10 @@ export type LogoutMutationOptions = ApolloReactCommon.BaseMutationOptions<Logout
 export const SigninDocument = gql`
     mutation Signin($email: String!, $password: String!) {
   signin(email: $email, password: $password) {
-    auth {
-      accessToken
-      user {
-        id
-        email
-      }
+    accessToken
+    user {
+      id
+      email
     }
     orders {
       inbox {
