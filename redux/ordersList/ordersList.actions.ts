@@ -18,9 +18,9 @@ export const fetchList = (orders: Orders) => {
   }
 }
 
-export const newOrder = () => {
+export const newOrderStart = () => {
   return {
-    type: OrdersListActionTypes.NEW_ORDER
+    type: OrdersListActionTypes.NEW_ORDER_START
   }
 }
 

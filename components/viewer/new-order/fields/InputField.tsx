@@ -52,8 +52,11 @@ const InputField = ({
     return Object.values(obj).find((value) => obj[key] === value)
   }
 
-  const newOrder = ordersList.new[0]
-  const storedValue = getValueByKey(newOrder, name)
+  let storedValue: any = ''
+  if (ordersList.newOrder) {
+    storedValue = getValueByKey(ordersList.newOrder, name)
+  }
+  // const newOrder = ordersList.new[0]
 
   return (
     <div>

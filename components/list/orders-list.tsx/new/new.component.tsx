@@ -21,7 +21,10 @@ interface Props {
 }
 
 const NewOrder: React.FC<Props> = (props) => {
-  const { customerName, item } = props.ordersList.new[0]
+  if (!props.ordersList.newOrder) {
+    return <div></div>
+  }
+  const { customerName, item } = props.ordersList.newOrder
   const { orderId } = props.selectOrder
 
   const processedCustomerName = processString(customerName, 14, 28)

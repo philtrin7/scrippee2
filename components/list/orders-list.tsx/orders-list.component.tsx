@@ -12,7 +12,7 @@ import {
 import {
   fetchArchiveListStart,
   fetchInboxListStart,
-  newOrder
+  newOrderStart
 } from '../../../redux/ordersList/ordersList.actions'
 
 import {
@@ -32,7 +32,7 @@ interface OrdersListPropTypes {
   fetchInboxListStart: Function
   fetchArchiveListStart: Function
   setNewOrderView: Function
-  newOrder: Function
+  newOrderStart: Function
   setViewToDefault: Function
   selectNewOrder: Function
   orders: Orders
@@ -46,14 +46,14 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
     loading,
     orders: { inbox, archive }
   } = props
-  const { listType, listIsLoading } = props.ordersList
+  const { listType, listIsLoading, newOrder } = props.ordersList
 
   const {
     fetchInboxListStart,
     fetchArchiveListStart,
     setNewOrderView,
     setViewToDefault,
-    newOrder,
+    newOrderStart,
     selectNewOrder
   } = props
 
@@ -71,7 +71,7 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
     Orders = (
       <div className="order-fragments">
         <React.Fragment>{todays}</React.Fragment>
-        {inbox.todays.length > 0 || props.ordersList.new.length > 0 ? (
+        {inbox.todays.length > 0 || newOrder ? (
           <hr className="order-divider" />
         ) : (
           ''
@@ -145,8 +145,8 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
                     if (listType !== ORDERS_LIST_TYPES.INBOX) {
                       fetchInboxListStart()
                     }
-                    if (props.ordersList.new.length === 0) {
-                      newOrder()
+                    if (!newOrder) {
+                      newOrderStart()
                     }
                     setNewOrderView()
                     selectNewOrder()
@@ -156,8 +156,7 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
                 </button>
                 <hr />
                 <ul className="nav order">
-                  {listType === ORDERS_LIST_TYPES.INBOX &&
-                  props.ordersList.new.length > 0 ? (
+                  {listType === ORDERS_LIST_TYPES.INBOX && newOrder ? (
                     <NewOrder />
                   ) : (
                     ''
@@ -184,7 +183,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   fetchInboxListStart: () => dispatch(fetchInboxListStart()),
   fetchArchiveListStart: () => dispatch(fetchArchiveListStart()),
   setNewOrderView: () => dispatch(setNewOrderView()),
-  newOrder: () => dispatch(newOrder()),
+  newOrderStart: () => dispatch(newOrderStart()),
   setViewToDefault: () => dispatch(setViewerToDefault()),
   selectNewOrder: () => dispatch(selectNewOrder())
 })

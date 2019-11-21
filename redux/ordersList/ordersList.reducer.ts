@@ -19,7 +19,7 @@ const INITIAL_STATE: OrdersListState = {
   orders: {},
   listType: null,
   listIsLoading: false,
-  new: []
+  newOrder: null
 }
 
 export const ordersListReducer: Reducer<OrdersListState, ListActionPayload> = (
@@ -65,34 +65,32 @@ export const ordersListReducer: Reducer<OrdersListState, ListActionPayload> = (
       }
 
     // NEW ORDER
-    case OrdersListActionTypes.NEW_ORDER:
+    case OrdersListActionTypes.NEW_ORDER_START:
       return {
         ...state,
-        new: [
-          {
-            customerName: '',
-            item: ''
-          }
-        ]
+        newOrder: {
+          customerName: '',
+          item: ''
+        }
       }
     case OrdersListActionTypes.SET_NEW_ORDER:
       let setStateWithNewOrder: OrdersListState = { ...state }
-      if (setStateWithNewOrder.new.length > 0) {
-        setStateWithNewOrder.new[0][action.field] = action.value
+      if (setStateWithNewOrder.newOrder) {
+        setStateWithNewOrder.newOrder[action.field] = action.value
       }
       return setStateWithNewOrder
 
     case OrdersListActionTypes.CLEAR_FIELD:
       let stateWithNewOrder: OrdersListState = { ...state }
-      if (stateWithNewOrder.new.length > 0) {
-        stateWithNewOrder.new[0][action.field] = ''
+      if (stateWithNewOrder.newOrder) {
+        stateWithNewOrder.newOrder[action.field] = ''
       }
 
       return stateWithNewOrder
     case OrdersListActionTypes.CLEAR_NEW_ORDER:
       return {
         ...state,
-        new: []
+        newOrder: null
       }
 
     // SIGN OUT
@@ -101,7 +99,7 @@ export const ordersListReducer: Reducer<OrdersListState, ListActionPayload> = (
         orders: {},
         listIsLoading: false,
         listType: null,
-        new: []
+        newOrder: null
       }
     default:
       return state
