@@ -12,8 +12,11 @@ import {
   fetchList,
   fetchInboxListStart,
   fetchArchiveListStart
-} from '../redux/list/list.actions'
-import { ListState, LIST_TYPES } from '../redux/list/list.types'
+} from '../redux/ordersList/ordersList.actions'
+import {
+  OrdersListState,
+  ORDERS_LIST_TYPES
+} from '../redux/ordersList/ordersList.types'
 
 import { useCurrentUserQuery, Orders } from '../generated/graphql'
 
@@ -29,7 +32,7 @@ interface IndexPageProps {
   fetchInboxListStart: Function
   fetchArchiveListStart: Function
   auth: AuthState
-  list: ListState
+  ordersList: OrdersListState
 }
 
 const IndexPage: React.FC<IndexPageProps> = (props) => {
@@ -38,7 +41,7 @@ const IndexPage: React.FC<IndexPageProps> = (props) => {
   const { getCurrentUser, signinRedirect } = props
   const prevCurrentUser: User | null | undefined = usePrevious(user)
 
-  const { listType, orders } = props.list
+  const { listType, orders } = props.ordersList
   const { fetchInboxListStart, fetchList } = props
 
   useEffect(() => {
@@ -66,7 +69,10 @@ const IndexPage: React.FC<IndexPageProps> = (props) => {
   }, [currentUserData])
 
   useEffect(() => {
-    if (listType === LIST_TYPES.INBOX || listType === LIST_TYPES.ARCHIVE) {
+    if (
+      listType === ORDERS_LIST_TYPES.INBOX ||
+      listType === ORDERS_LIST_TYPES.ARCHIVE
+    ) {
       if (currentUserData && currentUserData.currentUser) {
         const { currentUser } = currentUserData
         fetchList(currentUser.orders)
@@ -96,7 +102,7 @@ const IndexPage: React.FC<IndexPageProps> = (props) => {
 const mapStateToProps = (state: RootState) => {
   return {
     auth: state.auth,
-    list: state.list
+    ordersList: state.ordersList
   }
 }
 

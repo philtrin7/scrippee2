@@ -6,11 +6,14 @@ import { Dispatch } from 'redux'
 import { RootState } from '../../../redux/store'
 import { ViewerState } from '../../../redux/viewer/viewer.types'
 import { TempState } from '../../../redux/temp/temp.types'
-import { LIST_TYPES, ListState } from '../../../redux/list/list.types'
+import {
+  ORDERS_LIST_TYPES,
+  OrdersListState
+} from '../../../redux/ordersList/ordersList.types'
 import {
   fetchArchiveListStart,
   fetchInboxListStart
-} from '../../../redux/list/list.actions'
+} from '../../../redux/ordersList/ordersList.actions'
 import { newTempOrder } from '../../../redux/temp/temp.actions'
 import {
   setNewOrderView,
@@ -36,7 +39,7 @@ interface OrdersListPropTypes {
   loading: Boolean
   viewer: ViewerState
   temp: TempState
-  list: ListState
+  ordersList: OrdersListState
 }
 
 const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
@@ -44,7 +47,7 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
     loading,
     orders: { inbox, archive }
   } = props
-  const { listType, listIsLoading } = props.list
+  const { listType, listIsLoading } = props.ordersList
   const { orders: tempOrders } = props.temp
 
   const {
@@ -107,10 +110,10 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
                   <li>
                     <a
                       className={`filter-btn ${
-                        listType === LIST_TYPES.INBOX ? 'active' : ''
+                        listType === ORDERS_LIST_TYPES.INBOX ? 'active' : ''
                       }`}
                       onClick={() => {
-                        if (listType !== LIST_TYPES.INBOX) {
+                        if (listType !== ORDERS_LIST_TYPES.INBOX) {
                           props.fetchInboxListStart()
                         }
                       }}
@@ -121,10 +124,10 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
                   <li>
                     <a
                       className={`filter-btn ${
-                        listType === LIST_TYPES.ARCHIVE ? 'active' : ''
+                        listType === ORDERS_LIST_TYPES.ARCHIVE ? 'active' : ''
                       }`}
                       onClick={() => {
-                        if (listType !== LIST_TYPES.ARCHIVE) {
+                        if (listType !== ORDERS_LIST_TYPES.ARCHIVE) {
                           fetchArchiveListStart()
                           setViewToDefault()
                         }
@@ -141,7 +144,7 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
                   type="button"
                   className="btn round"
                   onClick={() => {
-                    if (listType !== LIST_TYPES.INBOX) {
+                    if (listType !== ORDERS_LIST_TYPES.INBOX) {
                       fetchInboxListStart()
                     }
                     if (tempOrders.length === 0) {
@@ -155,7 +158,8 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
                 </button>
                 <hr />
                 <ul className="nav order">
-                  {listType === LIST_TYPES.INBOX && tempOrders.length > 0 ? (
+                  {listType === ORDERS_LIST_TYPES.INBOX &&
+                  tempOrders.length > 0 ? (
                     <TempOrder />
                   ) : (
                     ''
@@ -176,7 +180,7 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
 const mapStateToProps = (state: RootState) => ({
   viewer: state.viewer,
   temp: state.temp,
-  list: state.list
+  ordersList: state.ordersList
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
@@ -188,7 +192,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   selectNewOrder: () => dispatch(selectNewOrder())
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(OrdersList)
+export default connect(mapStateToProps, mapDispatchToProps)(OrdersList)
