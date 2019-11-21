@@ -47,3 +47,16 @@ export const clearField = (field: keyof NewOrder) => {
     field
   }
 }
+
+export const selectOrder = (orderId: string) => {
+  return {
+    type: OrdersListActionTypes.SELECT_ORDER,
+    orderId
+  }
+}
+
+export const selectNewOrder = () => {
+  return {
+    type: OrdersListActionTypes.SELECT_NEW_ORDER
+  }
+}

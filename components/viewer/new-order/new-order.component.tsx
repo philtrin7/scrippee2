@@ -19,9 +19,11 @@ import {
   Order
 } from '../../../generated/graphql'
 
-import { selectOrder } from '../../../redux/selectOrder/selectOrder.actions'
 import { setOrderView } from '../../../redux/viewer/viewer.actions'
-import { clearNewOrder } from '../../../redux/ordersList/ordersList.actions'
+import {
+  clearNewOrder,
+  selectOrder
+} from '../../../redux/ordersList/ordersList.actions'
 
 import viewerStyles from '../viewer.styles.scss'
 

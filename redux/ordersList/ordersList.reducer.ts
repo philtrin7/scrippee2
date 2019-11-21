@@ -13,13 +13,15 @@ interface ListActionPayload {
   orders: Orders
   field: keyof NewOrder
   value: Order[keyof NewOrder]
+  orderId: string
 }
 
 const INITIAL_STATE: OrdersListState = {
   orders: {},
   listType: null,
   listIsLoading: false,
-  newOrder: null
+  newOrder: null,
+  selectOrder: { orderId: null }
 }
 
 export const ordersListReducer: Reducer<OrdersListState, ListActionPayload> = (
@@ -93,13 +95,27 @@ export const ordersListReducer: Reducer<OrdersListState, ListActionPayload> = (
         newOrder: null
       }
 
+    // SELECT ORDER
+    case OrdersListActionTypes.SELECT_ORDER:
+      return {
+        ...state,
+        selectOrder: { orderId: action.orderId }
+      }
+
+    case OrdersListActionTypes.SELECT_NEW_ORDER:
+      return {
+        ...state,
+        selectOrder: { orderId: 'NEW' }
+      }
+
     // SIGN OUT
     case AuthActionTypes.SIGNOUT_SUCCESS:
       return {
         orders: {},
         listIsLoading: false,
         listType: null,
-        newOrder: null
+        newOrder: null,
+        selectOrder: { orderId: null }
       }
     default:
       return state

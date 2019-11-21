@@ -3,11 +3,10 @@ import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { processString } from '../../../../lib/utils/processString'
 
-import { selectNewOrder } from '../../../../redux/selectOrder/selectOrder.actions'
 import { RootState } from '../../../../redux/store'
 import { OrdersListState } from '../../../../redux/ordersList/ordersList.types'
-import { SelectOrderState } from '../../../../redux/selectOrder/selectOrder.types'
 import { setNewOrderView } from '../../../../redux/viewer/viewer.actions'
+import { selectNewOrder } from '../../../../redux/ordersList/ordersList.actions'
 
 import StatusCounter from '../../../status-counter/status-counter.component'
 
@@ -17,7 +16,6 @@ interface Props {
   selectNewOrder: Function
   setNewOrderView: Function
   ordersList: OrdersListState
-  selectOrder: SelectOrderState
 }
 
 const NewOrder: React.FC<Props> = (props) => {
@@ -25,7 +23,7 @@ const NewOrder: React.FC<Props> = (props) => {
     return <div></div>
   }
   const { customerName, item } = props.ordersList.newOrder
-  const { orderId } = props.selectOrder
+  const { orderId } = props.ordersList.selectOrder
 
   const processedCustomerName = processString(customerName, 14, 28)
   const processedItem = processString(item, 18, 36)
@@ -68,8 +66,7 @@ const NewOrder: React.FC<Props> = (props) => {
 
 const mapStateToProps = (state: RootState) => {
   return {
-    ordersList: state.ordersList,
-    selectOrder: state.selectOrder
+    ordersList: state.ordersList
   }
 }
 

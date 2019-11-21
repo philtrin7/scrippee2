@@ -12,14 +12,14 @@ import {
 import {
   fetchArchiveListStart,
   fetchInboxListStart,
-  newOrderStart
+  newOrderStart,
+  selectNewOrder
 } from '../../../redux/ordersList/ordersList.actions'
 
 import {
   setNewOrderView,
   setViewerToDefault
 } from '../../../redux/viewer/viewer.actions'
-import { selectNewOrder } from '../../../redux/selectOrder/selectOrder.actions'
 import { Orders } from '../../../generated/graphql'
 
 import NewOrder from './new/new.component'

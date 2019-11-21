@@ -7,7 +7,9 @@ export enum OrdersListActionTypes {
   SET_NEW_ORDER = 'SET_NEW_ORDER',
   NEW_ORDER_START = 'NEW_ORDER_START',
   CLEAR_NEW_ORDER = 'CLEAR_NEW_ORDER',
-  CLEAR_FIELD = 'CLEAR_FIELD'
+  CLEAR_FIELD = 'CLEAR_FIELD',
+  SELECT_ORDER = 'SELECT_ORDER',
+  SELECT_NEW_ORDER = 'SELECT_NEW_ORDER'
 }
 
 export interface OrdersListState {
@@ -15,6 +17,7 @@ export interface OrdersListState {
   listType: ORDERS_LIST_TYPES | null
   listIsLoading: Boolean
   newOrder: NewOrder | null
+  selectOrder: SelectOrder
 }
 
 export enum ORDERS_LIST_TYPES {
@@ -23,3 +26,7 @@ export enum ORDERS_LIST_TYPES {
 }
 
 export type NewOrder = Pick<Order, 'customerName' | 'item'>
+
+export interface SelectOrder {
+  orderId: string | 'NEW' | null
+}
