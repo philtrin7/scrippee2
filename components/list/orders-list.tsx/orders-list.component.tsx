@@ -12,9 +12,10 @@ import {
 } from '../../../redux/ordersList/ordersList.types'
 import {
   fetchArchiveListStart,
-  fetchInboxListStart
+  fetchInboxListStart,
+  newTempOrder
 } from '../../../redux/ordersList/ordersList.actions'
-import { newTempOrder } from '../../../redux/temp/temp.actions'
+
 import {
   setNewOrderView,
   setViewerToDefault

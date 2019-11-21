@@ -1,21 +1,25 @@
 import {
   OrdersListActionTypes,
   OrdersListState,
-  ORDERS_LIST_TYPES
+  ORDERS_LIST_TYPES,
+  NewOrder
 } from './ordersList.types'
 import { Reducer } from 'redux'
 import { AuthActionTypes } from '../auth/auth.types'
-import { Orders } from '../../generated/graphql'
+import { Orders, Order } from '../../generated/graphql'
 
 interface ListActionPayload {
   type: OrdersListActionTypes | AuthActionTypes.SIGNOUT_SUCCESS
   orders: Orders
+  field: keyof NewOrder
+  value: Order[keyof NewOrder]
 }
 
 const INITIAL_STATE: OrdersListState = {
   orders: {},
   listType: null,
-  listIsLoading: false
+  listIsLoading: false,
+  new: []
 }
 
 export const ordersListReducer: Reducer<OrdersListState, ListActionPayload> = (
@@ -23,6 +27,7 @@ export const ordersListReducer: Reducer<OrdersListState, ListActionPayload> = (
   action
 ) => {
   switch (action.type) {
+    // ORDERS LIST
     case OrdersListActionTypes.FETCH_INBOX_LIST_START:
       return {
         ...state,
@@ -59,11 +64,42 @@ export const ordersListReducer: Reducer<OrdersListState, ListActionPayload> = (
         return state
       }
 
+    // NEW ORDER
+    case OrdersListActionTypes.NEW_TEMP_ORDER:
+      return {
+        ...state,
+        new: [
+          {
+            customerName: '',
+            item: ''
+          }
+        ]
+      }
+    case OrdersListActionTypes.SET_TEMP_ORDER:
+      if (state.new.length > 0) {
+        state.new[0][action.field] = action.value
+        return state
+      }
+      return state
+    case OrdersListActionTypes.CLEAR_FIELD:
+      if (state.new.length > 0) {
+        state.new[0][action.field] = ''
+        return state
+      }
+      return state
+    case OrdersListActionTypes.CLEAR_TEMP_ORDER:
+      return {
+        ...state,
+        new: []
+      }
+
+    // SIGN OUT
     case AuthActionTypes.SIGNOUT_SUCCESS:
       return {
         orders: {},
         listIsLoading: false,
-        listType: null
+        listType: null,
+        new: []
       }
     default:
       return state
