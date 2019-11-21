@@ -5,7 +5,7 @@ import { processString } from '../../../../lib/utils/processString'
 
 import { selectNewOrder } from '../../../../redux/selectOrder/selectOrder.actions'
 import { RootState } from '../../../../redux/store'
-import { TempState } from '../../../../redux/temp/temp.types'
+import { OrdersListState } from '../../../../redux/ordersList/ordersList.types'
 import { SelectOrderState } from '../../../../redux/selectOrder/selectOrder.types'
 import { setNewOrderView } from '../../../../redux/viewer/viewer.actions'
 
@@ -16,12 +16,12 @@ import orderComponentStyles from '../order/order.styles.scss'
 interface Props {
   selectNewOrder: Function
   setNewOrderView: Function
-  tempOrder: TempState
+  ordersList: OrdersListState
   selectOrder: SelectOrderState
 }
 
-const TempOrder: React.FC<Props> = (props) => {
-  const { customerName, item } = props.tempOrder.orders[0]
+const NewOrder: React.FC<Props> = (props) => {
+  const { customerName, item } = props.ordersList.new[0]
   const { orderId } = props.selectOrder
 
   const processedCustomerName = processString(customerName, 14, 28)
@@ -63,17 +63,16 @@ const TempOrder: React.FC<Props> = (props) => {
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  tempOrder: state.temp,
-  selectOrder: state.selectOrder
-})
+const mapStateToProps = (state: RootState) => {
+  return {
+    ordersList: state.ordersList,
+    selectOrder: state.selectOrder
+  }
+}
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   selectNewOrder: () => dispatch(selectNewOrder()),
   setNewOrderView: () => dispatch(setNewOrderView())
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TempOrder)
+export default connect(mapStateToProps, mapDispatchToProps)(NewOrder)

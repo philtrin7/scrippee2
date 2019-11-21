@@ -7,9 +7,16 @@ import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { FieldProps } from 'formik'
 
-import { setTempOrder, clearField } from '../../../../redux/temp/temp.actions'
-import { TempState } from '../../../../redux/temp/temp.types'
+import {
+  OrdersListState,
+  NewOrder
+} from '../../../../redux/ordersList/ordersList.types'
 import { RootState } from '../../../../redux/store'
+import {
+  clearField,
+  setNewOrder
+} from '../../../../redux/ordersList/ordersList.actions'
+import { Order } from '../../../../generated/graphql'
 
 import inputFieldStyles from './inputField.styles.scss'
 
@@ -24,17 +31,17 @@ type FormikPropTypes = DetailedHTMLProps<
   >
 
 interface ReduxProps {
-  setTempOrder: Function
+  setNewOrder: Function
   clearTempOrder: Function
   clearField: Function
-  temp: TempState
+  ordersList: OrdersListState
 }
 
 const InputField = ({
-  temp,
+  ordersList,
   form,
   field,
-  setTempOrder,
+  setNewOrder,
   clearTempOrder,
   clearField,
   ...formikProps
@@ -47,8 +54,8 @@ const InputField = ({
     return Object.values(obj).find((value) => obj[key] === value)
   }
 
-  const tempOrder = temp.orders[0]
-  const storedTempValue = getValueByKey(tempOrder, name)
+  const newOrder = ordersList.new[0]
+  const storedTempValue = getValueByKey(newOrder, name)
 
   return (
     <div>
@@ -62,7 +69,7 @@ const InputField = ({
             value={storedTempValue || value}
             onChange={(e) => {
               if (e.target.value.length > 0) {
-                setTempOrder(name, e.target.value)
+                setNewOrder(name, e.target.value)
               } else {
                 clearField(name)
               }
@@ -80,7 +87,7 @@ const InputField = ({
             value={storedTempValue || value}
             onChange={(e) => {
               if (e.target.value.length > 0) {
-                setTempOrder(name, e.target.value)
+                setNewOrder(name, e.target.value)
               } else {
                 clearField(name)
               }
@@ -98,13 +105,13 @@ const InputField = ({
 }
 
 const mapStateToProps = (state: RootState) => ({
-  temp: state.temp
+  ordersList: state.ordersList
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  setTempOrder: (field: string, value: string) =>
-    dispatch(setTempOrder(field, value)),
-  clearField: (field: string) => dispatch(clearField(field))
+  setNewOrder: (field: keyof NewOrder, value: Order[keyof NewOrder]) =>
+    dispatch(setNewOrder(field, value)),
+  clearField: (field: keyof NewOrder) => dispatch(clearField(field))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(InputField)

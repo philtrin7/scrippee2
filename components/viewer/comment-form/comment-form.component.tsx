@@ -1,7 +1,13 @@
 import React from 'react'
 import ReactSVG from 'react-svg'
-
+import { connect } from 'react-redux'
+import { Dispatch } from 'redux'
 import { Formik, Form, Field } from 'formik'
+
+// import { clearTempOrder } from '../../../redux/temp/temp.actions'
+import { selectOrder } from '../../../redux/selectOrder/selectOrder.actions'
+import { setOrderView } from '../../../redux/viewer/viewer.actions'
+import { clearTempOrder } from '../../../redux/ordersList/ordersList.actions'
 import {
   useCreateCommentMutation,
   CreateCommentMutationVariables,
@@ -14,11 +20,6 @@ import ClipLoader from 'react-spinners/ClipLoader'
 import InputFieldComment from './fields/inputFieldComment.component'
 
 import commentFormStyles from './comment-form.styles.scss'
-import { connect } from 'react-redux'
-import { Dispatch } from 'redux'
-import { clearTempOrder } from '../../../redux/temp/temp.actions'
-import { selectOrder } from '../../../redux/selectOrder/selectOrder.actions'
-import { setOrderView } from '../../../redux/viewer/viewer.actions'
 
 type CommentForm = MutationCreateCommentArgs
 

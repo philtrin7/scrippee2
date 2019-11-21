@@ -19,11 +19,11 @@ import {
   Order
 } from '../../../generated/graphql'
 
-import { clearTempOrder } from '../../../redux/temp/temp.actions'
 import { selectOrder } from '../../../redux/selectOrder/selectOrder.actions'
 import { setOrderView } from '../../../redux/viewer/viewer.actions'
 
 import viewerStyles from '../viewer.styles.scss'
+import { clearTempOrder } from '../../../redux/ordersList/ordersList.actions'
 
 type OrderForm = Pick<
   Order,

@@ -75,18 +75,20 @@ export const ordersListReducer: Reducer<OrdersListState, ListActionPayload> = (
           }
         ]
       }
-    case OrdersListActionTypes.SET_TEMP_ORDER:
-      if (state.new.length > 0) {
-        state.new[0][action.field] = action.value
-        return state
+    case OrdersListActionTypes.SET_NEW_ORDER:
+      let setStateWithNewOrder: OrdersListState = { ...state }
+      if (setStateWithNewOrder.new.length > 0) {
+        setStateWithNewOrder.new[0][action.field] = action.value
       }
-      return state
+      return setStateWithNewOrder
+
     case OrdersListActionTypes.CLEAR_FIELD:
-      if (state.new.length > 0) {
-        state.new[0][action.field] = ''
-        return state
+      let stateWithNewOrder: OrdersListState = { ...state }
+      if (stateWithNewOrder.new.length > 0) {
+        stateWithNewOrder.new[0][action.field] = ''
       }
-      return state
+
+      return stateWithNewOrder
     case OrdersListActionTypes.CLEAR_TEMP_ORDER:
       return {
         ...state,

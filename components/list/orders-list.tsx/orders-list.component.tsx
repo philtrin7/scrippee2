@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { RootState } from '../../../redux/store'
 import { ViewerState } from '../../../redux/viewer/viewer.types'
-import { TempState } from '../../../redux/temp/temp.types'
 import {
   ORDERS_LIST_TYPES,
   OrdersListState
@@ -23,7 +22,7 @@ import {
 import { selectNewOrder } from '../../../redux/selectOrder/selectOrder.actions'
 import { Orders } from '../../../generated/graphql'
 
-import TempOrder from './temp-order/temp-order.component'
+import NewOrder from './new/new.component'
 import OrderComponent from './order/order.components'
 import { PulseSpinner } from '../../loading-spinner/PulseSpinner'
 
@@ -39,7 +38,6 @@ interface OrdersListPropTypes {
   orders: Orders
   loading: Boolean
   viewer: ViewerState
-  temp: TempState
   ordersList: OrdersListState
 }
 
@@ -49,7 +47,6 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
     orders: { inbox, archive }
   } = props
   const { listType, listIsLoading } = props.ordersList
-  const { orders: tempOrders } = props.temp
 
   const {
     fetchInboxListStart,
@@ -74,7 +71,7 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
     Orders = (
       <div className="order-fragments">
         <React.Fragment>{todays}</React.Fragment>
-        {inbox.todays.length > 0 || tempOrders.length > 0 ? (
+        {inbox.todays.length > 0 || props.ordersList.new.length > 0 ? (
           <hr className="order-divider" />
         ) : (
           ''
@@ -148,7 +145,7 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
                     if (listType !== ORDERS_LIST_TYPES.INBOX) {
                       fetchInboxListStart()
                     }
-                    if (tempOrders.length === 0) {
+                    if (props.ordersList.new.length === 0) {
                       newTempOrder()
                     }
                     setNewOrderView()
@@ -160,8 +157,8 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
                 <hr />
                 <ul className="nav order">
                   {listType === ORDERS_LIST_TYPES.INBOX &&
-                  tempOrders.length > 0 ? (
-                    <TempOrder />
+                  props.ordersList.new.length > 0 ? (
+                    <NewOrder />
                   ) : (
                     ''
                   )}
@@ -180,7 +177,6 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
 
 const mapStateToProps = (state: RootState) => ({
   viewer: state.viewer,
-  temp: state.temp,
   ordersList: state.ordersList
 })
 

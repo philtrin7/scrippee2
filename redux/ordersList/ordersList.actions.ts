@@ -1,4 +1,4 @@
-import { OrdersListActionTypes } from './ordersList.types'
+import { OrdersListActionTypes, NewOrder } from './ordersList.types'
 import { Orders, Order } from '../../generated/graphql'
 
 export const fetchInboxListStart = () => {
@@ -24,12 +24,12 @@ export const newTempOrder = () => {
   }
 }
 
-export const setTempOrder = <D extends keyof Order>(
-  field: Pick<Order, D>,
-  value: Order[D]
+export const setNewOrder = (
+  field: keyof NewOrder,
+  value: Order[keyof NewOrder]
 ) => {
   return {
-    type: OrdersListActionTypes.SET_TEMP_ORDER,
+    type: OrdersListActionTypes.SET_NEW_ORDER,
     field,
     value
   }
@@ -41,7 +41,7 @@ export const clearTempOrder = () => {
   }
 }
 
-export const clearField = <D extends keyof Order>(field: Pick<Order, D>) => {
+export const clearField = (field: keyof NewOrder) => {
   return {
     type: OrdersListActionTypes.CLEAR_FIELD,
     field
