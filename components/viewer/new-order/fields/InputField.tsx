@@ -32,7 +32,6 @@ type FormikPropTypes = DetailedHTMLProps<
 
 interface ReduxProps {
   setNewOrder: Function
-  clearTempOrder: Function
   clearField: Function
   ordersList: OrdersListState
 }
@@ -42,7 +41,6 @@ const InputField = ({
   form,
   field,
   setNewOrder,
-  clearTempOrder,
   clearField,
   ...formikProps
 }: FormikPropTypes & ReduxProps) => {
@@ -55,7 +53,7 @@ const InputField = ({
   }
 
   const newOrder = ordersList.new[0]
-  const storedTempValue = getValueByKey(newOrder, name)
+  const storedValue = getValueByKey(newOrder, name)
 
   return (
     <div>
@@ -66,7 +64,7 @@ const InputField = ({
             {...fields}
             {...formikProps}
             name={name}
-            value={storedTempValue || value}
+            value={storedValue || value}
             onChange={(e) => {
               if (e.target.value.length > 0) {
                 setNewOrder(name, e.target.value)
@@ -76,7 +74,7 @@ const InputField = ({
               handleChange(e)
             }}
             className={`form-control ${
-              storedTempValue || value !== '' ? 'hasValue' : ''
+              storedValue || value !== '' ? 'hasValue' : ''
             }`}
           />
         ) : (
@@ -84,7 +82,7 @@ const InputField = ({
             {...fields}
             {...formikProps}
             name={name}
-            value={storedTempValue || value}
+            value={storedValue || value}
             onChange={(e) => {
               if (e.target.value.length > 0) {
                 setNewOrder(name, e.target.value)
@@ -94,7 +92,7 @@ const InputField = ({
               handleChange(e)
             }}
             className={`form-control ${
-              storedTempValue || value !== '' ? 'hasValue' : ''
+              storedValue || value !== '' ? 'hasValue' : ''
             }`}
           />
         )}

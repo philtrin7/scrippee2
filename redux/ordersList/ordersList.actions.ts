@@ -18,9 +18,9 @@ export const fetchList = (orders: Orders) => {
   }
 }
 
-export const newTempOrder = () => {
+export const newOrder = () => {
   return {
-    type: OrdersListActionTypes.NEW_TEMP_ORDER
+    type: OrdersListActionTypes.NEW_ORDER
   }
 }
 
@@ -35,9 +35,9 @@ export const setNewOrder = (
   }
 }
 
-export const clearTempOrder = () => {
+export const clearNewOrder = () => {
   return {
-    type: OrdersListActionTypes.CLEAR_TEMP_ORDER
+    type: OrdersListActionTypes.CLEAR_NEW_ORDER
   }
 }
 

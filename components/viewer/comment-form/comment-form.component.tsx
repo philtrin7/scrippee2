@@ -4,10 +4,9 @@ import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { Formik, Form, Field } from 'formik'
 
-// import { clearTempOrder } from '../../../redux/temp/temp.actions'
 import { selectOrder } from '../../../redux/selectOrder/selectOrder.actions'
 import { setOrderView } from '../../../redux/viewer/viewer.actions'
-import { clearTempOrder } from '../../../redux/ordersList/ordersList.actions'
+import { clearNewOrder } from '../../../redux/ordersList/ordersList.actions'
 import {
   useCreateCommentMutation,
   CreateCommentMutationVariables,
@@ -24,7 +23,7 @@ import commentFormStyles from './comment-form.styles.scss'
 type CommentForm = MutationCreateCommentArgs
 
 interface Props {
-  clearTempOrder: Function
+  clearNewOrder: Function
   setOrderView: Function
   selectOrder: Function
   convoId: string
@@ -115,7 +114,7 @@ const CommentForm: React.FC<Props> = (props) => {
 }
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  clearTempOrder: () => dispatch(clearTempOrder()),
+  clearNewOrder: () => dispatch(clearNewOrder()),
   selectOrder: (orderId: string) => dispatch(selectOrder(orderId)),
   setOrderView: (order: Order) => dispatch(setOrderView(order))
 })

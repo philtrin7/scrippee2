@@ -21,9 +21,9 @@ import {
 
 import { selectOrder } from '../../../redux/selectOrder/selectOrder.actions'
 import { setOrderView } from '../../../redux/viewer/viewer.actions'
+import { clearNewOrder } from '../../../redux/ordersList/ordersList.actions'
 
 import viewerStyles from '../viewer.styles.scss'
-import { clearTempOrder } from '../../../redux/ordersList/ordersList.actions'
 
 type OrderForm = Pick<
   Order,
@@ -31,7 +31,7 @@ type OrderForm = Pick<
 >
 
 interface Props {
-  clearTempOrder: Function
+  clearNewOrder: Function
   selectOrder: Function
   setOrderView: Function
 }
@@ -81,7 +81,7 @@ const NewOrderViewer: React.FC<Props> = (props) => {
       if (response && response.data) {
         resetForm()
         toast.success('Order successfully created')
-        props.clearTempOrder()
+        props.clearNewOrder()
         props.selectOrder(response.data.createOrder.id)
         props.setOrderView(response.data.createOrder)
       }
@@ -118,7 +118,7 @@ const NewOrderViewer: React.FC<Props> = (props) => {
                     type="button"
                     className="btn round"
                     onClick={() => {
-                      props.clearTempOrder()
+                      props.clearNewOrder()
                     }}
                   >
                     <i>
@@ -211,7 +211,7 @@ const NewOrderViewer: React.FC<Props> = (props) => {
 }
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  clearTempOrder: () => dispatch(clearTempOrder()),
+  clearNewOrder: () => dispatch(clearNewOrder()),
   selectOrder: (orderId: string) => dispatch(selectOrder(orderId)),
   setOrderView: (order: Order) => dispatch(setOrderView(order))
 })

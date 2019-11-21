@@ -18,7 +18,7 @@ const INITIAL_STATE: ViewerState = {
 interface ViewerPayload {
   type:
     | ViewerActionTypes
-    | OrdersListActionTypes.CLEAR_TEMP_ORDER
+    | OrdersListActionTypes.CLEAR_NEW_ORDER
     | AuthActionTypes.SIGNOUT_SUCCESS
   order: Order
   convo: OrderConvo
@@ -51,7 +51,7 @@ export const viewerReducer: Reducer<ViewerState, ViewerPayload> = (
         convo: action.convo
       }
 
-    case OrdersListActionTypes.CLEAR_TEMP_ORDER:
+    case OrdersListActionTypes.CLEAR_NEW_ORDER:
     case AuthActionTypes.SIGNOUT_SUCCESS:
       return {
         type: undefined,

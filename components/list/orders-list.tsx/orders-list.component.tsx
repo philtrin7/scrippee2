@@ -12,7 +12,7 @@ import {
 import {
   fetchArchiveListStart,
   fetchInboxListStart,
-  newTempOrder
+  newOrder
 } from '../../../redux/ordersList/ordersList.actions'
 
 import {
@@ -32,7 +32,7 @@ interface OrdersListPropTypes {
   fetchInboxListStart: Function
   fetchArchiveListStart: Function
   setNewOrderView: Function
-  newTempOrder: Function
+  newOrder: Function
   setViewToDefault: Function
   selectNewOrder: Function
   orders: Orders
@@ -53,7 +53,7 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
     fetchArchiveListStart,
     setNewOrderView,
     setViewToDefault,
-    newTempOrder,
+    newOrder,
     selectNewOrder
   } = props
 
@@ -146,7 +146,7 @@ const OrdersList: React.FC<OrdersListPropTypes> = (props) => {
                       fetchInboxListStart()
                     }
                     if (props.ordersList.new.length === 0) {
-                      newTempOrder()
+                      newOrder()
                     }
                     setNewOrderView()
                     selectNewOrder()
@@ -184,7 +184,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   fetchInboxListStart: () => dispatch(fetchInboxListStart()),
   fetchArchiveListStart: () => dispatch(fetchArchiveListStart()),
   setNewOrderView: () => dispatch(setNewOrderView()),
-  newTempOrder: () => dispatch(newTempOrder()),
+  newOrder: () => dispatch(newOrder()),
   setViewToDefault: () => dispatch(setViewerToDefault()),
   selectNewOrder: () => dispatch(selectNewOrder())
 })

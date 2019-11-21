@@ -65,7 +65,7 @@ export const ordersListReducer: Reducer<OrdersListState, ListActionPayload> = (
       }
 
     // NEW ORDER
-    case OrdersListActionTypes.NEW_TEMP_ORDER:
+    case OrdersListActionTypes.NEW_ORDER:
       return {
         ...state,
         new: [
@@ -89,7 +89,7 @@ export const ordersListReducer: Reducer<OrdersListState, ListActionPayload> = (
       }
 
       return stateWithNewOrder
-    case OrdersListActionTypes.CLEAR_TEMP_ORDER:
+    case OrdersListActionTypes.CLEAR_NEW_ORDER:
       return {
         ...state,
         new: []
