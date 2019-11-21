@@ -7,8 +7,7 @@ import { setAccessToken } from '../../lib/accessToken'
 import {
   useSigninMutation,
   CurrentUserDocument,
-  CurrentUserQuery,
-  Orders
+  CurrentUserQuery
 } from '../../generated/graphql'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
@@ -19,7 +18,6 @@ import {
   signinUser,
   signinFail
 } from '../../redux/auth/auth.actions'
-import { fetchList, fetchInboxListStart } from '../../redux/list/list.actions'
 
 import PulseLoader from 'react-spinners/PulseLoader'
 import signinPageStyles from './signin-page.styles.scss'
@@ -28,8 +26,6 @@ interface SigninPagePropTypes {
   clearAlertsArr: Function
   signinCurrentUser: Function
   signinFailed: Function
-  fetchInboxListStart: Function
-  fetchList: Function
   alerts: AlertsArray
 }
 
@@ -40,13 +36,7 @@ const SigninPage: React.FC<SigninPagePropTypes> = (props) => {
 
   const [signin, { loading }] = useSigninMutation()
 
-  const {
-    clearAlertsArr,
-    signinCurrentUser,
-    signinFailed,
-    fetchList,
-    fetchInboxListStart
-  } = props
+  const { clearAlertsArr, signinCurrentUser, signinFailed } = props
 
   useEffect(() => {
     if (alerts.length > 0) {
@@ -96,10 +86,7 @@ const SigninPage: React.FC<SigninPagePropTypes> = (props) => {
           setAccessToken(accessToken)
           signinCurrentUser(user)
         }
-        const { orders } = response.data.signin
-        if (orders) {
-          fetchInboxListStart() && fetchList(orders.inbox)
-        }
+
         Router.push('/')
       }
     } catch (err) {
@@ -173,8 +160,6 @@ const mapStateToProps = (state: RootState) => ({
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   signinCurrentUser: (currentUser: User) => dispatch(signinUser(currentUser)),
   signinFailed: () => dispatch(signinFail()),
-  fetchInboxListStart: () => dispatch(fetchInboxListStart()),
-  fetchList: (orders: Orders) => dispatch(fetchList(orders)),
   clearAlertsArr: () => dispatch(clearAlerts())
 })
 

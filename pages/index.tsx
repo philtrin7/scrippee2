@@ -44,16 +44,18 @@ const IndexPage: React.FC<IndexPageProps> = (props) => {
   useEffect(() => {
     if (currentUserData && currentUserData.currentUser) {
       const { currentUser } = currentUserData
+
+      // Post signin
       if (user !== null && user.id === currentUser.id) {
+        fetchInboxListStart()
         return
-      } else if (currentUser) {
-        const { id, email, orders } = currentUser
+      }
+
+      // Page refresh
+      if (user === null && currentUser) {
+        const { id, email } = currentUser
         getCurrentUser({ id, email })
         fetchInboxListStart()
-        fetchList(orders)
-      } else {
-        signinRedirect()
-        Router.push('/signin')
       }
     } else if (prevCurrentUser) {
       Router.push('/signin')
@@ -64,14 +66,13 @@ const IndexPage: React.FC<IndexPageProps> = (props) => {
   }, [currentUserData])
 
   useEffect(() => {
-    if (currentUserData && currentUserData.currentUser) {
-      const { currentUser } = currentUserData
-
-      if (listType === LIST_TYPES.INBOX || listType === LIST_TYPES.ARCHIVE) {
+    if (listType === LIST_TYPES.INBOX || listType === LIST_TYPES.ARCHIVE) {
+      if (currentUserData && currentUserData.currentUser) {
+        const { currentUser } = currentUserData
         fetchList(currentUser.orders)
       }
     }
-  }, [listType, currentUserData])
+  }, [listType])
 
   return (
     <div>
