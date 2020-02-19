@@ -1,0 +1,8 @@
+mutation CreateComment($convoId: ID!, $text: String!) {
+  createComment(convoId: $convoId, text: $text) {
+    id
+    text
+    createdAt
+    updatedAt
+  }
+}

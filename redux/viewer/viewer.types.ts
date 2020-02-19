@@ -1,16 +1,22 @@
 import { Order, Convo } from '../../generated/graphql'
 
+export type OrderConvo = Pick<
+  Convo,
+  'id' | 'updatedAt' | 'createdAt' | 'comments'
+>
+
 export interface ViewerState {
   type?: VIEWER_TYPES
   order?: Order
-  convo?: Pick<Convo, 'id' | 'updatedAt' | 'createdAt'>
+  convo?: OrderConvo
 }
 
 export enum ViewerActionTypes {
   DEFAULT_VIEW = 'DEFAULT_VIEW',
   NEW_ORDER_VIEW = 'NEW_ORDER_VIEW',
   SET_ORDER_VIEW = 'SET_ORDER_VIEW',
-  FETCH_CONVO = 'FETCH_CONVO'
+  FETCH_CONVO = 'FETCH_CONVO',
+  CREATE_COMMENT_SUCCESS = 'CREATE_COMMENT_SUCCESS'
 }
 
 export enum VIEWER_TYPES {

@@ -1,9 +1,13 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 
-import { Convo, useGetConvoLazyQuery } from '../../generated/graphql'
+import { useConvoLazyQuery } from '../../generated/graphql'
 import { RootState } from '../../redux/store'
-import { ViewerState, VIEWER_TYPES } from '../../redux/viewer/viewer.types'
+import {
+  ViewerState,
+  VIEWER_TYPES,
+  OrderConvo
+} from '../../redux/viewer/viewer.types'
 import { fetchConvo } from '../../redux/viewer/viewer.actions'
 import { Dispatch } from 'redux'
 
@@ -12,6 +16,7 @@ import ConvoViewer from './convo/convo.component'
 import NewOrderViewer from './new-order/new-order.component'
 import { DefaultView } from './default/defaultView.component'
 import { PulseSpinner } from '../loading-spinner/PulseSpinner'
+import { ErrorPlaceholder } from './error/placeholder/error-placeholder.components'
 
 import viewerStyles from './viewer.styles.scss'
 
@@ -35,14 +40,14 @@ const Viewer: React.FC<Props> = (props) => {
   const [
     getConvo,
     { data: convoData, loading: loadingConvo }
-  ] = useGetConvoLazyQuery({
+  ] = useConvoLazyQuery({
     variables: { orderId: order.id }
   })
 
   useEffect(() => {
     getConvo()
     if (convoData) {
-      props.fetchConvo(convoData.getConvo)
+      props.fetchConvo(convoData.convo)
     }
   }, [convoData])
 
@@ -51,17 +56,17 @@ const Viewer: React.FC<Props> = (props) => {
       <div>
         <HeaderViewer order={order} />
 
-        {loadingConvo ? (
+        {loadingConvo || !convoData ? (
           <div className="row text-center">
             <PulseSpinner loading={loadingConvo} />
           </div>
         ) : (
-          <ConvoViewer />
+          <ConvoViewer convo={convoData.convo} order={order} />
         )}
       </div>
     )
   } else {
-    Viewer = <div>Hmmm... this shouldn't have happened</div>
+    Viewer = <ErrorPlaceholder />
   }
 
   return (
@@ -85,11 +90,7 @@ const mapStateToProps = (state: RootState) => {
 }
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  fetchConvo: (convo: Pick<Convo, 'id' | 'updatedAt' | 'createdAt'>) =>
-    dispatch(fetchConvo(convo))
+  fetchConvo: (convo: OrderConvo) => dispatch(fetchConvo(convo))
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Viewer)
+export default connect(mapStateToProps, mapDispatchToProps)(Viewer)

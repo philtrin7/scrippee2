@@ -7,9 +7,16 @@ import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { FieldProps } from 'formik'
 
-import { setTempOrder, clearField } from '../../../../redux/temp/temp.actions'
-import { TempState } from '../../../../redux/temp/temp.types'
+import {
+  OrdersListState,
+  NewOrder
+} from '../../../../redux/ordersList/ordersList.types'
 import { RootState } from '../../../../redux/store'
+import {
+  clearField,
+  setNewOrder
+} from '../../../../redux/ordersList/ordersList.actions'
+import { Order } from '../../../../generated/graphql'
 
 import inputFieldStyles from './inputField.styles.scss'
 
@@ -24,18 +31,16 @@ type FormikPropTypes = DetailedHTMLProps<
   >
 
 interface ReduxProps {
-  setTempOrder: Function
-  clearTempOrder: Function
+  setNewOrder: Function
   clearField: Function
-  temp: TempState
+  ordersList: OrdersListState
 }
 
 const InputField = ({
-  temp,
+  ordersList,
   form,
   field,
-  setTempOrder,
-  clearTempOrder,
+  setNewOrder,
   clearField,
   ...formikProps
 }: FormikPropTypes & ReduxProps) => {
@@ -47,8 +52,11 @@ const InputField = ({
     return Object.values(obj).find((value) => obj[key] === value)
   }
 
-  const tempOrder = temp.orders[0]
-  const storedTempValue = getValueByKey(tempOrder, name)
+  let storedValue: any = ''
+  if (ordersList.newOrder) {
+    storedValue = getValueByKey(ordersList.newOrder, name)
+  }
+  // const newOrder = ordersList.new[0]
 
   return (
     <div>
@@ -59,17 +67,17 @@ const InputField = ({
             {...fields}
             {...formikProps}
             name={name}
-            value={storedTempValue || value}
+            value={storedValue || value}
             onChange={(e) => {
               if (e.target.value.length > 0) {
-                setTempOrder(name, e.target.value)
+                setNewOrder(name, e.target.value)
               } else {
                 clearField(name)
               }
               handleChange(e)
             }}
             className={`form-control ${
-              storedTempValue || value !== '' ? 'hasValue' : ''
+              storedValue || value !== '' ? 'hasValue' : ''
             }`}
           />
         ) : (
@@ -77,17 +85,17 @@ const InputField = ({
             {...fields}
             {...formikProps}
             name={name}
-            value={storedTempValue || value}
+            value={storedValue || value}
             onChange={(e) => {
               if (e.target.value.length > 0) {
-                setTempOrder(name, e.target.value)
+                setNewOrder(name, e.target.value)
               } else {
                 clearField(name)
               }
               handleChange(e)
             }}
             className={`form-control ${
-              storedTempValue || value !== '' ? 'hasValue' : ''
+              storedValue || value !== '' ? 'hasValue' : ''
             }`}
           />
         )}
@@ -98,16 +106,13 @@ const InputField = ({
 }
 
 const mapStateToProps = (state: RootState) => ({
-  temp: state.temp
+  ordersList: state.ordersList
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  setTempOrder: (field: string, value: string) =>
-    dispatch(setTempOrder(field, value)),
-  clearField: (field: string) => dispatch(clearField(field))
+  setNewOrder: (field: keyof NewOrder, value: Order[keyof NewOrder]) =>
+    dispatch(setNewOrder(field, value)),
+  clearField: (field: keyof NewOrder) => dispatch(clearField(field))
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(InputField)
+export default connect(mapStateToProps, mapDispatchToProps)(InputField)

@@ -1,0 +1,29 @@
+.error-placeholder {
+  .sad-mac {
+    font-size: 6px;
+    margin: auto;
+    color: #eaeaea;
+    width: 23em;
+    &:before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 1em;
+      height: 1em;
+      transform: translate(-1em, -1em);
+      box-shadow: 4em 3em, 5em 3em, 6em 3em, 7em 3em, 8em 3em, 9em 3em, 10em 3em,
+        11em 3em, 12em 3em, 13em 3em, 14em 3em, 15em 3em, 16em 3em, 17em 3em,
+        18em 3em, 19em 3em, 20em 3em, 3em 4em, 21em 4em, 3em 5em, 21em 5em,
+        3em 6em, 7em 6em, 9em 6em, 15em 6em, 17em 6em, 21em 6em, 3em 7em,
+        8em 7em, 16em 7em, 21em 7em, 3em 8em, 7em 8em, 9em 8em, 15em 8em,
+        17em 8em, 21em 8em, 3em 9em, 21em 9em, 3em 10em, 10em 10em, 13em 10em,
+        21em 10em, 3em 11em, 11em 11em, 12em 11em, 21em 11em, 3em 12em,
+        21em 12em, 3em 13em, 10em 13em, 11em 13em, 12em 13em, 13em 13em,
+        14em 13em, 21em 13em, 3em 14em, 9em 14em, 15em 14em, 16em 14em,
+        21em 14em, 3em 15em, 17em 15em, 21em 15em, 3em 16em, 21em 16em, 3em 17em,
+        6em 17em, 7em 17em, 8em 17em, 9em 17em, 10em 17em, 11em 17em, 12em 17em,
+        13em 17em, 14em 17em, 15em 17em, 16em 17em, 17em 17em, 18em 17em,
+        19em 17em, 20em 17em, 3em 18em, 5em 18em, 4em 19em, 3em 20em;
+    }
+  }
+}

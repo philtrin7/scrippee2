@@ -1,6 +1,10 @@
-query User {
-  user {
-    id
+mutation Signin($email: String!, $password: String!) {
+  signin(email: $email, password: $password) {
+    accessToken
+    user {
+      id
+      email
+    }
     orders {
       inbox {
         todays {

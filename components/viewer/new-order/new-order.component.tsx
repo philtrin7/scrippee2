@@ -14,14 +14,16 @@ import { formatValidationErrors } from '../../../lib/utils/formatError'
 import {
   useCreateOrderMutation,
   CreateOrderMutationVariables,
-  UserQuery,
-  UserDocument,
+  CurrentUserQuery,
+  CurrentUserDocument,
   Order
 } from '../../../generated/graphql'
 
-import { clearTempOrder } from '../../../redux/temp/temp.actions'
-import { selectOrder } from '../../../redux/selectOrder/selectOrder.actions'
 import { setOrderView } from '../../../redux/viewer/viewer.actions'
+import {
+  clearNewOrder,
+  selectOrder
+} from '../../../redux/ordersList/ordersList.actions'
 
 import viewerStyles from '../viewer.styles.scss'
 
@@ -31,7 +33,7 @@ type OrderForm = Pick<
 >
 
 interface Props {
-  clearTempOrder: Function
+  clearNewOrder: Function
   selectOrder: Function
   setOrderView: Function
 }
@@ -59,15 +61,19 @@ const NewOrderViewer: React.FC<Props> = (props) => {
             return null
           }
           if (data.createOrder) {
-            const dataStore = store.readQuery<UserQuery>({
-              query: UserDocument
+            const dataStore = store.readQuery<CurrentUserQuery>({
+              query: CurrentUserDocument
             })
-            if (dataStore && dataStore.user && dataStore.user.orders.inbox) {
-              const { todays } = dataStore.user.orders.inbox
+            if (
+              dataStore &&
+              dataStore.currentUser &&
+              dataStore.currentUser.orders.inbox
+            ) {
+              const { todays } = dataStore.currentUser.orders.inbox
               todays.unshift(data.createOrder)
 
-              store.writeQuery<UserQuery>({
-                query: UserDocument,
+              store.writeQuery<CurrentUserQuery>({
+                query: CurrentUserDocument,
                 data: dataStore
               })
             }
@@ -77,7 +83,7 @@ const NewOrderViewer: React.FC<Props> = (props) => {
       if (response && response.data) {
         resetForm()
         toast.success('Order successfully created')
-        props.clearTempOrder()
+        props.clearNewOrder()
         props.selectOrder(response.data.createOrder.id)
         props.setOrderView(response.data.createOrder)
       }
@@ -114,7 +120,7 @@ const NewOrderViewer: React.FC<Props> = (props) => {
                     type="button"
                     className="btn round"
                     onClick={() => {
-                      props.clearTempOrder()
+                      props.clearNewOrder()
                     }}
                   >
                     <i>
@@ -207,12 +213,9 @@ const NewOrderViewer: React.FC<Props> = (props) => {
 }
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  clearTempOrder: () => dispatch(clearTempOrder()),
+  clearNewOrder: () => dispatch(clearNewOrder()),
   selectOrder: (orderId: string) => dispatch(selectOrder(orderId)),
   setOrderView: (order: Order) => dispatch(setOrderView(order))
 })
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(NewOrderViewer)
+export default connect(null, mapDispatchToProps)(NewOrderViewer)

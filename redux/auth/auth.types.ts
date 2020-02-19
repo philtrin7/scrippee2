@@ -6,15 +6,17 @@ export enum AuthActionTypes {
   SIGNIN_REQUIRED = 'SIGNIN_REQUIRED',
   CLEAR_ALERTS = 'CLEAR_ALERTS',
   SIGNOUT_SUCCESS = 'SIGNOUT_SUCCESS',
-  SIGNOUT_FAIL = 'SIGNOUT_FAIL'
+  SIGNOUT_FAIL = 'SIGNOUT_FAIL',
+  GET_CURRENT_USER = 'GET_CURRENT_USER',
+  GET_CURRENT_USER_FAIL = 'GET_CURRENT_USER_FAIL'
 }
 
 export interface AuthState {
-  currentUser: User | null
+  user: User | null
   alerts: AlertsArray
 }
 
-export interface User extends _User {}
+export interface User extends Pick<_User, 'id' | 'email'> {}
 
 export type AlertsArray = Alert[]
 

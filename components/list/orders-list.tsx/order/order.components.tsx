@@ -3,23 +3,23 @@ import dayjs from 'dayjs'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 
-import { selectOrder } from '../../../../redux/selectOrder/selectOrder.actions'
+import { selectOrder } from '../../../../redux/ordersList/ordersList.actions'
 import { RootState } from '../../../../redux/store'
-import { SelectOrderState } from '../../../../redux/selectOrder/selectOrder.types'
+import { SelectOrder } from '../../../../redux/ordersList/ordersList.types'
 import { setOrderView } from '../../../../redux/viewer/viewer.actions'
 
 import { Order } from '../../../../generated/graphql'
 import { daysBetween } from '../../../../lib/utils/daysBetweenCalc'
+import { processString } from '../../../../lib/utils/processString'
 import StatusCounter from '../../../status-counter/status-counter.component'
 
 import orderComponentStyles from './order.styles.scss'
-import { processString } from '../../../../lib/utils/processString'
 
 interface Props {
   selectOrder: Function
   setOrderView: Function
   order: Order
-  selectedOrder: SelectOrderState
+  selectedOrder: SelectOrder
 }
 
 const OrderComponent: React.FC<Props> = (props) => {
@@ -89,7 +89,7 @@ const OrderComponent: React.FC<Props> = (props) => {
 }
 
 const mapStateToProps = (state: RootState) => ({
-  selectedOrder: state.selectOrder
+  selectedOrder: state.ordersList.selectOrder
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
@@ -97,7 +97,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   setOrderView: (order: Order) => dispatch(setOrderView(order))
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(OrderComponent)
+export default connect(mapStateToProps, mapDispatchToProps)(OrderComponent)

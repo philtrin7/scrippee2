@@ -3,11 +3,10 @@ import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { processString } from '../../../../lib/utils/processString'
 
-import { selectNewOrder } from '../../../../redux/selectOrder/selectOrder.actions'
 import { RootState } from '../../../../redux/store'
-import { TempState } from '../../../../redux/temp/temp.types'
-import { SelectOrderState } from '../../../../redux/selectOrder/selectOrder.types'
+import { OrdersListState } from '../../../../redux/ordersList/ordersList.types'
 import { setNewOrderView } from '../../../../redux/viewer/viewer.actions'
+import { selectNewOrder } from '../../../../redux/ordersList/ordersList.actions'
 
 import StatusCounter from '../../../status-counter/status-counter.component'
 
@@ -16,13 +15,15 @@ import orderComponentStyles from '../order/order.styles.scss'
 interface Props {
   selectNewOrder: Function
   setNewOrderView: Function
-  tempOrder: TempState
-  selectOrder: SelectOrderState
+  ordersList: OrdersListState
 }
 
-const TempOrder: React.FC<Props> = (props) => {
-  const { customerName, item } = props.tempOrder.orders[0]
-  const { orderId } = props.selectOrder
+const NewOrder: React.FC<Props> = (props) => {
+  if (!props.ordersList.newOrder) {
+    return <div></div>
+  }
+  const { customerName, item } = props.ordersList.newOrder
+  const { orderId } = props.ordersList.selectOrder
 
   const processedCustomerName = processString(customerName, 14, 28)
   const processedItem = processString(item, 18, 36)
@@ -63,17 +64,15 @@ const TempOrder: React.FC<Props> = (props) => {
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  tempOrder: state.temp,
-  selectOrder: state.selectOrder
-})
+const mapStateToProps = (state: RootState) => {
+  return {
+    ordersList: state.ordersList
+  }
+}
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   selectNewOrder: () => dispatch(selectNewOrder()),
   setNewOrderView: () => dispatch(setNewOrderView())
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TempOrder)
+export default connect(mapStateToProps, mapDispatchToProps)(NewOrder)

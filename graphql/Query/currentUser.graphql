@@ -1,12 +1,7 @@
-mutation Signin($email: String!, $password: String!) {
-  signin(email: $email, password: $password) {
-    auth {
-      accessToken
-      user {
-        id
-        email
-      }
-    }
+query CurrentUser {
+  currentUser {
+    id
+    email
     orders {
       inbox {
         todays {
