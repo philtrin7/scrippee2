@@ -29,7 +29,9 @@ const ConvoViewer: React.FC<Props> = (props) => {
             <li>
               <div className="content">
                 <div className="message">
-                  <div className="bubble">{Comment}</div>
+                  <div className="bubble">
+                    <p>{Comment}</p>
+                  </div>
                 </div>
                 <span>07:30am</span>
               </div>
